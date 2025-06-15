@@ -90,8 +90,3 @@ The platform helps students document achievements, generate personalized bios an
 ---
 
 
-### Run the Development Server
-npm run dev
-# or
-yarn dev
----
