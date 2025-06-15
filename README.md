@@ -89,3 +89,18 @@ The platform helps students document achievements, generate personalized bios an
 
 ---
 
+### How to start 
+After forking , clone the repo using command as
+git clone https://github.com/nst-sdc/LinkUp.AI.git
+cd LinkUp.AI
+---
+### Dependencies to install
+npm install
+# or
+yarn install
+---
+### Run the Development Server
+npm run dev
+# or
+yarn dev
+---
