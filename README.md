@@ -79,14 +79,12 @@ The platform helps students document achievements, generate personalized bios an
 
 ### ⚙️ Technical Architecture
 
-| Layer         | Technology                                            |
-|---------------|--------------------------------------------------------|
-| **Frontend**  | React.js                                               |
-| **Backend**   | Next.js (API Routes, SSR/SSG)                          |
-| **AI/NLP**    | OpenAI API (Bio, Resume Generation, Summarization)    |
-| **Storage**   | Firebase / AWS S3 (for documents and certificates)    |
-| **Database**  | PostgreSQL / MongoDB (for user data and timelines)    |
+| Layer        | Technology                                         |
+| ------------ | -------------------------------------------------- |
+| **Frontend** | React.js                                           |
+| **Backend**  | Next.js (API Routes, SSR/SSG)                      |
+| **AI/NLP**   | OpenAI API (Bio, Resume Generation, Summarization) |
+| **Storage**  | Firebase / AWS S3 (for documents and certificates) |
+| **Database** | PostgreSQL / MongoDB (for user data and timelines) |
 
 ---
-
-
