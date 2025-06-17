@@ -2,7 +2,7 @@
 
 ---
 
-### 🧠 Project Overview
+### 🧠 Project Overview:
 
 **LinkUp.AI** is a student-first, AI-powered profile management platform designed to help learners **build**, **organize**, and **showcase** their academic and professional journeys. Unlike traditional platforms built for working professionals, LinkUp.AI is optimized to meet the unique needs of students—acting as a **smart portfolio**, **career prep tool**, and **personal branding assistant** in one place.
 
@@ -10,7 +10,7 @@ The platform helps students document achievements, generate personalized bios an
 
 ---
 
-### 🎯 Objectives
+### 🎯 Objectives:
 
 - Build a structured academic portfolio for students.
 - Automate resume creation, bio generation, and project summaries using AI.
