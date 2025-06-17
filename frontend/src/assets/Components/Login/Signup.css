@@ -1,0 +1,57 @@
+
+body {
+  
+  background-color: grey;
+  margin: 0;
+  padding: 0;
+}
+
+
+.signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+
+.form {
+  background-color: rgb(120, 105, 105);
+  padding: 30px;
+  border-radius: 12px;
+  
+}
+
+
+.form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: black;
+}
+
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.field label {
+
+    font-weight: bold;
+
+  color: black;
+}
+
+.field input {
+  padding: 10px;font-size: 1rem;
+}
+
+
+.adjacent {
+  display: flex;
+  gap: 10px;
+}
+
+
+
