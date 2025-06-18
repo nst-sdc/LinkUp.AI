@@ -1,6 +1,9 @@
 .welcome-header{
     font-size: 1.5rem;
-    color: #333;
+    color: #111827;
     text-align: center;
     margin-top: 100px;
+}
+.app-container{
+    background-color: #F9FAFB;
 }
