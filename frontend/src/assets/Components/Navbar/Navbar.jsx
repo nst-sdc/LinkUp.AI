@@ -70,6 +70,7 @@ const Navbar = () => {
 
             <li>Notifications</li>
             <li>Profile</li>
+            <button style={{backgroundColor:'#111827',color:"white",borderRadius:'4px'}}>Sign in</button>
         </ul>
         <div className='search-bar'>
             <input type="text" placeholder='Search...' />

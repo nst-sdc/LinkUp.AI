@@ -1,0 +1,38 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.form {
+  padding: 20px;
+  
+  border-radius: 8px;
+  
+}
+
+.field {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+input {
+  margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.submit-btn {
+    background-color: #111827;
+    color: white;
+    border-radius: 6px;
+
+  
+}
+.label{
+    font-weight: bold;
+    font-size: 14px;
+}
