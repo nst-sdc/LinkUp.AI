@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="app-container">
       <Navbar />
+      <Signup/>
       <header className="welcome-header">
         <h1>Welcome to LinkUp.AI</h1>
         <p>Connecting people with AI-powered precision.</p>

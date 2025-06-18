@@ -31,9 +31,9 @@ const Footer = () => {
 
                 <div className='footer_links1'>
                     <h4>Contact</h4>
-                    <a href='/AboutUs'><p>help line</p></a>  
-                    <a href='/Accessibilty'><p>contact</p></a>
-                    <a href='/Support'><p>press </p></a>  
+                    <a href='/AboutUs'><p>Help line</p></a>  
+                    <a href='/Accessibilty'><p>Contact</p></a>
+                    <a href='/Support'><p>Press </p></a>  
                 </div>
 
                 {/* the below section is for social media accounds for which we have to add the images we will do it letter */}
@@ -50,7 +50,7 @@ const Footer = () => {
             <hr></hr>
             <div className='footer-below'>
                  <div className='copyright'>
-                    <p>@ 2025 LinkUp.AI . All right reserved.  </p>
+                    <p>@ 2025 LinkUp.AI . All right reserved. </p>
                  </div>
                  <div className='footer-below-links '>
                     <a href='/terms'><div><p>Terms and Conditions</p></div></a>

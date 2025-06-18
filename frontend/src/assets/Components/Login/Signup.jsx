@@ -32,7 +32,7 @@ function Signup() {
             </div>
             <div className="field">
               <label htmlFor="phone">Phone</label>
-              <input type="number" name="phone" id="phone" />
+              <input type="tel" name="phone" id="phone" />
             </div>
           </div>
 
@@ -45,7 +45,7 @@ function Signup() {
             <label htmlFor="cnfpass">Confirm Password</label>
             <input type="password" name="cnfpass" id="cnfpass" />
           </div>
-
+          
           <button type="submit">Let's Go</button>
         </form>
       </div>
