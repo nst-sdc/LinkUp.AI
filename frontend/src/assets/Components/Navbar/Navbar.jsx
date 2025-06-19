@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom';
 import './Navbar.css'
 import logo from '../../../assets/Images/logo.png'
 import searchIcon from '../../../assets/Images/search-iconW.png'
@@ -42,7 +43,7 @@ const Navbar = () => {
           {activeDropdown === 'opportunities' && (
             <ul className='dropdown-content'>
               <li>Hackathons</li>
-              <li>Webinars</li>
+              <li><Link to="/webinar">Webinars</Link></li>
             </ul>
           )}
         </li>
