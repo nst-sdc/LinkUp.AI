@@ -74,6 +74,7 @@ const Navbar = () => {
         </li>
             <li>Notifications</li>
             <li>Profile</li>
+            <button style={{backgroundColor:'#111827',color:"white",borderRadius:'4px'}}>Sign in</button>
         </ul>
     </div>
   )
