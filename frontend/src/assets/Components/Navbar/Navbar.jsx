@@ -34,6 +34,11 @@ const Navbar = () => {
   return (
     <div className='navbar'>
         <img src={logo} alt="LinkUp.AI Logo" className='logo' /> 
+        
+        <div className='search-bar'>
+            <input type="text" placeholder='Search...' />
+            <img src={searchIcon} alt=''/>
+        </div>
         <ul>
             <li>Feed</li>
 
@@ -67,14 +72,9 @@ const Navbar = () => {
             </ul>
           )}
         </li>
-
             <li>Notifications</li>
             <li>Profile</li>
         </ul>
-        <div className='search-bar'>
-            <input type="text" placeholder='Search...' />
-            <img src={searchIcon} alt=''/>
-        </div>
     </div>
   )
 }
