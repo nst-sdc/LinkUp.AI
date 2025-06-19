@@ -1,6 +1,6 @@
 import React from 'react'
 import './footer.css'
-
+import { FaLinkedin, FaInstagram, FaTwitter } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -53,11 +53,17 @@ const Footer = () => {
                     <p>@ 2025 LinkUp.AI . All right reserved. </p>
                  </div>
                  <div className='footer-below-links '>
-                    <a href='/terms'><div><p>Terms and Conditions</p></div></a>
-                    <a href='/terms'><div><p>Privacy </p></div></a>
-                    <a href='/terms'><div><p>Security</p></div></a>
-                    <a href='/terms'><div><p>Cookie Declarations  </p></div></a>  
+                    <span><a href='/terms'><div><p>Terms and Conditions</p></div></a></span>
+                    <span><a href='/terms'><div><p>Privacy </p></div></a></span>
+                    <span><a href='/terms'><div><p>Security</p></div></a></span>
+                    <span><a href='/terms'><div><p>Cookie Declarations  </p></div></a></span>  
+                    
+                    
+                    
                  </div>
+                 <div className='icons' ><FaLinkedin size={30} style={{ margin: '0 10px' , color:"white"}} />
+                    <FaInstagram size={30} style={{ margin: '0 10px', color:"white" }} />
+                    <FaTwitter size={30} style={{ margin: '0 10px', color:"white" }} /></div>
 
             </div>
             </div>
