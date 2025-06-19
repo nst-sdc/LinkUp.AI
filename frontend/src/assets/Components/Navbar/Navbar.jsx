@@ -58,7 +58,7 @@ const Navbar = () => {
             <ul className='dropdown-content'>
               <li>Bio Generator</li>
               <li>Resume Builder</li>
-              <li>Project Summarizer</li>
+              <li>Career Boost</li>
             </ul>
           )}
         </li>
