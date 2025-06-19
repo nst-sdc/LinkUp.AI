@@ -88,3 +88,12 @@ ul li:hover {
     margin-left: 5px;
     transition: transform 0.3s;
   }
+  .dropdown-content a {
+    color: black;
+    text-decoration: none;
+  }
+  
+  .dropdown-content a:hover {
+    color: #333; 
+  }
+  
