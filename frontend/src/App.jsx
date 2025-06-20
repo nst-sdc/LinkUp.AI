@@ -1,11 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Footer from './assets/Components/Footer/Footer';
-import './App.css';
-import Navbar from './assets/Components/Navbar/Navbar';
-import Signup from './assets/Components/Login/Signup';
-import Login from './assets/Components/Login/Login';
-import Webinar from './assets/Components/Webinar/Webinar';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Footer from './assets/Components/Footer/Footer'
+import './App.css'
+import Navbar from './assets/Components/Navbar/Navbar'
+import Signup from './assets/Components/Login/Signup'
+import Login from './assets/Components/Login/Login'
+import Webinar from './assets/Components/Webinar/Webinar'
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
         <Footer />
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
