@@ -45,8 +45,9 @@ function Signup() {
             <label htmlFor="cnfpass">Confirm Password</label>
             <input type="password" name="cnfpass" id="cnfpass" />
           </div>
+    
+          <button  className='submit-button'  type="submit">Let's Go</button>
           
-          <button type="submit">Let's Go</button>
         </form>
       </div>
     </>
