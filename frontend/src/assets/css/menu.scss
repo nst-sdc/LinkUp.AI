@@ -1,0 +1,53 @@
+/**
+ * Menu Component Styles -
+ *
+ * When the content gets .active,
+ * the dropdown will be displayed.
+ */
+.menu-list_container {
+    position: relative;
+    cursor: pointer;
+    min-width: 160px;
+
+    .menu-list__content {
+        position: absolute;
+        display: none;
+        z-index: 1;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 8px 0;
+        border-radius: 6px;
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        & a:hover {
+            color: #333;
+        }
+
+        .arrow-icon {
+            width: 15px;
+            height: 10px;
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+
+        li {
+            padding: 10px 20px;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        & li:hover {
+            background-color: #b6cbeb;
+        }
+    }
+
+    &.active .menu-list__content {
+        display: block;
+    }
+}

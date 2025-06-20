@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "title": "Feed"
+    },
+    {
+        "id": 2,
+        "title": "Opportunities",
+        "subMenu": [
+            {
+                "title": "Hackathons",
+                "link": "/hackathons"
+            },
+            { "title": "Webinars", "link": "/webinar" }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "AI Assist",
+        "subMenu": [
+            {
+                "title": "Bio Generator",
+                "link": "/bio-generator"
+            },
+            {
+                "title": "Resume Builder",
+                "link": "/resume-builder"
+            },
+            {
+                "title": "Career Boost",
+                "link": "/career-boost"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Jobs",
+        "subMenu": [
+            {
+                "title": "Internships",
+                "link": "/internships"
+            },
+            {
+                "title": "Jobs",
+                "link": "/jobs"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Notifications"
+    },
+    {
+        "id": 6,
+        "title": "Profile"
+    }
+]
