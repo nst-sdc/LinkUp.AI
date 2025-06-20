@@ -16,26 +16,26 @@
       "useUnknownInCatchVariables": true,
       "allowImportingTsExtensions": true,
       "noEmit": true,
-      "baseUrl": ".",
+      "baseUrl": "./src",
       "allowJs": true,
       "checkJs": true,
       "paths": {
-        "@/*": ["src/*"],
-        "@assets/*": ["src/assets/*"],
-        "@css/*": ["src/assets/css/*"],
-        "@images/*": ["src/assets/images/*"],
-        "@icons/*": ["src/assets/icons/*"],
-        "@data/*": ["src/data/*"],
-        "@utils/*": ["src/utils/*"],
-        "@hooks/*": ["src/hooks/*"]
+        "@/*": ["./*"],
+        "@assets/*": ["assets/*"],
+        "@css/*": ["assets/css/*"],
+        "@images/*": ["assets/images/*"],
+        "@icons/*": ["assets/icons/*"],
+        "@data/*": ["data/*"],
+        "@utils/*": ["utils/*"],
+        "@hooks/*": ["hooks/*"]
       },
-      "types": ["react", "react-dom", "jest"],
+      "types": ["react", "react-dom", "jest", "vite/client"],
       "lib": ["DOM", "ES2022", "DOM.Iterable"],
   },
   "references": [
     // { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "vite.config.ts"],
   "exclude": ["node_modules"] 
 }
