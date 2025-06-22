@@ -6,6 +6,8 @@ import Navbar from './assets/Components/Navbar/Navbar'
 import Signup from './assets/Components/Login/Signup'
 import Login from './assets/Components/Login/Login'
 import Webinar from './assets/Components/Webinar/Webinar'
+import Profile from './assets/Components/Profile/Profile';
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
             }
           />
           <Route path="/webinar" element={<Webinar />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
 
         <Footer />
