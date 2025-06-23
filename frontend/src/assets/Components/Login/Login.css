@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: auto;
   
 }
 
@@ -16,6 +17,9 @@
   display: block;
   margin-bottom: 10px;
   font-size: 16px;
+  font-weight: bold;
+  
+  
 }
 
 input {
@@ -32,7 +36,7 @@ input {
 
   
 }
-.label{
+label{
     font-weight: bold;
     font-size: 14px;
 }

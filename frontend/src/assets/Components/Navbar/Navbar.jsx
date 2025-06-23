@@ -1,62 +1,67 @@
-import React from 'react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom';
-import './Navbar.css'
-import logo from '../../../assets/Images/logo.png'
-import searchIcon from '../../../assets/Images/search-iconW.png'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './Navbar.css';
+import logo from '../../../assets/Images/logo.png';
+import searchIcon from '../../../assets/Images/search-iconW.png';
 
 const ArrowIcon = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16px"
-      height="16px"
-      viewBox="0 0 16 16"
-      fill="transparent"
-      className="arrow-icon"
-    >
-      <path
-        d="M4 6L8 10L12 6"
-        stroke="#16191d"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-)
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    fill="transparent"
+    className="arrow-icon"
+  >
+    <path
+      d="M4 6L8 10L12 6"
+      stroke="#16191d"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
-const Navbar = () => {
-
-    const [activeDropdown, setActiveDropdown] = useState(null)
+const Navbar = ({ isSignedIn, setIsSignedIn }) => {
+  const navigate = useNavigate();
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleDropdown = (name) => {
-    setActiveDropdown(prev => (prev === name ? null : name))
-  }
+    setActiveDropdown((prev) => (prev === name ? null : name));
+  };
+
+  const handleSignOut = () => {
+    setIsSignedIn(false);
+    navigate('/');
+  };
 
   return (
-    <div className='navbar'>
-        <img src={logo} alt="LinkUp.AI Logo" className='logo' /> 
-        
-        <div className='search-bar'>
-            <input type="text" placeholder='Search...' />
-            <img src={searchIcon} alt=''/>
-        </div>
-        <ul>
-            <li>Feed</li>
+    <div className="navbar">
+      <img src={logo} alt="LinkUp.AI Logo" className="logo" />
 
-            <li className='dropdown' onClick={() => toggleDropdown('opportunities')}>
+      <div className="search-bar">
+        <input type="text" placeholder="Search..." />
+        <img src={searchIcon} alt="Search Icon" />
+      </div>
+
+      <ul>
+        <li>Feed</li>
+
+        <li className="dropdown" onClick={() => toggleDropdown('opportunities')}>
           Opportunities <ArrowIcon />
           {activeDropdown === 'opportunities' && (
-            <ul className='dropdown-content'>
+            <ul className="dropdown-content">
               <li>Hackathons</li>
               <li><Link to="/webinar">Webinars</Link></li>
             </ul>
           )}
         </li>
 
-        <li className='dropdown' onClick={() => toggleDropdown('ai')}>
+        <li className="dropdown" onClick={() => toggleDropdown('ai')}>
           AI Assist <ArrowIcon />
           {activeDropdown === 'ai' && (
-            <ul className='dropdown-content'>
+            <ul className="dropdown-content">
               <li>Bio Generator</li>
               <li>Resume Builder</li>
               <li>Career Boost</li>
@@ -64,21 +69,35 @@ const Navbar = () => {
           )}
         </li>
 
-        <li className='dropdown' onClick={() => toggleDropdown('jobs')}>
+        <li className="dropdown" onClick={() => toggleDropdown('jobs')}>
           Jobs <ArrowIcon />
           {activeDropdown === 'jobs' && (
-            <ul className='dropdown-content'>
+            <ul className="dropdown-content">
               <li>Internships</li>
               <li>Jobs</li>
             </ul>
           )}
         </li>
-            <li>Notifications</li>
-            <li><Link to="/profile" className="profile-link">Profile</Link></li>
-            <button style={{backgroundColor:'#111827',color:"white",borderRadius:'4px'}}>Sign in</button>
-        </ul>
-    </div>
-  )
-}
 
-export default Navbar
+        <li>Notifications</li>
+
+        <li className="auth-buttons">
+          {isSignedIn ? (
+             <div className="auth-buttons">
+              <Link to="/profile" className="profile-link">👤 Profile</Link>
+              <button className="nav-btn signout" onClick={handleSignOut}>Sign Out</button>
+              
+            </div>
+          ) : (
+            <div className="auth-buttons">
+              <button className="nav-btn login" onClick={() => navigate('/login')}>Login</button>
+              <button className="nav-btn signup" onClick={() => navigate('/signup')}>Sign Up</button>
+            </div>
+          )}
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default Navbar;
