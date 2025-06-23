@@ -7,6 +7,7 @@ import Signup from './assets/Components/Login/Signup';
 import Login from './assets/Components/Login/Login';
 import Webinar from './assets/Components/Webinar/Webinar';
 import Home from './assets/Components/home_content/Homecontent';
+import Hackathon from './assets/Components/hackathon/Hackathon';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/webinar" element={<Webinar />} />
+      <Route path="/hackathon" element={<Hackathon />} />
       </Routes>
 
       <Footer />
