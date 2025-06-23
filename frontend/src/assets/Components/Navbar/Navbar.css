@@ -1,5 +1,5 @@
 .navbar{
-    width: 90%;
+    width: 100%;
     background-color:#EEF2FF;
     color: #111827;
     display: flex;
@@ -101,3 +101,6 @@ ul li:hover {
     color: black;
   }
   
+  .navbar a{
+    color: #000;
+  }

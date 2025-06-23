@@ -41,7 +41,7 @@ const Navbar = () => {
             <img src={searchIcon} alt=''/>
         </div>
         <ul>
-            <li>Feed</li>
+        <li><Link to="/">Home</Link></li>
 
             <li className='dropdown' onClick={() => toggleDropdown('opportunities')}>
           Opportunities <ArrowIcon />
