@@ -97,4 +97,7 @@ ul li:hover {
   .dropdown-content a:hover {
     color: #333; 
   }
+  .navbar ul li a.profile-link {
+    color: black;
+  }
   
