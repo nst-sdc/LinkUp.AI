@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../../../assets/Images/logo.png';
 import searchIcon from '../../../assets/Images/search-iconW.png';
-
+import Hackathon from '../hackathon/Hackathon';
 const ArrowIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
           Opportunities <ArrowIcon />
           {activeDropdown === 'opportunities' && (
             <ul className="dropdown-content">
-              <li>Hackathons</li>
+              <li><Link to="/hackathon">Hackathons</Link></li>
               <li><Link to="/webinar">Webinars</Link></li>
             </ul>
           )}

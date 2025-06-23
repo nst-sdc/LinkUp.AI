@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TechNewsCard from './TechNewsCard';
 import './TechNewsCard.css';
+import Hackathon from '../hackathon/Hackathon';
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -22,6 +23,7 @@ export default function Home() {
   }, []);
 
   return (
+    <>
     <div className="news-section">
       <div className="news-container">
         {loading ? (
@@ -39,5 +41,6 @@ export default function Home() {
         )}
       </div>
     </div>
+    </>
   );
 }
