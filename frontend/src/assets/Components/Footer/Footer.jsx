@@ -1,6 +1,6 @@
 import React from 'react'
 import './footer.css'
-import { FaLinkedin, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaLinkedin, FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -61,9 +61,10 @@ const Footer = () => {
                     
                     
                  </div>
-                 <div className='icons' ><FaLinkedin size={30} style={{ margin: '0 10px' , color:"white"}} />
-                    <FaInstagram size={30} style={{ margin: '0 10px', color:"white" }} />
-                    <FaTwitter size={30} style={{ margin: '0 10px', color:"white" }} /></div>
+                 <div className='icons' ><FaLinkedin size={30} style={{ margin: '10 10px' , color:"white"}} />
+                    <FaInstagram size={30} style={{ margin: '10 10px', color:"white" }} />
+                    <FaTwitter size={30} style={{ margin: '10 10px', color:"white" }} />
+                    <FaFacebook size={30} style={{ margin: '10 10px', color:"white" }} /></div>
 
             </div>
             </div>
