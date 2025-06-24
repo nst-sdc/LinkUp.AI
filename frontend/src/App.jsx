@@ -10,6 +10,7 @@ import Profile from './assets/Components/Profile/Profile';
 import Home from './assets/Components/home_content/Homecontent';
 import Hackathon from './assets/Components/hackathon/Hackathon';
 import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
+import Internships from './assets/Components/Internships/Internships';
 
 import Jobs from './assets/Components/Jobs/Jobs'
 import Internships from './assets/Components/Internships/Internships';
