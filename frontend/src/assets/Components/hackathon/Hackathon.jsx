@@ -10,6 +10,7 @@ import Navbar from "../Navbar/Navbar"
 const Hackathon = () => {
   return (
     <>
+    
     <div id = "container">
         <img src={main1} alt="hackathon"></img>
         <h1>Hackathon & Bootcamp</h1>
@@ -18,7 +19,7 @@ const Hackathon = () => {
     <div id = "know">
         <img src={main2} alt='search-image'/>
         <h1>Know your Hackathon</h1>
-        <div className='search-bar'>
+        <div className='hackathon-search-bar'>
             <input type="text" placeholder='Search...' />
         </div>
     </div>
@@ -42,4 +43,4 @@ const Hackathon = () => {
   )
 }
 
-export default Hackathon
+export default Hackathon;

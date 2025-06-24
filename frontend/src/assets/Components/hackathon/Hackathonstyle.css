@@ -1,111 +1,122 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
 #container {
-    position: relative;
-    height: 300px;
-    width: 100%;
+  position: relative;
+  height: 300px;
+  width: 100%;
 }
+
 #container img {
-    position: absolute;
-    height: 100%;
-    width: 100%;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
 }
-#container h1 {
-    position: absolute;
-    color: white;
-    font-size: 50px;
-    padding-left: 400px;
-    padding-top: 75px;
-}
+
+#container h1,
 #container p {
-    position: absolute;
-    color: white;
-    font-size: 25px;
-    padding-left: 200px;
-    padding-top: 180px;
+  position: absolute;
+  color: white;
+  z-index: 1;
 }
+
+#container h1 {
+  font-size: 50px;
+  left: 25%;
+  top: 25%;
+}
+
+#container p {
+  font-size: 25px;
+  left: 15%;
+  top: 60%;
+}
+
 #know {
-    position: relative;
-    height: 400px;
-    width: 100%;
-} 
+  position: relative;
+  height: 400px;
+  width: 100%;
+}
 
 #know img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 #know h1 {
-    position: absolute;
-    font-size: 50px;
-    top: 20%;
-    left: 30%;
+  position: absolute;
+  font-size: 50px;
+  top: 20%;
+  left: 30%;
+  z-index: 1;
 }
-.search-bar{
-    top: 60%;
-    left: 32%;
-    position: absolute;
-    display : flex;
-    width : 400px;
-    padding-top: 100px;
-    align-items: center;
-    background: #242424;
-    padding: 10px 20px;
-    border-radius: 50px;
+
+.hackathon-search-bar {
+  top: 60%;
+  left: 32%;
+  position: absolute;
+  display: flex;
+  width: 400px;
+  align-items: center;
+  background: #242424;
+  padding: 10px 20px;
+  border-radius: 50px;
+  z-index: 1;
 }
-.search-bar input{
-    border: none;
-    outline: none;
-    background: transparent;
-    color: #fff;
-    font-size: 16px;
-    width: 200px;
+
+.hackathon-search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  width: 100%;
 }
-.search-bar input::placeholder{
-    color: #ccc;
-}
-.search-bar img{
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    cursor: pointer;
+
+.hackathon-search-bar input::placeholder {
+  color: #ccc;
 }
 
 #text {
-    margin-top: 20px;
-    text-align: center;
-    padding: 10px;
-    background-color:  #F9FAFB;
+  margin-top: 20px;
+  text-align: center;
+  padding: 10px;
+  background-color: #F9FAFB;
 }
 
 #tophack {
-    background-color: #F9FAFB;
-    height: 400px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  background-color: #F9FAFB;
+  height: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 #tophack div {
-    height: 75%;
-    width: 30%;
-    background-color: white;
-    border-radius: 5%;
-}
-#tophack div img{
-    height: 60%;
-    width: 60%;
-    margin-top: 10%;
-    margin-left: 20%; 
-    border-radius: 5%;
-}
-#tophack div h4 {
-    text-align: center;
-    margin-top: 5%;
-    font-size: 20px;
+  height: 75%;
+  width: 30%;
+  background-color: white;
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+#tophack div img {
+  height: 60%;
+  width: 60%;
+  margin-bottom: 10px;
+  border-radius: 5%;
+}
+
+#tophack div h4 {
+  font-size: 20px;
+}

@@ -65,7 +65,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
             <ul className="dropdown-content">
               <li>Bio Generator</li>
               <li>Resume Builder</li>
-              <li>Career Boost</li>
+              <li onClick={() => navigate('/career-boost')}>Career Boost</li>
             </ul>
           )}
         </li>

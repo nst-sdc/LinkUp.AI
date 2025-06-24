@@ -68,6 +68,7 @@ ul li:not(.auth-buttons):hover {
 
 .search-bar input::placeholder {
   color: #ccc;
+  
 }
 
 .search-bar img {
