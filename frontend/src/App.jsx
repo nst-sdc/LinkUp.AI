@@ -7,6 +7,7 @@ import Signup from './assets/Components/Login/Signup'
 import Login from './assets/Components/Login/Login'
 import Webinar from './assets/Components/Webinar/Webinar'
 import Profile from './assets/Components/Profile/Profile';
+import Jobs from './assets/Components/Jobs/Jobs'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             }
           />
           <Route path="/webinar" element={<Webinar />} />
+          <Route path="/Jobs" element={<Jobs />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
 

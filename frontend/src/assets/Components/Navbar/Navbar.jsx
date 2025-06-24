@@ -69,7 +69,7 @@ const Navbar = () => {
           {activeDropdown === 'jobs' && (
             <ul className='dropdown-content'>
               <li>Internships</li>
-              <li>Jobs</li>
+              <li><Link to="/Jobs">Jobs</Link></li>
             </ul>
           )}
         </li>
