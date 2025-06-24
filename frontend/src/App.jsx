@@ -10,8 +10,9 @@ import Profile from './assets/Components/Profile/Profile';
 import Home from './assets/Components/home_content/Homecontent';
 import Hackathon from './assets/Components/hackathon/Hackathon';
 import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
-import Jobs from './assets/Components/Jobs/Jobs'
 
+import Jobs from './assets/Components/Jobs/Jobs'
+import Internships from './assets/Components/Internships/Internships';
 
 
 function App() {
@@ -44,6 +45,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/hackathon" element={<Hackathon />} />
           <Route path="/career-boost" element={<CareerBoost />} />
+          <Route path="/internships" element={<Internships />} />
+
 
           {/* Auth */}
           <Route

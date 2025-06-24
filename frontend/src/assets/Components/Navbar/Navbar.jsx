@@ -74,8 +74,12 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
           Jobs <ArrowIcon />
           {activeDropdown === 'jobs' && (
             <ul className="dropdown-content">
+
               <li>Internships</li>
               <li><Link to="/Jobs">Jobs</Link></li>
+
+              <li><Link to="/internships">Internships</Link></li>
+              <li>Jobs</li>
             </ul>
           )}
         </li>

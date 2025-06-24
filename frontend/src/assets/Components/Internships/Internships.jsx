@@ -7,7 +7,10 @@ const Internships = () => {
   const handleSearch = () => {
     if (query.trim()) {
       const encodedQuery = encodeURIComponent(query.trim());
-      window.open(`https://internshala.com/internships/keywords-${encodedQuery}/`, "_blank");
+      window.open(
+        `https://internshala.com/internships/keywords-${encodedQuery}/`,
+        "_blank"
+      );
     }
   };
 
@@ -17,16 +20,20 @@ const Internships = () => {
     "An internship is a trial run for your dream career.",
     "Every professional was once an intern.",
     "Internships build confidence, skills, and connections.",
-    "Start where you are. Use what you have. Do what you can.",
-    "Your career begins with a single internship.",
-    "Internships are investments in your future.",
-    "Learn by doing — internships make it real.",
-    "Opportunities don’t happen, you create them — start with an internship."
   ];
 
   return (
     <div className="internships-wrapper">
       <h1 className="internship-title">Explore Internships</h1>
+
+      <div className="quotes-top">
+        {quotes.slice(0, 3).map((quote, idx) => (
+          <div className={`quote-shape shape-${idx + 1}`} key={idx}>
+            {quote}
+          </div>
+        ))}
+      </div>
+
       <div className="internship-search-bar">
         <input
           type="text"
@@ -37,9 +44,9 @@ const Internships = () => {
         <button onClick={handleSearch}>Search</button>
       </div>
 
-      <div className="quotes-container">
-        {quotes.map((quote, idx) => (
-          <div className={`quote-shape shape-${(idx % 5) + 1}`} key={idx}>
+      <div className="quotes-bottom">
+        {quotes.slice(3, 5).map((quote, idx) => (
+          <div className={`quote-shape shape-${idx + 4}`} key={idx + 3}>
             {quote}
           </div>
         ))}

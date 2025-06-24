@@ -45,7 +45,7 @@ ul li:not(.auth-buttons):hover {
 }
 
 .nav-btn:hover {
-  filter: brightness(0.9);          /* or use opacity: 0.85; */
+  filter: brightness(0.9);          
 }
 
 .search-bar {
