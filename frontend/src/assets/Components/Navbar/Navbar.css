@@ -1,5 +1,5 @@
 .navbar {
-  width: 90%;
+  width: 100%;
   background-color: #EEF2FF;
   color: #111827;
   display: flex;
@@ -165,3 +165,7 @@ ul li:not(.auth-buttons):hover {
   font-size: 14px;        /* 👈 smaller font */
   padding: 6px 10px; 
 }
+.navbar a{
+    color: #000;
+  }
+

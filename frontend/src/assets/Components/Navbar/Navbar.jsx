@@ -37,16 +37,17 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
   };
 
   return (
-    <div className="navbar">
-      <img src={logo} alt="LinkUp.AI Logo" className="logo" />
 
-      <div className="search-bar">
-        <input type="text" placeholder="Search..." />
-        <img src={searchIcon} alt="Search Icon" />
-      </div>
+    <div className='navbar'>
+        <img src={logo} alt="LinkUp.AI Logo" className='logo' /> 
+        
+        <div className='search-bar'>
+            <input type="text" placeholder='Search...' />
+            <img src={searchIcon} alt=''/>
+        </div>
+        <ul>
+        <li><Link to="/">Home</Link></li>
 
-      <ul>
-        <li>Feed</li>
 
         <li className="dropdown" onClick={() => toggleDropdown('opportunities')}>
           Opportunities <ArrowIcon />
