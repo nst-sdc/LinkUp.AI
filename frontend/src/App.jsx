@@ -12,7 +12,7 @@ import Hackathon from './assets/Components/hackathon/Hackathon';
 import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
 import Jobs from './assets/Components/Jobs/Jobs'
 import Internships from './assets/Components/Internships/Internships';
-
+import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
 
 
 
@@ -50,6 +50,7 @@ function App() {
          <Route path="/hackathon" element={<Hackathon />} />
          <Route path="/career-boost" element={<CareerBoost />} />
          <Route path="/internships" element={<Internships />} />
+         <Route path='/bio-generator' element={<BioGenerator/>}/>
 
 
 
