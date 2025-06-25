@@ -10,11 +10,8 @@ import Navbar from "../Navbar/Navbar"
 const Hackathon = () => {
   return (
     <>
-    
     <div id = "container">
         <img src={main1} alt="hackathon"></img>
-        <h1>Hackathon & Bootcamp</h1>
-        <p>Embark on your hackathon journey — where ideas ignite, skills grow, and innovation begins.</p>
     </div>
     <div id = "know">
         <img src={main2} alt='search-image'/>
