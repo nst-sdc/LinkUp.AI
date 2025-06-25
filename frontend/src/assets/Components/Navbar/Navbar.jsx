@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../../../assets/Images/logo.png';
 import searchIcon from '../../../assets/Images/search-iconW.png';
-import Hackathon from '../hackathon/Hackathon';
+
 const ArrowIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
 
   const handleSignOut = () => {
     setIsSignedIn(false);
-    navigate('/');
+    navigate('/home');
   };
 
   return (
@@ -46,7 +46,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
             <img src={searchIcon} alt=''/>
         </div>
         <ul>
-        <li><Link to="/">Home</Link></li>
+        <li><Link to="/home">Home</Link></li>
 
 
         <li className="dropdown" onClick={() => toggleDropdown('opportunities')}>
@@ -74,12 +74,8 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
           Jobs <ArrowIcon />
           {activeDropdown === 'jobs' && (
             <ul className="dropdown-content">
-
-              {/* <li>Internships</li> */}
               <li><Link to="/Jobs">Jobs</Link></li>
-
               <li><Link to="/internships">Internships</Link></li>
-              {/* <li>Jobs</li> */}
             </ul>
           )}
         </li>
