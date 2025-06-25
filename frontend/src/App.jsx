@@ -10,74 +10,85 @@ import Profile from './assets/Components/Profile/Profile';
 import Home from './assets/Components/home_content/Homecontent';
 import Hackathon from './assets/Components/hackathon/Hackathon';
 import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
-import Internships from './assets/Components/Internships/Internships';
 import Jobs from './assets/Components/Jobs/Jobs'
+import Internships from './assets/Components/Internships/Internships';
 import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
-// import Internships from './assets/Components/Internships/Internships';
+
 
 
 function App() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+ const [isSignedIn, setIsSignedIn] = useState(false);
 
-  return (
-    <Router>
-      <div className="app-container">
-        <Navbar isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />
 
-        <Routes>
-          {/* Home */}
-          <Route
-            path="/"
-            element={
-              isSignedIn ? (
-                <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>
-                  Welcome to your Profile
-                </h2>
-              ) : (
-                <Home />
-              )
-            }
-          />
-          <Route path="/home" element={<Home />} />
+ return (
+   <Router>
+     <div className="app-container">
+       <Navbar isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />
 
-          {/* Web pages */}
-          <Route path="/webinar" element={<Webinar />} />
-          <Route path="/Jobs" element={<Jobs />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/hackathon" element={<Hackathon />} />
-          <Route path="/career-boost" element={<CareerBoost />} />
-          <Route path="/internships" element={<Internships />} />
-          <Route path="/home" element={<Home />} />
 
-          <Route path='/bio-generator' element={<BioGenerator/>}/>
+       <Routes>
+         {/* Home */}
+         <Route
+           path="/"
+           element={
+             isSignedIn ? (
+               <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>
+                 Welcome to your Profile
+               </h2>
+             ) : (
+               <Home />
+             )
+           }
+         />
+         <Route path="/home" element={<Home />} />
 
-          {/* Auth */}
-          <Route
-            path="/login"
-            element={
-              isSignedIn ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Login setIsSignedIn={setIsSignedIn} />
-              )
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              isSignedIn ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Signup />
-              )
-            }
-          />
 
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
-  );
+         {/* Web pages */}
+         <Route path="/webinar" element={<Webinar />} />
+         <Route path="/Jobs" element={<Jobs />} />
+         <Route path="/profile" element={<Profile />} />
+         <Route path="/hackathon" element={<Hackathon />} />
+         <Route path="/career-boost" element={<CareerBoost />} />
+         <Route path="/internships" element={<Internships />} />
+         <Route path='/bio-generator' element={<BioGenerator/>}/>
+
+
+
+
+         {/* Auth */}
+         <Route
+           path="/login"
+           element={
+             isSignedIn ? (
+               <Navigate to="/" replace />
+             ) : (
+               <Login setIsSignedIn={setIsSignedIn} />
+             )
+           }
+         />
+         <Route
+           path="/signup"
+           element={
+             isSignedIn ? (
+               <Navigate to="/" replace />
+             ) : (
+               <Signup />
+             )
+           }
+         />
+
+
+       </Routes>
+
+
+       <Footer />
+     </div>
+   </Router>
+ );
 }
 
+
 export default App;
+
+
+
