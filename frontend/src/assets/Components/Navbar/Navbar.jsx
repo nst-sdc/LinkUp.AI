@@ -63,7 +63,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
           AI Assist <ArrowIcon />
           {activeDropdown === 'ai' && (
             <ul className="dropdown-content">
-              <li>Bio Generator</li>
+              <li><Link to="/bio-generator">Bio Generator</Link></li>
               <li>Resume Builder</li>
               <li onClick={() => navigate('/career-boost')}>Career Boost</li>
             </ul>

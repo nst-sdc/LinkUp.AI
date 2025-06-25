@@ -12,6 +12,9 @@ import Hackathon from './assets/Components/hackathon/Hackathon';
 import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
 import Internships from './assets/Components/Internships/Internships';
 import Jobs from './assets/Components/Jobs/Jobs'
+import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
+// import Internships from './assets/Components/Internships/Internships';
+
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -46,6 +49,8 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/home" element={<Home />} />
 
+          <Route path='/bio-generator' element={<BioGenerator/>}/>
+
           {/* Auth */}
           <Route
             path="/login"
@@ -69,7 +74,6 @@ function App() {
           />
 
         </Routes>
-
         <Footer />
       </div>
     </Router>
