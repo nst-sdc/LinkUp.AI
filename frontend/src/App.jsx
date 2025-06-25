@@ -11,10 +11,7 @@ import Home from './assets/Components/home_content/Homecontent';
 import Hackathon from './assets/Components/hackathon/Hackathon';
 import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
 import Internships from './assets/Components/Internships/Internships';
-
 import Jobs from './assets/Components/Jobs/Jobs'
-// import Internships from './assets/Components/Internships/Internships';
-
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -47,7 +44,7 @@ function App() {
           <Route path="/hackathon" element={<Hackathon />} />
           <Route path="/career-boost" element={<CareerBoost />} />
           <Route path="/internships" element={<Internships />} />
-
+          <Route path="/home" element={<Home />} />
 
           {/* Auth */}
           <Route
