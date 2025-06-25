@@ -13,7 +13,7 @@ import CareerBoost from './assets/Components/CareerBoost/CareerBoost';
 import Internships from './assets/Components/Internships/Internships';
 
 import Jobs from './assets/Components/Jobs/Jobs'
-import Internships from './assets/Components/Internships/Internships';
+// import Internships from './assets/Components/Internships/Internships';
 
 
 function App() {
