@@ -75,11 +75,11 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
           {activeDropdown === 'jobs' && (
             <ul className="dropdown-content">
 
-              <li>Internships</li>
+              {/* <li>Internships</li> */}
               <li><Link to="/Jobs">Jobs</Link></li>
 
               <li><Link to="/internships">Internships</Link></li>
-              <li>Jobs</li>
+              {/* <li>Jobs</li> */}
             </ul>
           )}
         </li>

@@ -295,6 +295,14 @@ const Jobs = () => {
     setSearchTerm(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Call your search function using searchTerm
+    console.log("Searching for:", searchTerm);
+    // You can trigger an API call or filter jobs here
+  };
+  
+
   const handleFilterChange = (filterType, value) => {
     setFilters(prev => ({
       ...prev,
@@ -354,7 +362,7 @@ const Jobs = () => {
       </div>
 
       {/* Search Section */}
-      <div className="search-section">
+      {/* <div className="search-section">
         <div className="search-container">
           <div className="search-bar">
             <input
@@ -372,7 +380,36 @@ const Jobs = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
+
+<div className="search-section">
+  <div className="search-container">
+    <form className="search-bar" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Search for jobs, companies, or skills..."
+        value={searchTerm}
+        onChange={handleSearch}
+        className="search-input"
+        aria-label="Search jobs"
+      />
+      <button type="submit" className="search-button" aria-label="Search">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+
 
       <div className="jobs-content">
         {/* Filter Panel */}
