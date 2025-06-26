@@ -64,7 +64,7 @@ function CareerBoost() {
 
   return (
     <div className="career-boost-container">
-      <h1 style={{ marginBottom: '10px' }}>🚀 Career Boost Suggestions</h1>
+      <h1 style={{ marginBottom: '10px' }}>Career Boost Suggestions</h1>
       <p className="description">
         Enter a role like <strong>"Frontend Developer"</strong> or <strong>"Data Analyst"</strong> to get recommended certificates.
       </p>

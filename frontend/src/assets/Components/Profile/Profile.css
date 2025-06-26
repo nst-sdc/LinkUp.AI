@@ -1,3 +1,5 @@
+
+
 /* Profile.css */
 .profile-container {
     min-height: 100vh;
@@ -666,3 +668,28 @@
       height: 100px;
     }
   }
+
+  .post-btn {
+    position: absolute;
+    top: 6rem; 
+    right: 6rem;
+    padding: 0.85rem 1.75rem; 
+    background-color: #4F46E5;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.05rem; 
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+  
+  .post-btn:hover {
+    background-color: #4338CA;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.3);
+  }
+  
+  
