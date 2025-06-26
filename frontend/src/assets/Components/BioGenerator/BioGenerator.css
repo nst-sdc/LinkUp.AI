@@ -1,115 +1,141 @@
-body, html {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-background-color: #eaf4ff;
-font-family: Arial, sans-serif;
-}
-
 .bio-wrapper {
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: flex-start;
-padding-top: 50px;
-}
+    padding: 10px 10px 40px;
+    margin: 0 auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: calc(100vh - 150px);
+  }
+  
+  .sec {
+    text-align: center;
+    margin-bottom: 25px;
+    margin-top: 15px;
+    padding: 20px 0;
+    height: auto;
+    animation: fadeInSlide 1s ease-out;
+    background: linear-gradient(90deg, #f0f4ff, #e0ecff);
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    transition: transform 0.3s ease;
+  }
+  
+  .sec:hover {
+    transform: scale(1.03);
+  }
+  
+  @keyframes fadeInSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .text h1 {
+    color: #112541;
+    font-size: 20px;
+    margin: 0;
+    padding: 4px 0;
+    line-height: 1.1;
+  }
+  
+  .hero-text p {
+    color: #555;
+    font-size: 12px;
+    margin: 2px 0 0 0;
+    line-height: 1.2;
+  }
+  
+  .bio-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  .bio-textarea {
+    width: 100%;
+    height: 140px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1f1f1f;
+    color: white;
+    font-size: 15px;
+    resize: none;
+    margin-bottom: 15px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .write-btn {
+    background-color: #e5e7eb;
+    color: #111827;
+  }
+  
+  .write-btn:hover {
+    background-color: #d1d5db;
+  }
+  
+  .ai-btn {
+    background-color: #4f46e5;
+    color: white;
+  }
+  
+  .ai-btn:hover {
+    background-color: #4338ca;
+  }
+  
+  .clear-btn {
+    background-color: #111827;
+    color: white;
+  }
+  
+  .clear-btn:hover {
+    background-color: #000000;
+  }
+  
+  .generated-bio {
+    margin-top: 20px;
+    text-align: left;
+    background-color: #f0f4ff;
+    padding: 15px;
+    border-radius: 8px;
+    color: #112541;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .generated-bio h4 {
+    margin-bottom: 10px;
+    color: #1e3a8a;
+    font-size: 16px;
+  }
+  
 
-.hero-section {
-text-align: center;
-margin-bottom: 30px;
-}
 
-.hero-text h1 {
-color: #112541;
-font-size: 36px;
-margin-bottom: 10px;
-}
 
-.hero-text p {
-color: #555;
-font-size: 16px;
-}
-
-.bio-box {
-background-color: #ffffff;
-padding: 30px;
-border-radius: 12px;
-box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-width: 90%;
-max-width: 500px;
-text-align: center;
-}
-
-.bio-textarea {
-width: 100%;
-height: 140px;
-padding: 10px;
-border: none;
-border-radius: 8px;
-background-color: #1f1f1f;
-color: white;
-font-size: 15px;
-resize: none;
-margin-bottom: 20px;
-}
-
-.button-group {
-display: flex;
-justify-content: space-between;
-gap: 10px;
-}
-
-.btn {
-padding: 10px 20px;
-font-size: 14px;
-border: none;
-border-radius: 6px;
-cursor: pointer;
-transition: all 0.3s ease;
-}
-
-.write-btn {
-background-color: #e5e7eb;
-color: #111827;
-}
-
-.write-btn:hover {
-background-color: #d1d5db;
-}
-
-.ai-btn {
-background-color: #4f46e5;
-color: white;
-}
-
-.ai-btn:hover {
-background-color: #4338ca;
-}
-
-.clear-btn {
-background-color: #111827;
-color: white;
-}
-
-.clear-btn:hover {
-background-color: #000000;
-}
-
-.generated-bio {
-margin-top: 25px;
-text-align: left;
-background-color: #f0f4ff;
-padding: 15px;
-border-radius: 8px;
-color: #112541;
-font-size: 15px;
-line-height: 1.5;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.generated-bio h4 {
-margin-bottom: 10px;
-color: #1e3a8a;
-font-size: 16px;
-}

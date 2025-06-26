@@ -55,12 +55,12 @@ export default function BioGenerator() {
 
   return (
     <div className="bio-wrapper">
-      <div className="hero-section">
-        <div className="hero-text">
+       <div className="sec">
+        <div className="text">
           <h1>AI Bio Generator</h1>
           <p>"Let Artificial Intelligence Tell Your Story — with Power, Precision, and Style."</p>
         </div>
-      </div>
+      </div> 
 
       <div className="bio-box">
         <textarea
@@ -101,3 +101,4 @@ export default function BioGenerator() {
     </div>
   );
 }
+
