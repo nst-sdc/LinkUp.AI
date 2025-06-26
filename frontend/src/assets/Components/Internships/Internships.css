@@ -5,7 +5,7 @@ body {
   color: #111827;
 }
 
-.internships-wrapper {
+.intern-internships-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,14 +17,14 @@ body {
   box-sizing: border-box;
 }
 
-.internship-title {
+.intern-internship-title {
   font-size: 2.1rem;
   margin-bottom: 40px;
   color: #111827;
 }
 
-.quotes-top,
-.quotes-bottom {
+.intern-quotes-top,
+.intern-quotes-bottom {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -32,11 +32,11 @@ body {
   margin-bottom: 30px;
 }
 
-.quotes-bottom {
+.intern-quotes-bottom {
   margin-top: 30px;
 }
 
-.quote-shape {
+.intern-quote-shape {
   flex: 1 1 250px;
   max-width: 280px;
   padding: 35px 25px;
@@ -48,30 +48,28 @@ body {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.quote-shape:hover {
+.intern-quote-shape:hover {
   transform: scale(1.05);
   background-color: #e0e7ff;
 }
 
-
-.shape-1 {
+.intern-shape-1 {
   border-radius: 20px 40px 20px 40px;
 }
-.shape-2 {
+.intern-shape-2 {
   border-radius: 60px 10px;
 }
-.shape-3 {
+.intern-shape-3 {
   border-radius: 10px 30px 30px 10px;
 }
-.shape-4 {
+.intern-shape-4 {
   border-radius: 25px 50px 0 25px;
 }
-.shape-5 {
+.intern-shape-5 {
   border-radius: 50px 0 50px 0;
 }
 
-
-.internship-search-bar {
+.intern-internship-search-bar {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,7 +77,7 @@ body {
   flex-wrap: wrap;
 }
 
-.internship-search-bar input {
+.intern-internship-search-bar input {
   padding: 18px 28px;
   width: 340px;
   font-size: 20.8px; /* was 16px */
@@ -90,7 +88,7 @@ body {
   color: #111827;
 }
 
-.internship-search-bar button {
+.intern-internship-search-bar button {
   padding: 18px 28px;
   font-size: 20.8px;
   border: 2px solid #c7d2fe;
@@ -101,6 +99,6 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.internship-search-bar button:hover {
+.intern-internship-search-bar button:hover {
   background-color: #a5b4fc;
 }
