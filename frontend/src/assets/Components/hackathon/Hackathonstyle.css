@@ -4,100 +4,530 @@
   box-sizing: border-box;
 }
 
-#container {
+.hackathon-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 50%, #dbeafe 100%);
+}
+
+/* Hero Section */
+.hero-section {
   position: relative;
-  height: 300px;
-  width: 100%;
-}
-
-#container img {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 0;
-}
-
-#know {
-  position: relative;
-  height: 400px;
-  width: 100%;
-}
-
-#know img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-#know h1 {
-  position: absolute;
-  font-size: 50px;
-  top: 20%;
-  left: 30%;
-  z-index: 1;
-}
-
-.hackathon-search-bar {
-  top: 60%;
-  left: 32%;
-  position: absolute;
+  overflow: hidden;
+  height: 100vh;
   display: flex;
-  width: 400px;
-  align-items: center;
-  background: #242424;
-  padding: 10px 20px;
-  border-radius: 50px;
-  z-index: 1;
-}
-
-.hackathon-search-bar input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #fff;
-  font-size: 16px;
-  width: 100%;
-}
-
-.hackathon-search-bar input::placeholder {
-  color: #ccc;
-}
-
-#text {
-  margin-top: 20px;
-  text-align: center;
-  padding: 10px;
-  background-color: #F9FAFB;
-}
-
-#tophack {
-  background-color: #F9FAFB;
-  height: 400px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-#tophack div {
-  height: 75%;
-  width: 30%;
-  background-color: white;
-  border-radius: 5%;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-#tophack div img {
-  height: 60%;
-  width: 60%;
-  margin-bottom: 10px;
-  border-radius: 5%;
+.hero-background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #1e40af 100%);
 }
 
-#tophack div h4 {
-  font-size: 20px;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.hero-decorations {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.floating-orb {
+  position: absolute;
+  width: 288px;
+  height: 288px;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  filter: blur(64px);
+  opacity: 0.2;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.orb-1 {
+  top: -16px;
+  left: -16px;
+  background: #a855f7;
+}
+
+.orb-2 {
+  bottom: -32px;
+  right: -16px;
+  background: #3b82f6;
+  animation-delay: 2s;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 24px;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+
+.hero-content.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 700;
+  color: white;
+  margin-bottom: 24px;
+  line-height: 1.1;
+}
+
+.hero-highlight {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  color: #e5e7eb;
+  margin-bottom: 32px;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  color: white;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 600;
+}
+
+/* Search Section */
+.search-section {
+  position: relative;
+  margin-top: -48px;
+  z-index: 20;
+  padding: 0 24px;
+}
+
+.search-container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.search-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 32px;
+  backdrop-filter: blur(8px);
+}
+
+.search-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.search-input-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  font-size: 1.125rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  transition: all 0.3s ease;
+  outline: none;
+  color: #1f2937; 
+}
+
+.search-input:focus {
+  border-color: #9333ea;
+  background: white;
+  color: #1f2937; 
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 8px 24px;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  border: none;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.filter-btn:hover {
+  background: #e5e7eb;
+  transform: scale(1.05);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Hackathons Section */
+.hackathons-section {
+  padding: 64px 24px;
+}
+
+.hackathons-container {
+  max-width: 1536px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 48px;
+  font-size: 1.125rem;
+}
+
+.hackathons-grid {
+  display: grid;
+  justify-content: center; /* center cards in grid */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 360px)); /* restrict max width */
+  gap: 32px;
+}
+
+.hackathon-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.hackathon-card.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hackathon-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.25);
+}
+
+.card-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  height: 192px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.hackathon-card:hover .card-image {
+  transform: scale(1.1);
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  opacity: 0.6;
+}
+
+.card-rating {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.star-icon {
+  color: #eab308;
+  fill: currentColor;
+}
+
+.difficulty-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.difficulty-beginner {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.difficulty-intermediate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.difficulty-advanced {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.difficulty-expert {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.difficulty-default {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.card-content {
+  padding: 24px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.hackathon-card:hover .card-title {
+  color: #9333ea;
+}
+
+.card-description {
+  color: #6b7280;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  padding: 4px 8px;
+  background: #ede9fe;
+  color: #6d28d9;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.card-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+}
+
+.join-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #9333ea 0%, #2563eb 100%);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.join-btn:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #1e40af 100%);
+  padding: 64px 24px;
+}
+
+.cta-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.cta-subtitle {
+  font-size: 1.25rem;
+  color: #e5e7eb;
+  margin-bottom: 32px;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .cta-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.cta-btn {
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cta-btn.primary {
+  background: white;
+  color: #9333ea;
+}
+
+.cta-btn.primary:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.cta-btn.secondary {
+  border: 2px solid white;
+  color: white;
+  background: transparent;
+}
+
+.cta-btn.secondary:hover {
+  background: white;
+  color: #9333ea;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hackathons-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .filter-buttons {
+    justify-content: center;
+  }
+  
+  .card-stats {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-card {
+    padding: 24px 16px;
+  }
+  
+  .hackathons-section {
+    padding: 48px 16px;
+  }
+  
+  .cta-section {
+    padding: 48px 16px;
+  }
 }
