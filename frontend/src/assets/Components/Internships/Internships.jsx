@@ -23,18 +23,18 @@ const Internships = () => {
   ];
 
   return (
-    <div className="internships-wrapper">
-      <h1 className="internship-title">Explore Internships</h1>
+    <div className="intern-internships-wrapper">
+      <h1 className="intern-internship-title">Explore Internships</h1>
 
-      <div className="quotes-top">
+      <div className="intern-quotes-top">
         {quotes.slice(0, 3).map((quote, idx) => (
-          <div className={`quote-shape shape-${idx + 1}`} key={idx}>
+          <div className={`intern-quote-shape intern-shape-${idx + 1}`} key={idx}>
             {quote}
           </div>
         ))}
       </div>
 
-      <div className="internship-search-bar">
+      <div className="intern-internship-search-bar">
         <input
           type="text"
           placeholder="Search internships e.g. React Developer"
@@ -44,9 +44,9 @@ const Internships = () => {
         <button onClick={handleSearch}>Search</button>
       </div>
 
-      <div className="quotes-bottom">
+      <div className="intern-quotes-bottom">
         {quotes.slice(3, 5).map((quote, idx) => (
-          <div className={`quote-shape shape-${idx + 4}`} key={idx + 3}>
+          <div className={`intern-quote-shape intern-shape-${idx + 4}`} key={idx + 3}>
             {quote}
           </div>
         ))}
