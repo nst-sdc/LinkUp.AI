@@ -38,6 +38,8 @@ const Profile = () => {
     achievements: []
   });
 
+  const isSignedIn = true;
+
   const [newSkill, setNewSkill] = useState('');
   const [newProject, setNewProject] = useState({
     name: '',
@@ -928,9 +930,15 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <h1>LinkUp.AI Profile</h1>
-        <p>Complete your profile to access internships, jobs, webinars, and hackathons</p>
-      </div>
+      <div className="profile-header-left">
+      <h1>LinkUp.AI Profile</h1>
+      <p>Complete your profile to access internships, jobs, webinars, and hackathons</p>
+    </div>
+
+    {isSignedIn && (
+      <button className="post-btn">Post</button>
+    )}
+    </div>
 
       {renderStepIndicator()}
 
