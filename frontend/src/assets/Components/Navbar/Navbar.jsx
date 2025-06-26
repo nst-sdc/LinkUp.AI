@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
@@ -23,11 +24,12 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const Navbar = ({ isSignedIn, setIsSignedIn }) => {
+const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
   const navigate = useNavigate();
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleDropdown = (name) => {
+    console.log('Toggling dropdown:', name, 'profileData:', profileData); // Debug log
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 
@@ -37,17 +39,14 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
   };
 
   return (
-
-    <div className='navbar'>
-        <img src={logo} alt="LinkUp.AI Logo" className='logo' /> 
-        
-        <div className='search-bar'>
-            <input type="text" placeholder='Search...' />
-            <img src={searchIcon} alt=''/>
-        </div>
-        <ul>
+    <div className="navbar">
+      <img src={logo} alt="LinkUp.AI Logo" className="logo" />
+      <div className="search-bar">
+        <input type="text" placeholder="Search..." />
+        <img src={searchIcon} alt="" />
+      </div>
+      <ul>
         <li><Link to="/home">Home</Link></li>
-
 
         <li className="dropdown" onClick={() => toggleDropdown('opportunities')}>
           Opportunities <ArrowIcon />
@@ -64,7 +63,11 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
           {activeDropdown === 'ai' && (
             <ul className="dropdown-content">
               <li><Link to="/bio-generator">Bio Generator</Link></li>
-              <li>Resume Builder</li>
+              <li>
+                <Link to="/resume-builder" state={{ profileData: profileData || {} }}>
+                  Resume Builder
+                </Link>
+              </li>
               <li onClick={() => navigate('/career-boost')}>Career Boost</li>
             </ul>
           )}
@@ -84,10 +87,9 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
 
         <li className="auth-buttons">
           {isSignedIn ? (
-             <div className="auth-buttons">
+            <div className="auth-buttons">
               <Link to="/profile" className="profile-link">👤 Profile</Link>
               <button className="nav-btn signout" onClick={handleSignOut}>Sign Out</button>
-              
             </div>
           ) : (
             <div className="auth-buttons">
