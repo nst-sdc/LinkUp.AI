@@ -1,8 +1,8 @@
-// Profile.jsx
+
 import React, { useState } from 'react';
 import './Profile.css';
 
-const Profile = () => {
+const Profile = ({ onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [profileData, setProfileData] = useState({
     // Personal Information
@@ -37,6 +37,8 @@ const Profile = () => {
     // Co-curricular Achievements
     achievements: []
   });
+
+  const isSignedIn = true;
 
   const [newSkill, setNewSkill] = useState('');
   const [newProject, setNewProject] = useState({
@@ -250,7 +252,8 @@ const Profile = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Profile Data:', profileData);
+    console.log('Profile Data Submitted:', profileData); // Debug log
+    onSubmit(profileData); // Pass profileData to parent
     alert('Profile updated successfully!');
   };
 
@@ -928,8 +931,13 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <h1>LinkUp.AI Profile</h1>
-        <p>Complete your profile to access internships, jobs, webinars, and hackathons</p>
+        <div className="profile-header-left">
+          <h1>LinkUp.AI Profile</h1>
+          <p>Complete your profile to access internships, jobs, webinars, and hackathons</p>
+        </div>
+        {isSignedIn && (
+          <button className="post-btn">Post</button>
+        )}
       </div>
 
       {renderStepIndicator()}

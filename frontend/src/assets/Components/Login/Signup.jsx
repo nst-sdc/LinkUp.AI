@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
-
-
 function Signup() {
  const navigate = useNavigate();
 
@@ -224,6 +222,3 @@ function Signup() {
 
 
 export default Signup;
-
-
-

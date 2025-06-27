@@ -13,12 +13,11 @@ body {
   margin: 30px 0;
   color: #111827;
  }
- 
- 
  .signup-form {
   width: 500px;
   padding: 20px;
   background-color: #EEF2FF;
+
   border-radius: 8px;
   display: flex;
   flex-direction: column;
