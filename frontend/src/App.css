@@ -1,14 +1,12 @@
-.welcome-header{
+/* .welcome-header{
     font-size: 1.5rem;
     color: #111827;
     text-align: center;
     margin-top: 100px;
-}
+} */
 .app-container{
     background-color: #F9FAFB;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+      
 }
 
 .footer {
