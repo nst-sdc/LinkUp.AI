@@ -36,9 +36,7 @@ function App() {
             path="/"
             element={
               isSignedIn ? (
-                <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>
-                  Welcome to your Profile
-                </h2>
+                <Home />
               ) : (
                 <Home />
               )
@@ -55,6 +53,7 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/bio-generator" element={<BioGenerator />} />
           <Route path="/resume-builder" element={<ResumeBuilder />} />
+          <Route path="/home" element={<Home/>} />
 
           {/* Auth */}
           <Route
