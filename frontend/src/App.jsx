@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
@@ -36,13 +35,17 @@ function App() {
             path="/"
             element={
               isSignedIn ? (
+
                 <Home />
+
               ) : (
+
                 <Home />
+
               )
+
             }
           />
-          <Route path="/home" element={<Home />} />
 
           {/* Web pages */}
           <Route path="/webinar" element={<Webinar />} />
@@ -56,6 +59,7 @@ function App() {
           <Route path="/home" element={<Home/>} />
 
           {/* Auth */}
+
           <Route
             path="/login"
             element={
@@ -66,6 +70,7 @@ function App() {
               )
             }
           />
+
           <Route
             path="/signup"
             element={
@@ -76,6 +81,7 @@ function App() {
               )
             }
           />
+
         </Routes>
 
         <Footer />
