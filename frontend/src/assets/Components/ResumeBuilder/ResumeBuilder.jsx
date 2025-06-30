@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import jsPDF from 'jspdf';
 import './ResumeBuilder.css';
 
 const ResumeBuilder = () => {
@@ -17,8 +17,8 @@ const ResumeBuilder = () => {
     return isNaN(d.getTime()) ? 'Invalid Date' : `${d.getMonth() + 1}/${d.getFullYear()}`;
   };
 
-  // Generate LaTeX content
-  const generateLatex = () => {
+  // Generate PDF content
+  const generatePDF = () => {
     const {
       name = 'Your Name',
       email = '',
@@ -35,82 +35,184 @@ const ResumeBuilder = () => {
       achievements = [],
     } = profileData;
 
-    return `
-\\documentclass[11pt]{article}
-\\usepackage[utf8]{inputenc}
-\\usepackage{geometry}
-\\usepackage{enumitem}
-\\usepackage{hyperref}
-\\geometry{a4paper, margin=1in}
+    const doc = new jsPDF();
+    let yPosition = 20;
+    const margin = 20;
+    const pageWidth = doc.internal.pageSize.width;
+    const contentWidth = pageWidth - (2 * margin);
 
-\\begin{document}
+    // Set font styles
+    doc.setFontSize(24);
+    doc.setFont(undefined, 'bold');
+    doc.text(name, pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 15;
 
-\\begin{center}
-    {\\Large \\textbf{${name}}}\\\\
-    \\vspace{0.1in}
-    ${email ? `\\href{mailto:${email}}{${email}}` : ''} 
-    ${mobile ? `\\ \\ $|$ \\ ${mobile}` : ''}\\\\
-    ${linkedIn ? `\\href{${linkedIn}}{LinkedIn}` : ''} 
-    ${github ? `$|$ \\href{${github}}{GitHub}` : ''} 
-    ${leetcode ? `$|$ \\href{${leetcode}}{LeetCode}` : ''} 
-    ${portfolioWebsite ? `$|$ \\href{${portfolioWebsite}}{Portfolio}` : ''}\\\\
-    \\vspace{0.1in}
-    ${bio ? `\\textit{${bio}}` : ''}\\\\
-\\end{center}
+    // Contact information
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'normal');
+    const contactInfo = [];
+    if (email) contactInfo.push(email);
+    if (mobile) contactInfo.push(mobile);
+    if (linkedIn) contactInfo.push('LinkedIn');
+    if (github) contactInfo.push('GitHub');
+    if (leetcode) contactInfo.push('LeetCode');
+    if (portfolioWebsite) contactInfo.push('Portfolio');
+    
+    if (contactInfo.length > 0) {
+      doc.text(contactInfo.join(' | '), pageWidth / 2, yPosition, { align: 'center' });
+      yPosition += 10;
+    }
 
-\\section*{Education}
-${education.length > 0 ? education.map(edu => `
-    \\textbf{${edu.degree || ''}${edu.fieldOfStudy ? ` in ${edu.fieldOfStudy}` : ''}} \\hfill ${formatDate(edu.startDate)} -- ${formatDate(edu.endDate)}\\\\
-    ${edu.institution || ''}${edu.grade ? `, ${edu.grade}` : ''}\\\\
-`).join('\n') : 'No education details provided.'}
+    // Bio
+    if (bio) {
+      doc.setFont(undefined, 'italic');
+      const bioLines = doc.splitTextToSize(bio, contentWidth);
+      doc.text(bioLines, margin, yPosition);
+      yPosition += (bioLines.length * 7) + 10;
+    }
 
-\\section*{Experience}
-${experience.length > 0 ? experience.map(exp => `
-    \\textbf{${exp.position || ''}} \\hfill ${formatDate(exp.startDate)} -- ${formatDate(exp.endDate)}\\\\
-    ${exp.company || ''}${exp.location ? `, ${exp.location}` : ''}\\\\
-    \\begin{itemize}[leftmargin=*]
-        \\item ${exp.description || 'No description provided.'}
-    \\end{itemize}
-`).join('\n') : 'No experience details provided.'}
+    // Education Section
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Education', margin, yPosition);
+    yPosition += 10;
 
-\\section*{Projects}
-${projects.length > 0 ? projects.map(proj => `
-    \\textbf{${proj.name || ''}} \\hfill 
-    ${proj.hostedLink ? `\\href{${proj.hostedLink}}{[Live]} ` : ''}${proj.githubLink ? `\\href{${proj.githubLink}}{[GitHub]}` : ''}\\\\
-    \\begin{itemize}[leftmargin=*]
-        \\item ${proj.description || 'No description provided.'}
-    \\end{itemize}
-`).join('\n') : 'No projects added.'}
+    if (education.length > 0) {
+      education.forEach(edu => {
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        const degree = `${edu.degree || ''}${edu.fieldOfStudy ? ` in ${edu.fieldOfStudy}` : ''}`;
+        doc.text(degree, margin, yPosition);
+        
+        doc.setFont(undefined, 'normal');
+        yPosition += 7;
+        doc.text(`${edu.institution || ''}${edu.grade ? `, ${edu.grade}` : ''}`, margin, yPosition);
+        yPosition += 7;
+        doc.text(`${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`, margin, yPosition);
+        yPosition += 15;
+      });
+    } else {
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text('No education details provided.', margin, yPosition);
+      yPosition += 10;
+    }
 
-\\section*{Skills}
-${skills.length > 0 ? `\\begin{itemize}[leftmargin=*]
-    ${skills.map(skill => `\\item ${skill}`).join('\n    ')}
-\\end{itemize}` : 'No skills listed.'}
+    // Experience Section
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Experience', margin, yPosition);
+    yPosition += 10;
 
-\\section*{Achievements}
-${achievements.length > 0 ? achievements.map(ach => `
-    \\textbf{${ach.title || ''}} \\hfill ${ach.date ? formatDate(ach.date) : ''}\\\\
-    ${ach.organization ? `${ach.organization}, ` : ''}${ach.description || 'No description provided.'}\\\\
-`).join('\n') : 'No achievements listed.'}
+    if (experience.length > 0) {
+      experience.forEach(exp => {
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        doc.text(exp.position || '', margin, yPosition);
+        
+        doc.setFont(undefined, 'normal');
+        yPosition += 7;
+        doc.text(`${exp.company || ''}${exp.location ? `, ${exp.location}` : ''}`, margin, yPosition);
+        yPosition += 7;
+        doc.text(`${formatDate(exp.startDate)} - ${formatDate(exp.endDate)}`, margin, yPosition);
+        yPosition += 7;
+        
+        const description = exp.description || 'No description provided.';
+        const descLines = doc.splitTextToSize(description, contentWidth);
+        doc.text(descLines, margin, yPosition);
+        yPosition += (descLines.length * 7) + 10;
+      });
+    } else {
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text('No experience details provided.', margin, yPosition);
+      yPosition += 10;
+    }
 
-\\end{document}
-`;
+    // Projects Section
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Projects', margin, yPosition);
+    yPosition += 10;
+
+    if (projects.length > 0) {
+      projects.forEach(proj => {
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        doc.text(proj.name || '', margin, yPosition);
+        
+        doc.setFont(undefined, 'normal');
+        yPosition += 7;
+        const description = proj.description || 'No description provided.';
+        const descLines = doc.splitTextToSize(description, contentWidth);
+        doc.text(descLines, margin, yPosition);
+        yPosition += (descLines.length * 7) + 10;
+      });
+    } else {
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text('No projects added.', margin, yPosition);
+      yPosition += 10;
+    }
+
+    // Skills Section
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Skills', margin, yPosition);
+    yPosition += 10;
+
+    if (skills.length > 0) {
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      skills.forEach(skill => {
+        doc.text(`• ${skill}`, margin, yPosition);
+        yPosition += 7;
+      });
+    } else {
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text('No skills listed.', margin, yPosition);
+      yPosition += 10;
+    }
+
+    // Achievements Section
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Achievements', margin, yPosition);
+    yPosition += 10;
+
+    if (achievements.length > 0) {
+      achievements.forEach(ach => {
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        doc.text(ach.title || '', margin, yPosition);
+        
+        doc.setFont(undefined, 'normal');
+        yPosition += 7;
+        doc.text(`${ach.organization ? `${ach.organization}, ` : ''}${ach.date ? formatDate(ach.date) : ''}`, margin, yPosition);
+        yPosition += 7;
+        
+        const description = ach.description || 'No description provided.';
+        const descLines = doc.splitTextToSize(description, contentWidth);
+        doc.text(descLines, margin, yPosition);
+        yPosition += (descLines.length * 7) + 10;
+      });
+    } else {
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text('No achievements listed.', margin, yPosition);
+      yPosition += 10;
+    }
+
+    return doc;
   };
 
   const handleGenerateResume = async () => {
     setIsGenerating(true);
     try {
-      const latexContent = generateLatex();
-      const blob = new Blob([latexContent], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${profileData.name || 'resume'}.tex`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      alert('Resume LaTeX file downloaded! Compile it with a LaTeX editor to generate the PDF.');
+      const doc = generatePDF();
+      doc.save(`${profileData.name || 'resume'}.pdf`);
+      alert('Resume PDF file downloaded successfully!');
     } catch (error) {
       console.error('Error generating resume:', error);
       alert('Failed to generate resume. Please try again.');
