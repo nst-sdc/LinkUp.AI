@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import './Profile.css';
 
 const Profile = ({ onSubmit }) => {
@@ -71,6 +72,8 @@ const Profile = ({ onSubmit }) => {
     date: '',
     organization: ''
   });
+
+  const navigate = useNavigate()
 
   const handleInputChange = (field, value) => {
     setProfileData(prev => ({
@@ -936,8 +939,14 @@ const Profile = ({ onSubmit }) => {
           <p>Complete your profile to access internships, jobs, webinars, and hackathons</p>
         </div>
         {isSignedIn && (
-          <button className="post-btn">Post</button>
+          <button 
+            className="post-btn"
+            onClick={() => navigate("/post")}
+          >
+            Post
+          </button>
         )}
+
       </div>
 
       {renderStepIndicator()}
