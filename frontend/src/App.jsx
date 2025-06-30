@@ -15,6 +15,7 @@ import Jobs from './assets/Components/Jobs/Jobs';
 import Internships from './assets/Components/Internships/Internships';
 import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
 import ResumeBuilder from './assets/Components/ResumeBuilder/ResumeBuilder';
+import Post from './assets/Components/Post/Post';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -55,6 +56,7 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/bio-generator" element={<BioGenerator />} />
           <Route path="/resume-builder" element={<ResumeBuilder />} />
+          <Route path="/post" element={<Post />} />
 
           {/* Auth */}
           <Route
