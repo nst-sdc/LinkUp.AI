@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
@@ -37,15 +36,17 @@ function App() {
             path="/"
             element={
               isSignedIn ? (
-                <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>
-                  Welcome to your Profile
-                </h2>
-              ) : (
+
                 <Home />
+
+              ) : (
+
+                <Home />
+
               )
+
             }
           />
-          <Route path="/home" element={<Home />} />
 
           {/* Web pages */}
           <Route path="/webinar" element={<Webinar />} />
@@ -57,8 +58,11 @@ function App() {
           <Route path="/bio-generator" element={<BioGenerator />} />
           <Route path="/resume-builder" element={<ResumeBuilder />} />
           <Route path="/post" element={<Post />} />
+          <Route path="/home" element={<Home/>} />
+
 
           {/* Auth */}
+
           <Route
             path="/login"
             element={
@@ -69,6 +73,7 @@ function App() {
               )
             }
           />
+
           <Route
             path="/signup"
             element={
@@ -79,6 +84,7 @@ function App() {
               )
             }
           />
+
         </Routes>
 
         <Footer />
