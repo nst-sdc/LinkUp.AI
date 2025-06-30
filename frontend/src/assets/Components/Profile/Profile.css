@@ -583,6 +583,8 @@
   }
   
   .btn-secondary {
+    margin-top: 20px;
+    margin-right: 15px;
     background-color: #F3F4F6;
     color: #111827;
     border: 2px solid #E5E7EB;
