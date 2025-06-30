@@ -1,61 +1,51 @@
 import React, { useState } from 'react';
 import './CareerBoost.css';
 
-const certificateMap = {
-    'frontend developer': [
-      { title: 'HTML, CSS & JavaScript Certificate', image: 'https://cdn-icons-png.flaticon.com/512/732/732212.png' },
-      { title: 'React Developer Certificate', image: 'https://cdn-icons-png.flaticon.com/512/919/919851.png' },
-      { title: 'Responsive Web Design Certification', image: 'https://cdn-icons-png.flaticon.com/512/3523/3523063.png' },
-      { title: 'Git & GitHub for Developers', image: 'https://cdn-icons-png.flaticon.com/512/2111/2111288.png' },
-      { title: 'TypeScript Basics', image: 'https://cdn-icons-png.flaticon.com/512/919/919832.png' }
-    ],
-    'backend developer': [
-      { title: 'Node.js Developer Certificate', image: 'https://cdn-icons-png.flaticon.com/512/919/919825.png' },
-      { title: 'SQL & Database Design', image: 'https://cdn-icons-png.flaticon.com/512/4248/4248443.png' },
-      { title: 'REST API Development', image: 'https://cdn-icons-png.flaticon.com/512/4150/4150897.png' },
-      { title: 'Docker Fundamentals', image: 'https://cdn-icons-png.flaticon.com/512/919/919853.png' }
-    ],
-    'ui/ux designer': [
-      { title: 'Figma Basics', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png' },
-      { title: 'User Research & Wireframing', image: 'https://cdn-icons-png.flaticon.com/512/3064/3064197.png' },
-      { title: 'Adobe XD Certification', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968520.png' }
-    ],
-    'data analyst': [
-      { title: 'Excel for Data Analysis', image: 'https://cdn-icons-png.flaticon.com/512/732/732220.png' },
-      { title: 'SQL for Data Analytics', image: 'https://cdn-icons-png.flaticon.com/512/4248/4248443.png' },
-      { title: 'Power BI Fundamentals', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968526.png' },
-      { title: 'Python for Data Analysis', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968350.png' }
-    ],
-    'machine learning engineer': [
-      { title: 'ML with Python', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968350.png' },
-      { title: 'Deep Learning Specialization', image: 'https://cdn-icons-png.flaticon.com/512/3800/3800024.png' },
-      { title: 'TensorFlow Developer Certificate', image: 'https://cdn-icons-png.flaticon.com/512/5969/5969246.png' }
-    ],
-    'devops engineer': [
-      { title: 'CI/CD with Jenkins', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968695.png' },
-      { title: 'Docker & Kubernetes', image: 'https://cdn-icons-png.flaticon.com/512/919/919853.png' },
-      { title: 'Linux for DevOps', image: 'https://cdn-icons-png.flaticon.com/512/6124/6124995.png' }
-    ],
-    'mobile app developer': [
-      { title: 'Flutter Development Certificate', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968976.png' },
-      { title: 'React Native Essentials', image: 'https://cdn-icons-png.flaticon.com/512/919/919851.png' },
-      { title: 'Android App Development', image: 'https://cdn-icons-png.flaticon.com/512/226/226770.png' }
-    ],
-    'cloud engineer': [
-      { title: 'AWS Cloud Practitioner', image: 'https://cdn-icons-png.flaticon.com/512/873/873120.png' },
-      { title: 'Google Cloud Fundamentals', image: 'https://cdn-icons-png.flaticon.com/512/300/300221.png' },
-      { title: 'Azure Developer Associate', image: 'https://cdn-icons-png.flaticon.com/512/5968/5968906.png' }
-    ],
-    'cybersecurity analyst': [
-      { title: 'Cybersecurity Basics', image: 'https://cdn-icons-png.flaticon.com/512/10027/10027415.png' },
-      { title: 'Network Security Certification', image: 'https://cdn-icons-png.flaticon.com/512/3190/3190441.png' },
-      { title: 'Ethical Hacking Certificate', image: 'https://cdn-icons-png.flaticon.com/512/10492/10492734.png' }
-    ]
-  };
-  
-function CareerBoost() {
+const CareerBoost = () => {
   const [inputRole, setInputRole] = useState('');
   const [results, setResults] = useState([]);
+
+  const certificateMap = {
+    'frontend developer': [
+      { title: 'HTML, CSS & JavaScript Certificate', issuer: 'freeCodeCamp', level: 'Beginner' },
+      { title: 'React Developer Certificate', issuer: 'Meta', level: 'Intermediate' },
+      { title: 'Front End Development Libraries', issuer: 'freeCodeCamp', level: 'Intermediate' },
+      { title: 'Advanced JavaScript Concepts', issuer: 'Udemy', level: 'Advanced' },
+    ],
+    'backend developer': [
+      { title: 'Node.js Developer Certificate', issuer: 'OpenJS Foundation', level: 'Intermediate' },
+      { title: 'SQL & Database Design', issuer: 'Stanford University', level: 'Intermediate' },
+      { title: 'REST API Development', issuer: 'IBM', level: 'Intermediate' },
+      { title: 'Docker Fundamentals', issuer: 'Docker Inc.', level: 'Intermediate' },
+    ],
+    'data analyst': [
+      { title: 'Google Data Analytics', issuer: 'Google', level: 'Beginner' },
+      { title: 'Microsoft Certified: Data Analyst Associate', issuer: 'Microsoft', level: 'Intermediate' },
+      { title: 'IBM Data Science Professional', issuer: 'IBM', level: 'Intermediate' },
+      { title: 'Tableau Desktop Specialist', issuer: 'Tableau', level: 'Beginner' },
+    ],
+    'cybersecurity': [
+      { title: 'CompTIA Security+', issuer: 'CompTIA', level: 'Intermediate' },
+      { title: 'Certified Ethical Hacker (CEH)', issuer: 'EC-Council', level: 'Advanced' },
+      { title: 'CISSP', issuer: '(ISC)²', level: 'Advanced' },
+      { title: 'Google Cybersecurity Certificate', issuer: 'Google', level: 'Beginner' },
+    ],
+    'cloud engineer': [
+      { title: 'AWS Certified Solutions Architect', issuer: 'Amazon Web Services', level: 'Intermediate' },
+      { title: 'Google Cloud Professional', issuer: 'Google Cloud', level: 'Intermediate' },
+      { title: 'Microsoft Certified: Azure Administrator', issuer: 'Microsoft', level: 'Intermediate' },
+      { title: 'Cloud Security Certification', issuer: 'Cloud Security Alliance', level: 'Advanced' },
+    ],
+  };
+
+  const popularCertifications = [
+    { title: 'AWS Certified Solutions Architect', category: 'Cloud', issuer: 'Amazon Web Services' },
+    { title: 'Certified Information Systems Security Professional (CISSP)', category: 'Security', issuer: '(ISC)²' },
+    { title: 'Google Data Analytics Professional Certificate', category: 'Data', issuer: 'Google' },
+    { title: 'Microsoft Certified: Azure Fundamentals', category: 'Cloud', issuer: 'Microsoft' },
+    { title: 'CompTIA A+', category: 'IT Fundamentals', issuer: 'CompTIA' },
+    { title: 'Project Management Professional (PMP)', category: 'Management', issuer: 'PMI' },
+  ];
 
   const handleSearch = () => {
     const roleKey = inputRole.toLowerCase().trim();
@@ -64,38 +54,97 @@ function CareerBoost() {
 
   return (
     <div className="career-boost-container">
-      <h1 style={{ marginBottom: '10px' }}>Career Boost Suggestions</h1>
-      <p className="description">
-        Enter a role like <strong>"Frontend Developer"</strong> or <strong>"Data Analyst"</strong> to get recommended certificates.
-      </p>
-
-      <div className="career-boost-form">
-        <input
-          type="text"
-          value={inputRole}
-          onChange={(e) => setInputRole(e.target.value)}
-          placeholder="e.g. frontend Developer"
-        />
-        <button onClick={handleSearch}>Suggest</button>
+      <div className="header-section">
+        <h1>IT Career Certification Guide</h1>
+        <p className="description">
+          Discover valuable certifications to boost your IT career
+        </p>
+        <div className="search-container">
+          <input
+            type="text"
+            value={inputRole}
+            onChange={(e) => setInputRole(e.target.value)}
+            placeholder="Search by role (e.g. Frontend Developer, Cloud Engineer)"
+          />
+          <button onClick={handleSearch}>Find Certifications</button>
+        </div>
       </div>
 
       {results.length > 0 ? (
-        <div className="certificate-list">
-          <h3>📜 Recommended Certificates:</h3>
+        <div className="results-section">
+          <h2>Recommended Certifications for {inputRole}</h2>
           <div className="certificate-grid">
             {results.map((cert, index) => (
               <div key={index} className="certificate-card">
-                <img src={cert.image} alt="certificate icon" />
-                <p>{cert.title}</p>
+                <h3>{cert.title}</h3>
+                <p><strong>Issuer:</strong> {cert.issuer}</p>
+                <p><strong>Level:</strong> {cert.level}</p>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        inputRole && <p className="no-results">No suggestions found for that role.</p>
+        inputRole && <p className="no-results">No certifications found for "{inputRole}"</p>
       )}
+
+      <div className="importance-section">
+        <h2>Why IT Certifications Matter</h2>
+        <div className="importance-grid">
+          <div className="importance-card">
+            <h3>Career Advancement</h3>
+            <p>Certifications can lead to promotions and salary increases, with many employers requiring them for senior positions.</p>
+          </div>
+          <div className="importance-card">
+            <h3>Skill Validation</h3>
+            <p>They provide third-party verification of your skills and knowledge in specific technologies.</p>
+          </div>
+          <div className="importance-card">
+            <h3>Industry Recognition</h3>
+            <p>Many certifications are globally recognized standards that demonstrate your commitment to professional development.</p>
+          </div>
+          <div className="importance-card">
+            <h3>Keeping Skills Current</h3>
+            <p>The process of certification ensures you stay updated with the latest technologies and best practices.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="popular-certifications">
+        <h2>Popular IT Certifications</h2>
+        <div className="certification-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Certification</th>
+                <th>Category</th>
+                <th>Issuer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {popularCertifications.map((cert, index) => (
+                <tr key={index}>
+                  <td>{cert.title}</td>
+                  <td>{cert.category}</td>
+                  <td>{cert.issuer}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="tips-section">
+        <h2>Certification Tips</h2>
+        <ul>
+          <li>Choose certifications aligned with your career goals and current skill level</li>
+          <li>Check job postings for your target roles to see which certifications are most valued</li>
+          <li>Consider both vendor-specific (AWS, Microsoft) and vendor-neutral (CompTIA) certifications</li>
+          <li>Many certifications require renewal - factor in maintenance costs and time</li>
+          <li>Combine certifications with practical experience for maximum impact</li>
+        </ul>
+      </div>
     </div>
   );
-}
+};
 
 export default CareerBoost;
