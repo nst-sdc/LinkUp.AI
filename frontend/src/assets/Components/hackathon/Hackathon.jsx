@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Calendar, Users, Trophy, ExternalLink, Star, MapPin, Clock } from 'lucide-react';
 import "./Hackathonstyle.css"
 import Navbar from "../Navbar/Navbar"
+import { Link, useNavigate } from 'react-router-dom';
 
 const Hackathon = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,6 +75,9 @@ const filteredHackathons = hackathons.filter(hackathon => {
       default: return 'difficulty-default';
     }
   };
+
+  const navigate = useNavigate();
+
 
   return (
     <>
@@ -248,7 +252,7 @@ const filteredHackathons = hackathons.filter(hackathon => {
   <Calendar size={20} />
   Browse All Events
 </button>
-              <button className="cta-btn secondary">
+              <button className="cta-btn secondary" onClick={() => navigate('/teamform')}>
                 <Users size={20} />
                 Create Team
               </button>
