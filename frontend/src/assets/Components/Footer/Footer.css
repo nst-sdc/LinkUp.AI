@@ -6,8 +6,6 @@
 
 .footer{
     background-color: #111827;
-    
-
 }
 
 .in_footer{
@@ -24,7 +22,7 @@
     width: 100%;
     text-align: left;
     margin-bottom: 2rem ;
-    
+    text-align: center;
 }
 
 .footer_links1{
