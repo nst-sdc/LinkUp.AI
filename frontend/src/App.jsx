@@ -20,6 +20,7 @@ import TeamForm from './assets/Components/hackathon/teamform';
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [profileData, setProfileData] = React.useState({});
+  
 
   const updateProfileData = (data) => {
     console.log('Updating profileData in App:', data); // Debug log
@@ -58,7 +59,7 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/bio-generator" element={<BioGenerator />} />
           <Route path="/resume-builder" element={<ResumeBuilder />} />
-          <Route path="/post" element={<Post />} />
+          <Route path="/post" element={<Post profileData={profileData} onBack={()=>window.history.back()} />} />
           <Route path="/home" element={<Home/>} />
           <Route path="/teamform" element={<TeamForm />} />
 
