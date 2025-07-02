@@ -15,6 +15,7 @@ import Internships from './assets/Components/Internships/Internships';
 import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
 import ResumeBuilder from './assets/Components/ResumeBuilder/ResumeBuilder';
 import Post from './assets/Components/Post/Post';
+import TeamForm from './assets/Components/hackathon/teamform';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -59,6 +60,7 @@ function App() {
           <Route path="/resume-builder" element={<ResumeBuilder />} />
           <Route path="/post" element={<Post />} />
           <Route path="/home" element={<Home/>} />
+          <Route path="/teamform" element={<TeamForm />} />
 
 
           {/* Auth */}
