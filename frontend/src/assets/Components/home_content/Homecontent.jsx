@@ -112,7 +112,7 @@ export default function Home() {
 
 
       {/* What is LinkUp.AI Section */}
-      <section className="home-about-section home-fade-in-section">
+      <section className="home-about-section home-fade-in-section" id = "about">
         <div className="home-container">
           <div className="home-about-content">
             <div className="home-about-text">
@@ -156,7 +156,7 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section className="home-features-section home-fade-in-section">
+      <section className="home-features-section home-fade-in-section" id = "features">
         <div className="home-container">
           <h2 className="home-section-title home-text-center">Core Features for Students</h2>
           <p className="home-section-subtitle home-text-center">
@@ -179,7 +179,7 @@ export default function Home() {
 
 
       {/* News Section */}
-      <section className="home-news-section home-fade-in-section">
+      <section className="home-news-section home-fade-in-section" id = "news">
         <div className="home-container">
           <h2 className="home-section-title home-text-center">Latest Tech News</h2>
           <p className="home-section-subtitle home-text-center">

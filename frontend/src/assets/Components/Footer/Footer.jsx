@@ -10,35 +10,34 @@ return (
     {/* for the every section there will be the new page and that page link we will add when we will make there page till then leave it as it is  */}
     <div className='footer_links1'>
         <h4>Company</h4>
-        <a href='/AboutUs'><p>About Us</p></a>  
-        <a href='/Accessibilty'><p>Accessibilty</p></a>
-        <a href='/Support'><p>Support</p></a>  
+        <a href='/home'><p>Home</p></a>  
+        <a href='/hackathon'><p>Hackathon</p></a>
+        <a href='/webinar'><p>Webinar</p></a>
+        <p></p>
+        <p></p>
     </div>
 
     <div className='footer_links1'>
-        <h4>Privacy</h4>
-        <a href='/AboutUs'><p>Privacy Policy</p></a>  
-        <a href='/Accessibilty'><p>Ad Choices</p></a>
-        <a href='/Support'><p>Promos</p></a>  
+        <h4>AI Assist</h4>
+        <a href='/bio-generator'><p>Bio Generator</p></a>  
+        <a href='/resume-builder'><p>Resume Builder</p></a>
+        <a href='/career-boost'><p>Career Boost</p></a>  
     </div>
 
     <div className='footer_links1'>
         <h4>More</h4>
-        <a href='/AboutUs'><p>Business</p></a>  
-        <a href='/Accessibilty'><p>Get the App</p></a>
-        <a href='/Support'><p>Something Else</p></a>  
+        <a href='/#about'><p>About Us</p></a>  
+        <a href='/#features'><p>Core Features</p></a>
+        <a href='/#news'><p>Latest Tech News</p></a>  
     </div>
 
-    <div className='footer_links1'>
-        <h4>Contact</h4>
-        <a href='/AboutUs'><p>Help line</p></a>  
-        <a href='/Accessibilty'><p>Contact</p></a>
-        <a href='/Support'><p>Press </p></a>  
-    </div>
 
     {/* the below section is for social media accounds for which we have to add the images we will do it letter */}
 
+
 <hr></hr>
+
+
 <div className='footer-below'>
         <div className='copyright'>
         <p>@ 2025 LinkUp.AI . All right reserved. </p>
@@ -48,7 +47,6 @@ return (
         <span><a href='/terms'><div><p>Privacy </p></div></a></span>
         <span><a href='/terms'><div><p>Security</p></div></a></span>
         <span><a href='/terms'><div><p>Cookie Declarations  </p></div></a></span>  
-        
         
         
         </div>
