@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
-import { auth, db } from "../../../firebase"// ✅ added to use Firebase
-import { createUserWithEmailAndPassword } from "firebase/auth"; // ✅ for email sign-up
-import { doc, setDoc } from "firebase/firestore"; // ✅ to store extra user details
+import { auth, db } from "../../../firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; 
 
 function Signup() {
  const navigate = useNavigate();
@@ -62,14 +62,14 @@ function Signup() {
 //  };
 
 try {
-  // ✅ Create Firebase Auth user
+ 
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     form.email,
     form.password
   );
 
-  // ✅ Save additional data to Firestore
+ 
   await setDoc(doc(db, "users", userCredential.user.uid), {
     firstName: form.firstName,
     lastName: form.lastName,

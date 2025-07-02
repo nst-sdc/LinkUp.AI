@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
-import { signInWithEmailAndPassword } from "firebase/auth"; // ✅ for login
-import { auth } from "../../../firebase"; // ✅ from your firebase.js
+import { signInWithEmailAndPassword } from "firebase/auth"; 
+import { auth } from "../../../firebase"; 
 
 
 
