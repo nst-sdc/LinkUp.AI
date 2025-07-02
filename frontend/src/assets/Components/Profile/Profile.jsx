@@ -962,16 +962,16 @@ const Profile = ({ onSubmit }) => {
 
         <div className="form-navigation">
           {currentStep > 1 && (
-            <button type="button" onClick={prevStep} className="btn-secondary">
+            <button type="button" onClick={prevStep} className="prof-btn-secondary">
               Previous
             </button>
           )}
           {currentStep < 7 ? (
-            <button type="button" onClick={nextStep} className="btn-primary">
+            <button type="button" onClick={nextStep} className="prof-btn-primary">
               Next
             </button>
           ) : (
-            <button type="button" onClick={handleSubmit} className="btn-primary">
+            <button type="button" onClick={handleSubmit} className="prof-btn-primary">
               Complete Profile
             </button>
           )}
