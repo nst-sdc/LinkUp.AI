@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
+import { auth, db } from "../../../firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; 
+
 function Signup() {
  const navigate = useNavigate();
 
@@ -46,16 +50,43 @@ function Signup() {
    setLoading(true);
 
 
-   try {
-     console.log("Registered:", form);
-     navigate("/profile");
-   } catch (err) {
-     console.error(err);
-     setError("Something went wrong");
-   } finally {
-     setLoading(false);
-   }
- };
+//    try {
+//      console.log("Registered:", form);
+//      navigate("/profile");
+//    } catch (err) {
+//      console.error(err);
+//      setError("Something went wrong");
+//    } finally {
+//      setLoading(false);
+//    }
+//  };
+
+try {
+ 
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    form.email,
+    form.password
+  );
+
+ 
+  await setDoc(doc(db, "users", userCredential.user.uid), {
+    firstName: form.firstName,
+    lastName: form.lastName,
+    userName: form.userName,
+    email: form.email,
+    phone: form.phone,
+  });
+
+  navigate("/login");
+} catch (err) {
+  console.error(err);
+  setError("Something went wrong. Please try again.");
+} finally {
+  setLoading(false);
+}
+};
+
 
 
  const handleGoogleSignup = () => {
