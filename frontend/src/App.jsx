@@ -59,9 +59,12 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/bio-generator" element={<BioGenerator />} />
           <Route path="/resume-builder" element={<ResumeBuilder />} />
-          <Route path="/post" element={<Post profileData={profileData} onBack={()=>window.history.back()} />} />
+          
           <Route path="/home" element={<Home/>} />
           <Route path="/teamform" element={<TeamForm />} />
+
+
+          <Route path="/post" element={<Post profileData={profileData} onBack={()=>window.history.back()} />} />
 
 
           {/* Auth */}
