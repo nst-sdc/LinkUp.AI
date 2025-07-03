@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Footer from './assets/Components/Footer/Footer';
@@ -16,14 +16,23 @@ import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
 import ResumeBuilder from './assets/Components/ResumeBuilder/ResumeBuilder';
 import Post from './assets/Components/Post/Post';
 import TeamForm from './assets/Components/hackathon/teamform';
+import { auth } from "./firebase"; 
+import { onAuthStateChanged } from "firebase/auth"; 
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [profileData, setProfileData] = React.useState({});
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsSignedIn(!!user); 
+    });
+    return () => unsubscribe(); 
+  }, []);
   
 
   const updateProfileData = (data) => {
-    console.log('Updating profileData in App:', data); // Debug log
+    console.log('Updating profileData in App:', data); 
     setProfileData(data);
   };
 

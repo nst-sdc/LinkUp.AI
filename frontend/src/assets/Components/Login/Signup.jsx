@@ -4,6 +4,7 @@ import "./Signup.css";
 import { auth, db } from "../../../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Signup() {
  const navigate = useNavigate();
@@ -50,16 +51,7 @@ function Signup() {
    setLoading(true);
 
 
-//    try {
-//      console.log("Registered:", form);
-//      navigate("/profile");
-//    } catch (err) {
-//      console.error(err);
-//      setError("Something went wrong");
-//    } finally {
-//      setLoading(false);
-//    }
-//  };
+
 
 try {
  
@@ -88,36 +80,34 @@ try {
 };
 
 
+const handleGoogleSignup = async () => {
+  setGoogleLoading(true);
+  setError("");
 
- const handleGoogleSignup = () => {
-   setGoogleLoading(true);
-   setError("")
-  
-   try {
-     const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "your-google-client-id";
-     const redirectUri = encodeURIComponent(window.location.origin + "/auth/google/callback");
-     const scope = encodeURIComponent("openid email profile");
-     const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    
-     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
-       `client_id=${googleClientId}&` +
-       `redirect_uri=${redirectUri}&` +
-       `response_type=code&` +
-       `scope=${scope}&` +
-       `access_type=offline&` +
-       `prompt=consent&` +
-       `state=${state}`;
-     sessionStorage.setItem('google_oauth_state', state);
-    
-     // Redirect to Google OAuth
-     window.location.href = googleAuthUrl;
-   } catch (err) {
-     console.error('Google OAuth Error:', err);
-     setError("Failed to connect with Google. Please try again.");
-     setGoogleLoading(false);
-   }
- };
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
+   
+    await setDoc(doc(db, "users", user.uid), {
+      firstName: user.displayName?.split(" ")[0] || "",
+      lastName: user.displayName?.split(" ")[1] || "",
+      userName: user.displayName || "",
+      email: user.email,
+      phone: user.phoneNumber || "",
+    });
+
+   
+    navigate("/Home");
+
+  } catch (err) {
+    console.error("Google Sign-In Error:", err.message);
+    setError("Google sign-in failed. Try again.");
+  } finally {
+    setGoogleLoading(false);
+  }
+};
 
 
 
