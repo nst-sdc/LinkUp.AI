@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './teamform.css';
+import { db } from '../../../firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+
 
 
 const TeamForm = () => {
@@ -51,14 +54,54 @@ const TeamForm = () => {
     setData((prev) => ({ ...prev, members: prev.members.map((m, idx) => idx === i ? { ...m, [field]: value } : m) }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', data);
-    alert('Team created successfully!');
-    setData({
-      teamName: '', projectTitle: '', projectDesc: '', projectCat: '', leaderEmail: '', phone: '', slack: '', members: [{ name: '', email: '', role: '', exp: '' }]
-    });
+  
+    const teamData = {
+      teamName: data.teamName,
+      project: {
+        title: data.projectTitle,
+        description: data.projectDesc,
+        category: data.projectCat
+      },
+      members: data.members.map((m) => ({
+        name: m.name,
+        email: m.email,
+        role: m.role,
+        experience: m.exp
+      })),
+      contact: {
+        email: data.leaderEmail,
+        phone: data.phone,
+        slack: data.slack
+      },
+      createdAt: Timestamp.now()
+    };
+    console.log("📤 Submitting data to Firestore:", teamData);
+  
+    try {
+        const docRef = await addDoc(collection(db, 'teams'), teamData); 
+        console.log("Document written with ID: ", docRef.id);            
+        alert("Team created successfully!");
+      
+  
+      // Reset form
+      setData({
+        teamName: '',
+        projectTitle: '',
+        projectDesc: '',
+        projectCat: '',
+        leaderEmail: '',
+        phone: '',
+        slack: '',
+        members: [{ name: '', email: '', role: '', exp: '' }]
+      });
+    } catch (err) {
+      console.error("🔥 Firestore Error:", err.code, err.message); // This is the key
+      alert("Failed to create team. Try again.");
+    }
   };
+  
 
   return (
     <div className="team-form-container">
