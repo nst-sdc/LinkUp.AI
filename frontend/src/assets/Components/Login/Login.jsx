@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./Login.css";
-import { signInWithEmailAndPassword } from "firebase/auth"; 
+import "./Login.css"; 
 import { auth } from "../../../firebase"; 
-
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
 
 function Login({ setIsSignedIn }) {
@@ -44,28 +43,35 @@ try {
 };
 
 
- const handleForgotPassword = async (e) => {
-   e.preventDefault();
-   setResetMessage("");
-  
-   if (!resetEmail) {
-     setResetMessage("Please enter your email address");
-     return;
-   }
+const handleForgotPassword = async (e) => {
+  e.preventDefault();
+  setResetMessage("");
 
+  if (!resetEmail) {
+    setResetMessage("Please enter your email address");
+    return;
+  }
 
-   try {
-     console.log("Password reset requested for:", resetEmail);
-     setResetMessage("Password reset link sent to your email!");
-     setTimeout(() => {
-       setShowForgotPassword(false);
-       setResetEmail("");
-       setResetMessage("");
-     }, 3000);
-   } catch (err) {
-     setResetMessage("Error sending reset email. Please try again.");
-   }
- };
+  try {
+    await sendPasswordResetEmail(auth, resetEmail);
+    console.log("Password reset email sent to:", resetEmail);
+    setResetMessage("Password reset link sent to your email!");
+    setTimeout(() => {
+      setShowForgotPassword(false);
+      setResetEmail("");
+      setResetMessage("");
+    }, 3000);
+  } catch (err) {
+    console.error("Error sending password reset email:", err);
+    if (err.code === 'auth/user-not-found') {
+      setResetMessage("No user found with this email.");
+    } else if (err.code === 'auth/invalid-email') {
+      setResetMessage("Invalid email address.");
+    } else {
+      setResetMessage("Error sending reset email. Please try again.");
+    }
+  }
+};
 
 
  if (showForgotPassword) {

@@ -97,7 +97,7 @@ const TeamForm = () => {
         members: [{ name: '', email: '', role: '', exp: '' }]
       });
     } catch (err) {
-      console.error("🔥 Firestore Error:", err.code, err.message); // This is the key
+      console.error("🔥 Firestore Error:", err.code, err.message);
       alert("Failed to create team. Try again.");
     }
   };
