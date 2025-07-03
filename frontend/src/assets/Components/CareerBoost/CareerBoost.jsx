@@ -36,6 +36,36 @@ const CareerBoost = () => {
       { title: 'Microsoft Certified: Azure Administrator', issuer: 'Microsoft', level: 'Intermediate' },
       { title: 'Cloud Security Certification', issuer: 'Cloud Security Alliance', level: 'Advanced' },
     ],
+    'devops engineer': [
+    { title: 'Docker Certified Associate', issuer: 'Docker Inc.', level: 'Intermediate' },
+    { title: 'Certified Kubernetes Administrator (CKA)', issuer: 'Linux Foundation', level: 'Intermediate' },
+    { title: 'AWS Certified DevOps Engineer', issuer: 'Amazon Web Services', level: 'Advanced' },
+    { title: 'Microsoft Certified: DevOps Engineer Expert', issuer: 'Microsoft', level: 'Advanced' },
+  ],
+  'ai engineer': [
+    { title: 'TensorFlow Developer Certificate', issuer: 'TensorFlow', level: 'Intermediate' },
+    { title: 'Deep Learning Specialization', issuer: 'DeepLearning.AI', level: 'Advanced' },
+    { title: 'AI for Everyone', issuer: 'DeepLearning.AI', level: 'Beginner' },
+    { title: 'Microsoft Certified: Azure AI Engineer Associate', issuer: 'Microsoft', level: 'Intermediate' },
+  ],
+  'machine learning engineer': [
+    { title: 'Machine Learning Specialization', issuer: 'Coursera - Andrew Ng', level: 'Intermediate' },
+    { title: 'AWS Certified Machine Learning – Specialty', issuer: 'Amazon Web Services', level: 'Advanced' },
+    { title: 'MLOps Fundamentals', issuer: 'Google Cloud', level: 'Intermediate' },
+    { title: 'Professional Machine Learning Engineer', issuer: 'Google Cloud', level: 'Advanced' },
+  ],
+  'ui ux designer': [
+    { title: 'Google UX Design Professional Certificate', issuer: 'Google', level: 'Beginner' },
+    { title: 'UI/UX Design Specialization', issuer: 'California Institute of the Arts', level: 'Intermediate' },
+    { title: 'Adobe Certified Professional: UX Design', issuer: 'Adobe', level: 'Advanced' },
+    { title: 'Human-Computer Interaction', issuer: 'University of California, San Diego', level: 'Intermediate' },
+  ],
+  'mobile app developer': [
+    { title: 'Android Developer Certification', issuer: 'Google', level: 'Intermediate' },
+    { title: 'Flutter Development', issuer: 'Udemy', level: 'Beginner' },
+    { title: 'iOS App Development with Swift', issuer: 'Coursera', level: 'Intermediate' },
+    { title: 'React Native Mobile Development', issuer: 'Meta', level: 'Intermediate' },
+  ],
   };
 
   const popularCertifications = [
@@ -47,9 +77,36 @@ const CareerBoost = () => {
     { title: 'Project Management Professional (PMP)', category: 'Management', issuer: 'PMI' },
   ];
 
+
   const handleSearch = () => {
     const roleKey = inputRole.toLowerCase().trim();
-    setResults(certificateMap[roleKey] || []);
+
+    if (!roleKey) {
+      setResults([]);
+      return;
+    }
+
+    // Exact match or partial match
+    const foundKey = Object.keys(certificateMap).find((key) =>
+      key.toLowerCase().includes(roleKey)
+    );
+
+    if (foundKey) {
+      setResults(certificateMap[foundKey]);
+    } else {
+      setResults([]);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    handleSearch();
   };
 
   return (
@@ -64,9 +121,10 @@ const CareerBoost = () => {
             type="text"
             value={inputRole}
             onChange={(e) => setInputRole(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="Search by role (e.g. Frontend Developer, Cloud Engineer)"
           />
-          <button onClick={handleSearch}>Find Certifications</button>
+          <button className='search-bth' onClick={handleButtonClick}>Find Certifications</button>
         </div>
       </div>
 
@@ -77,14 +135,18 @@ const CareerBoost = () => {
             {results.map((cert, index) => (
               <div key={index} className="certificate-card">
                 <h3>{cert.title}</h3>
-                <p><strong>Issuer:</strong> {cert.issuer}</p>
-                <p><strong>Level:</strong> {cert.level}</p>
+                <p className="issuer">Issued by: {cert.issuer}</p>
+                <span className={`level ${cert.level.toLowerCase()}`}>
+                  {cert.level}
+                </span>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        inputRole && <p className="no-results">No certifications found for "{inputRole}"</p>
+        inputRole.trim() && (
+          <p className="no-results">No certifications found for "{inputRole}"</p>
+        )
       )}
 
       <div className="importance-section">

@@ -53,7 +53,7 @@
   border-color: #4c1d95;
 }
 
-.search-container button {
+ .search-container button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   background-color: #4c1d95;
@@ -62,7 +62,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
+} 
 
 .search-container button:hover {
   background-color: #6f42c1;
@@ -255,4 +255,39 @@ tr:hover {
   table {
     font-size: 0.9rem;
   }
+}
+
+.career-boost-container .search-container input[type="text"] {
+  display: block;
+  width: 50%;
+  padding: 12px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  position: relative;
+  z-index: 100;
+  border-radius: 5px;
+}
+
+
+.search-bth {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #4c1d95;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.search-bth:hover {
+  background-color: #6f42c1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.search-bth:active {
+  transform: scale(0.95);
+  background-color: #5b21b6;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
