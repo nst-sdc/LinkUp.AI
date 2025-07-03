@@ -124,7 +124,7 @@ ul li:not(.auth-buttons):hover {
   background-color: #ef4444;
   color: white;
   font-size: 14px;        /* 👈 smaller font */
-  padding: 4px,8px;      /* 👈 smaller padding */
+  padding: 4px 8px;      /* 👈 smaller padding */
   border-radius: 6px;
   cursor: pointer;
 }
