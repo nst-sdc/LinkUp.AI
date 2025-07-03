@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./internships.css";
+import "./Internships.css"; // Assuming you have a CSS file for styling
 
 const Internships = () => {
   const [query, setQuery] = useState("");

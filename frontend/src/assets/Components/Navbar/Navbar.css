@@ -48,36 +48,6 @@ ul li:not(.auth-buttons):hover {
   filter: brightness(0.9);          
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  background: #242424;
-  padding: 10px 20px;
-  border-radius: 50px;
-  margin-left: 2rem;
-}
-
-.search-bar input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #fff;
-  font-size: 16px;
-  width: 200px;
-}
-
-.search-bar input::placeholder {
-  color: #ccc;
-  
-}
-
-.search-bar img {
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
 .dropdown {
   position: relative;
   cursor: pointer;
@@ -154,9 +124,14 @@ ul li:not(.auth-buttons):hover {
   background-color: #ef4444;
   color: white;
   font-size: 14px;        /* 👈 smaller font */
-  padding: 4px,2px;      /* 👈 smaller padding */
+  padding: 4px,8px;      /* 👈 smaller padding */
   border-radius: 6px;
   cursor: pointer;
+}
+
+.dropdown.active {
+  background-color: #c7d8f4;
+  border-radius: 6px;
 }
 
 .profile-link {

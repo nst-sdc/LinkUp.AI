@@ -1,17 +1,15 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../../../assets/Images/logo.png';
-import searchIcon from '../../../assets/Images/search-iconW.png';
 
 const ArrowIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16px"
-    height="16px"
+    width="16"
+    height="16"
     viewBox="0 0 16 16"
-    fill="transparent"
+    fill="none"
     className="arrow-icon"
   >
     <path
@@ -29,7 +27,6 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleDropdown = (name) => {
-    console.log('Toggling dropdown:', name, 'profileData:', profileData); 
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 
@@ -41,14 +38,14 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
   return (
     <div className="navbar">
       <img src={logo} alt="LinkUp.AI Logo" className="logo" />
-      <div className="search-bar">
-        <input type="text" placeholder="Search..." />
-        <img src={searchIcon} alt="" />
-      </div>
+
       <ul>
         <li><Link to="/home">Home</Link></li>
 
-        <li className="dropdown" onClick={() => toggleDropdown('opportunities')}>
+        <li
+          className={`dropdown ${activeDropdown === 'opportunities' ? 'active' : ''}`}
+          onClick={() => toggleDropdown('opportunities')}
+        >
           Opportunities <ArrowIcon />
           {activeDropdown === 'opportunities' && (
             <ul className="dropdown-content">
@@ -58,7 +55,10 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
           )}
         </li>
 
-        <li className="dropdown" onClick={() => toggleDropdown('ai')}>
+        <li
+          className={`dropdown ${activeDropdown === 'ai' ? 'active' : ''}`}
+          onClick={() => toggleDropdown('ai')}
+        >
           AI Assist <ArrowIcon />
           {activeDropdown === 'ai' && (
             <ul className="dropdown-content">
@@ -73,7 +73,10 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
           )}
         </li>
 
-        <li className="dropdown" onClick={() => toggleDropdown('jobs')}>
+        <li
+          className={`dropdown ${activeDropdown === 'jobs' ? 'active' : ''}`}
+          onClick={() => toggleDropdown('jobs')}
+        >
           Jobs <ArrowIcon />
           {activeDropdown === 'jobs' && (
             <ul className="dropdown-content">
@@ -83,7 +86,8 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
           )}
         </li>
 
-        <li>Notifications</li>
+        {/* Replaced Notifications with Chat */}
+        <li><Link to="/messages" className="chat-link">💬 Chit Chat</Link></li>
 
         <li className="auth-buttons">
           {isSignedIn ? (
