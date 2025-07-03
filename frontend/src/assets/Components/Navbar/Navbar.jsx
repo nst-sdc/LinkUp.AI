@@ -29,7 +29,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleDropdown = (name) => {
-    console.log('Toggling dropdown:', name, 'profileData:', profileData); // Debug log
+    console.log('Toggling dropdown:', name, 'profileData:', profileData); 
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 

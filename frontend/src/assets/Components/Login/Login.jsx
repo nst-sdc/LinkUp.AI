@@ -24,27 +24,13 @@ function Login({ setIsSignedIn }) {
    setIsLoading(true);
 
 
-//    try {
-//      console.log("Logging in with", email, password, "Remember me:", rememberMe);
-//      if (rememberMe) {
-//        console.log("User will be remembered");
-//      }
-    
-//      setIsSignedIn(true);
-//      navigate("/profile");
-//    } catch (err) {
-//      console.error(err);
-//      setError("Invalid email or password");
-//    } finally {
-//      setIsLoading(false);
-//    }
-//  };
+
 try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("Logged in user:", userCredential.user);
   
     if (rememberMe) {
-      // You can optionally persist auth here
+     
     }
   
     setIsSignedIn(true);
