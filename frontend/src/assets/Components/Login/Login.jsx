@@ -9,7 +9,6 @@ function Login({ setIsSignedIn }) {
  const navigate = useNavigate();
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
- const [rememberMe, setRememberMe] = useState(false);
  const [error, setError] = useState("");
  const [isLoading, setIsLoading] = useState(false);
  const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -27,10 +26,6 @@ function Login({ setIsSignedIn }) {
 try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("Logged in user:", userCredential.user);
-  
-    if (rememberMe) {
-     
-    }
   
     setIsSignedIn(true);
     navigate("/profile");
@@ -153,16 +148,6 @@ const handleForgotPassword = async (e) => {
 
 
        <div className="login-options">
-         <label className="remember-me">
-           <input
-             type="checkbox"
-             checked={rememberMe}
-             onChange={(e) => setRememberMe(e.target.checked)}
-           />
-           <span className="checkmark"></span>
-           Remember me
-         </label>
-        
          <button
            type="button"
            className="forgot-password-link"
