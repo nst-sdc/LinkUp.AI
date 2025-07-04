@@ -1,6 +1,7 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+
 import Footer from './assets/Components/Footer/Footer';
 import Navbar from './assets/Components/Navbar/Navbar';
 import Signup from './assets/Components/Login/Signup';
@@ -16,25 +17,32 @@ import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
 import ResumeBuilder from './assets/Components/ResumeBuilder/ResumeBuilder';
 import Post from './assets/Components/Post/Post';
 import TeamForm from './assets/Components/hackathon/teamform';
-import { auth } from "./firebase"; 
-import { onAuthStateChanged } from "firebase/auth"; 
+
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [profileData, setProfileData] = React.useState({});
+  const [authChecked, setAuthChecked] = useState(false); 
+  const [profileData, setProfileData] = useState({});
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsSignedIn(!!user); 
+      setAuthChecked(true); 
     });
-    return () => unsubscribe(); 
+
+    return () => unsubscribe();
   }, []);
-  
 
   const updateProfileData = (data) => {
-    console.log('Updating profileData in App:', data); 
     setProfileData(data);
   };
+
+  
+  if (!authChecked) {
+    return <div className="loading-screen">Loading...</div>;
+  }
 
   return (
     <Router>
@@ -43,21 +51,7 @@ function App() {
 
         <Routes>
           {/* Home */}
-          <Route
-            path="/"
-            element={
-              isSignedIn ? (
-
-                <Home />
-
-              ) : (
-
-                <Home />
-
-              )
-
-            }
-          />
+          <Route path="/" element={<Home />} />
 
           {/* Web pages */}
           <Route path="/webinar" element={<Webinar />} />
@@ -68,38 +62,23 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/bio-generator" element={<BioGenerator />} />
           <Route path="/resume-builder" element={<ResumeBuilder />} />
-          
-          <Route path="/home" element={<Home/>} />
+          <Route path="/home" element={<Home />} />
           <Route path="/teamform" element={<TeamForm />} />
+          <Route path="/post" element={<Post profileData={profileData} onBack={() => window.history.back()} />} />
 
-
-          <Route path="/post" element={<Post profileData={profileData} onBack={()=>window.history.back()} />} />
-
-
-          {/* Auth */}
-
+          {/* Auth Routes */}
           <Route
             path="/login"
             element={
-              isSignedIn ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Login setIsSignedIn={setIsSignedIn} />
-              )
+              isSignedIn ? <Navigate to="/" replace /> : <Login setIsSignedIn={setIsSignedIn} />
             }
           />
-
           <Route
             path="/signup"
             element={
-              isSignedIn ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Signup />
-              )
+              isSignedIn ? <Navigate to="/" replace /> : <Signup />
             }
           />
-
         </Routes>
 
         <Footer />
