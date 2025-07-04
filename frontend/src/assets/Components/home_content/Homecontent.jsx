@@ -19,8 +19,11 @@ export default function Home() {
     const getData = async () => {
       try {
         const res = await fetch('https://newsapi.org/v2/everything?q=coding&language=en&sortBy=publishedAt&pageSize=12&apiKey=45e23b431f194cdbbf519e8363a3c211');
+        if (!res.ok) {
+          throw new Error(`News API error: ${res.status}`);
+        }
         const json = await res.json();
-        setData(json.articles);
+        setData(Array.isArray(json.articles) ? json.articles : []);
       } catch (e) {
         console.log('error', e);
       }
@@ -193,7 +196,7 @@ export default function Home() {
                 <p>Loading latest news...</p>
               </div>
             ) : (
-              data.map((item, i) => (
+              (data || []).map((item, i) => (
                 <TechNewsCard
                   key={i}
                   title={item.title}
