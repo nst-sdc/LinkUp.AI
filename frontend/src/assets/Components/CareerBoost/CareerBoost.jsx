@@ -107,6 +107,7 @@ const CareerBoost = () => {
   const handleButtonClick = (e) => {
     e.preventDefault();
     handleSearch();
+    console.log("Button Clicked")
   };
 
   return (
@@ -120,12 +121,15 @@ const CareerBoost = () => {
           <input
             type="text"
             value={inputRole}
+            id="search-bar"
             onChange={(e) => setInputRole(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Search by role (e.g. Frontend Developer, Cloud Engineer)"
           />
-          <button className='search-bth' onClick={handleButtonClick}>Find Certifications</button>
-        </div>
+          {/* <button className="search-bth" onClick={handleButtonClick}>
+            Find Certifications
+          </button>         */}
+</div>
       </div>
 
       {results.length > 0 ? (
