@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../../../assets/Images/logo.png';
 import searchIcon from '../../../assets/Images/search-iconW.png';
+import { signOut } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 const ArrowIcon = () => (
   <svg
@@ -33,9 +35,10 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async() => {
     setIsSignedIn(false);
     navigate('/home');
+    await signOut(auth);
   };
 
   return (
