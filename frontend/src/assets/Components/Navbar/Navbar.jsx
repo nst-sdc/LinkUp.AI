@@ -87,7 +87,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
         </li>
 
         {/* Replaced Notifications with Chat */}
-        <li><Link to="/messages" className="chat-link">💬 Chit Chat</Link></li>
+        <li><Link to="/messages" className="chat-link">💬 messaging</Link></li>
 
         <li className="auth-buttons">
           {isSignedIn ? (
