@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./internships.css";
+import "./Internships.css";
 
 const Internships = () => {
   const [query, setQuery] = useState("");
