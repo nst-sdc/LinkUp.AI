@@ -4,6 +4,32 @@ import "./Login.css";
 import { auth } from "../../../firebase";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
+function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/profile");
+    } catch (err) {
+      console.error(err);
+      setError("Invalid email or password");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
@@ -76,6 +102,63 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/aut
       </div>
     );
   }
+
+  return (
+    <div className="login">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2 className="login-header">Login</h2>
+
+        {error && <div className="error-message">{error}</div>}
+
+        <input
+          type="email"
+          className="login-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Email"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          className="login-input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <div className="login-options">
+          <label className="remember-me">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <span className="checkmark"></span>
+            Remember me
+          </label>
+
+          <button
+            type="button"
+            className="forgot-password-link"
+            onClick={() => setShowForgotPassword(true)}
+          >
+            Forgot Password?
+          </button>
+        </div>
+
+        <button className="btn-primary login-btn" type="submit" disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Login"}
+        </button>
+
+        <p className="redirect-link">
+          Don't have an account?{" "}
+          <Link to="/signup" className="login-link">Sign Up</Link>
+        </p>
+      </form>
+    </div>
+  );
 }
 
 export default Login;
