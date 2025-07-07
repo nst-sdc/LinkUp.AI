@@ -4,6 +4,10 @@ import "./Login.css";
 import { auth } from "../../../firebase";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
+function Login() {
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
@@ -76,7 +80,8 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/aut
       </div>
     );
   }
+
+  
 }
 
 export default Login;
-
