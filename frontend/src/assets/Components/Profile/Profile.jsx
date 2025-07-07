@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Profile.css';
+import { db } from '../../../firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 const Profile = ({ onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -254,10 +255,65 @@ const Profile = ({ onSubmit }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log('Profile Data Submitted:', profileData); // Debug log
-    onSubmit(profileData); // Pass profileData to parent
-    alert('Profile updated successfully!');
+    
+    // Prepare data for Firebase (excluding photos and files)
+    const profileDataForFirebase = {
+      // Personal Information (excluding photos)
+      personalInfo: {
+        name: profileData.name,
+        email: profileData.email,
+        mobile: profileData.mobile,
+        bio: profileData.bio
+      },
+      
+      // Social Links
+      socialLinks: {
+        linkedIn: profileData.linkedIn,
+        github: profileData.github,
+        leetcode: profileData.leetcode,
+        portfolioWebsite: profileData.portfolioWebsite
+      },
+      
+      // Skills
+      skills: profileData.skills,
+      
+      // Projects (excluding images)
+      projects: profileData.projects.map(project => ({
+        name: project.name,
+        description: project.description,
+        hostedLink: project.hostedLink,
+        githubLink: project.githubLink
+      })),
+      
+      // Education
+      education: profileData.education,
+      
+      // Experience
+      experience: profileData.experience,
+      
+      // Achievements
+      achievements: profileData.achievements,
+      
+      // Metadata
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now()
+    };
+
+    console.log("📤 Submitting profile data to Firestore:", profileDataForFirebase);
+
+    try {
+      const docRef = await addDoc(collection(db, 'profiles'), profileDataForFirebase);
+      console.log("Profile document written with ID: ", docRef.id);
+      
+      // Call the original onSubmit function
+      onSubmit(profileData);
+      alert('Profile updated successfully and saved to database!');
+    } catch (err) {
+      console.error("🔥 Firestore Error:", err.code, err.message);
+      alert("Failed to save profile to database. Please try again.");
+    }
   };
 
   const renderStepIndicator = () => {
