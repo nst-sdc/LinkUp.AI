@@ -1,113 +1,87 @@
 import React, { useState } from 'react';
 import './CareerBoost.css';
 
+// Dummy data for popular certifications (keep your existing data here)
+const popularCertifications = [
+  { title: 'AWS Certified Solutions Architect', category: 'Cloud', issuer: 'Amazon' },
+  { title: 'Certified Kubernetes Administrator', category: 'DevOps', issuer: 'CNCF' },
+  { title: 'CompTIA Security+', category: 'Security', issuer: 'CompTIA' },
+  { title: 'Microsoft Certified: Azure Fundamentals', category: 'Cloud', issuer: 'Microsoft' },
+  { title: 'Google Associate Cloud Engineer', category: 'Cloud', issuer: 'Google' },
+];
+
+// Dummy map for local search (keep your existing data here)
+const certificateMap = {
+  'frontend developer': [
+    { title: 'Certified Front End Developer', issuer: 'W3C', level: 'Beginner' },
+    { title: 'React Developer Certification', issuer: 'Meta', level: 'Intermediate' },
+    { title: 'Google Mobile Web Specialist', issuer: 'Google', level: 'Intermediate' },
+  ],
+  'cloud engineer': [
+    { title: 'AWS Certified Solutions Architect', issuer: 'Amazon', level: 'Intermediate' },
+    { title: 'Google Associate Cloud Engineer', issuer: 'Google', level: 'Beginner' },
+    { title: 'Microsoft Certified: Azure Fundamentals', issuer: 'Microsoft', level: 'Beginner' },
+  ],
+  'devops': [
+    { title: 'Certified Kubernetes Administrator', issuer: 'CNCF', level: 'Intermediate' },
+    { title: 'AWS Certified DevOps Engineer', issuer: 'Amazon', level: 'Advanced' },
+    { title: 'Docker Certified Associate', issuer: 'Docker', level: 'Intermediate' },
+  ],
+  'security': [
+    { title: 'CompTIA Security+', issuer: 'CompTIA', level: 'Beginner' },
+    { title: 'Certified Ethical Hacker', issuer: 'EC-Council', level: 'Intermediate' },
+    { title: 'CISSP', issuer: 'ISC2', level: 'Advanced' },
+  ],
+};
+
 const CareerBoost = () => {
   const [inputRole, setInputRole] = useState('');
   const [results, setResults] = useState([]);
+  const [aiResponse, setAiResponse] = useState('');
+  const [loadingAI, setLoadingAI] = useState(false);
 
-  const certificateMap = {
-    'frontend developer': [
-      { title: 'HTML, CSS & JavaScript Certificate', issuer: 'freeCodeCamp', level: 'Beginner' },
-      { title: 'React Developer Certificate', issuer: 'Meta', level: 'Intermediate' },
-      { title: 'Front End Development Libraries', issuer: 'freeCodeCamp', level: 'Intermediate' },
-      { title: 'Advanced JavaScript Concepts', issuer: 'Udemy', level: 'Advanced' },
-    ],
-    'backend developer': [
-      { title: 'Node.js Developer Certificate', issuer: 'OpenJS Foundation', level: 'Intermediate' },
-      { title: 'SQL & Database Design', issuer: 'Stanford University', level: 'Intermediate' },
-      { title: 'REST API Development', issuer: 'IBM', level: 'Intermediate' },
-      { title: 'Docker Fundamentals', issuer: 'Docker Inc.', level: 'Intermediate' },
-    ],
-    'data analyst': [
-      { title: 'Google Data Analytics', issuer: 'Google', level: 'Beginner' },
-      { title: 'Microsoft Certified: Data Analyst Associate', issuer: 'Microsoft', level: 'Intermediate' },
-      { title: 'IBM Data Science Professional', issuer: 'IBM', level: 'Intermediate' },
-      { title: 'Tableau Desktop Specialist', issuer: 'Tableau', level: 'Beginner' },
-    ],
-    'cybersecurity': [
-      { title: 'CompTIA Security+', issuer: 'CompTIA', level: 'Intermediate' },
-      { title: 'Certified Ethical Hacker (CEH)', issuer: 'EC-Council', level: 'Advanced' },
-      { title: 'CISSP', issuer: '(ISC)²', level: 'Advanced' },
-      { title: 'Google Cybersecurity Certificate', issuer: 'Google', level: 'Beginner' },
-    ],
-    'cloud engineer': [
-      { title: 'AWS Certified Solutions Architect', issuer: 'Amazon Web Services', level: 'Intermediate' },
-      { title: 'Google Cloud Professional', issuer: 'Google Cloud', level: 'Intermediate' },
-      { title: 'Microsoft Certified: Azure Administrator', issuer: 'Microsoft', level: 'Intermediate' },
-      { title: 'Cloud Security Certification', issuer: 'Cloud Security Alliance', level: 'Advanced' },
-    ],
-    'devops engineer': [
-    { title: 'Docker Certified Associate', issuer: 'Docker Inc.', level: 'Intermediate' },
-    { title: 'Certified Kubernetes Administrator (CKA)', issuer: 'Linux Foundation', level: 'Intermediate' },
-    { title: 'AWS Certified DevOps Engineer', issuer: 'Amazon Web Services', level: 'Advanced' },
-    { title: 'Microsoft Certified: DevOps Engineer Expert', issuer: 'Microsoft', level: 'Advanced' },
-  ],
-  'ai engineer': [
-    { title: 'TensorFlow Developer Certificate', issuer: 'TensorFlow', level: 'Intermediate' },
-    { title: 'Deep Learning Specialization', issuer: 'DeepLearning.AI', level: 'Advanced' },
-    { title: 'AI for Everyone', issuer: 'DeepLearning.AI', level: 'Beginner' },
-    { title: 'Microsoft Certified: Azure AI Engineer Associate', issuer: 'Microsoft', level: 'Intermediate' },
-  ],
-  'machine learning engineer': [
-    { title: 'Machine Learning Specialization', issuer: 'Coursera - Andrew Ng', level: 'Intermediate' },
-    { title: 'AWS Certified Machine Learning – Specialty', issuer: 'Amazon Web Services', level: 'Advanced' },
-    { title: 'MLOps Fundamentals', issuer: 'Google Cloud', level: 'Intermediate' },
-    { title: 'Professional Machine Learning Engineer', issuer: 'Google Cloud', level: 'Advanced' },
-  ],
-  'ui ux designer': [
-    { title: 'Google UX Design Professional Certificate', issuer: 'Google', level: 'Beginner' },
-    { title: 'UI/UX Design Specialization', issuer: 'California Institute of the Arts', level: 'Intermediate' },
-    { title: 'Adobe Certified Professional: UX Design', issuer: 'Adobe', level: 'Advanced' },
-    { title: 'Human-Computer Interaction', issuer: 'University of California, San Diego', level: 'Intermediate' },
-  ],
-  'mobile app developer': [
-    { title: 'Android Developer Certification', issuer: 'Google', level: 'Intermediate' },
-    { title: 'Flutter Development', issuer: 'Udemy', level: 'Beginner' },
-    { title: 'iOS App Development with Swift', issuer: 'Coursera', level: 'Intermediate' },
-    { title: 'React Native Mobile Development', issuer: 'Meta', level: 'Intermediate' },
-  ],
-  };
-
-  const popularCertifications = [
-    { title: 'AWS Certified Solutions Architect', category: 'Cloud', issuer: 'Amazon Web Services' },
-    { title: 'Certified Information Systems Security Professional (CISSP)', category: 'Security', issuer: '(ISC)²' },
-    { title: 'Google Data Analytics Professional Certificate', category: 'Data', issuer: 'Google' },
-    { title: 'Microsoft Certified: Azure Fundamentals', category: 'Cloud', issuer: 'Microsoft' },
-    { title: 'CompTIA A+', category: 'IT Fundamentals', issuer: 'CompTIA' },
-    { title: 'Project Management Professional (PMP)', category: 'Management', issuer: 'PMI' },
-  ];
-
-
-  const handleSearch = () => {
-    const roleKey = inputRole.toLowerCase().trim();
-
-    if (!roleKey) {
-      setResults([]);
-      return;
-    }
-
-    // Exact match or partial match
-    const foundKey = Object.keys(certificateMap).find((key) =>
-      key.toLowerCase().includes(roleKey)
-    );
-
-    if (foundKey) {
-      setResults(certificateMap[foundKey]);
-    } else {
-      setResults([]);
+  // Call your backend OpenAI proxy
+  const callOpenAI = async (prompt) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/openai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || 'No response';
+    } catch (err) {
+      return 'Error contacting OpenAI API';
     }
   };
 
-  const handleKeyPress = (e) => {
+  // Enter key handler: local search + AI
+  const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
+      // Local search
+      const role = inputRole.trim().toLowerCase();
+      let foundKey = null;
+      Object.keys(certificateMap).forEach((key) => {
+        if (role.includes(key)) foundKey = key;
+      });
+      if (foundKey) {
+        setResults(certificateMap[foundKey]);
+      } else {
+        setResults([]);
+      }
 
-  const handleButtonClick = (e) => {
-    e.preventDefault();
-    handleSearch();
-    console.log("Button Clicked")
+      // AI search
+      if (!inputRole.trim()) {
+        setAiResponse('Please enter a role to get AI suggestions.');
+        return;
+      }
+      setLoadingAI(true);
+      setAiResponse('');
+      const prompt = `Suggest top IT certifications for the role: ${inputRole}. List them with issuer and level if possible.`;
+      const result = await callOpenAI(prompt);
+      setAiResponse(result);
+      setLoadingAI(false);
+    }
   };
 
   return (
@@ -125,11 +99,9 @@ const CareerBoost = () => {
             onChange={(e) => setInputRole(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Search by role (e.g. Frontend Developer, Cloud Engineer)"
+            disabled={loadingAI}
           />
-          {/* <button className="search-bth" onClick={handleButtonClick}>
-            Find Certifications
-          </button>         */}
-</div>
+        </div>
       </div>
 
       {results.length > 0 ? (
@@ -151,6 +123,16 @@ const CareerBoost = () => {
         inputRole.trim() && (
           <p className="no-results">No certifications found for "{inputRole}"</p>
         )
+      )}
+
+      {/* AI Response Section */}
+      {aiResponse && (
+        <div className="results-section">
+          <h2>AI Suggested Certifications</h2>
+          <div style={{ whiteSpace: 'pre-line', background: '#f3f3f3', padding: '1rem', borderRadius: '8px' }}>
+            {loadingAI ? 'Loading AI suggestions...' : aiResponse}
+          </div>
+        </div>
       )}
 
       <div className="importance-section">

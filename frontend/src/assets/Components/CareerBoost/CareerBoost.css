@@ -42,7 +42,7 @@
 .search-container input {
   padding: 0.75rem;
   font-size: 1rem;
-  border: 2px solid #ffffff;
+  border: 2px solid;
   border-radius: 5px;
   width: 300px;
   transition: border-color 0.3s ease;
