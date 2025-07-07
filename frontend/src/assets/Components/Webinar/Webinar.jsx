@@ -47,9 +47,10 @@ export default function Webinar() {
    <div className="webinars-container">
      <div className="container">
        {/* Header */}
-       <div className="header">
-         <h1>LinkUp.AI Webinars</h1>
-       </div>
+       <div className="header-with-button">
+        <h1>LinkUp.AI Webinars</h1>
+        <button className="create-event-btn">Create Event</button>
+      </div>
 
 
 
