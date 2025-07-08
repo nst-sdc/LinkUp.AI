@@ -99,7 +99,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
           )}
         </li>
       </ul>
-      <div className="notification-top-right">💬</div>
+      <div className="notification-top-right"><Link to="/chat">💬</Link></div>
     </div>
   );
 };
