@@ -17,6 +17,7 @@ import BioGenerator from './assets/Components/BioGenerator/BioGenerator';
 import ResumeBuilder from './assets/Components/ResumeBuilder/ResumeBuilder';
 import Post from './assets/Components/Post/Post';
 import TeamForm from './assets/Components/hackathon/teamform';
+import Chat from './assets/Components/Chat/Chat'
 
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -64,6 +65,7 @@ function App() {
           <Route path="/resume-builder" element={<ResumeBuilder />} />
           <Route path="/home" element={<Home />} />
           <Route path="/teamform" element={<TeamForm />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/post" element={<Post profileData={profileData} onBack={() => window.history.back()} />} />
 
           {/* Auth Routes */}
