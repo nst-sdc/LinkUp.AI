@@ -18,7 +18,11 @@ export default function Home() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await fetch('https://newsapi.org/v2/everything?q=coding&language=en&sortBy=publishedAt&pageSize=12&apiKey=45e23b431f194cdbbf519e8363a3c211');
+        const res = await fetch('http://localhost:3000/tech-news?q=coding');
+        if (!res.ok) {
+          throw new Error(`News API error: ${res.status}`);
+        }
+        
         const json = await res.json();
         setData(json.articles);
       } catch (e) {
