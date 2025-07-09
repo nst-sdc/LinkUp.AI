@@ -266,3 +266,36 @@
    }
    
    
+
+   .header-with-button {
+    position: relative;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .header-with-button h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111827;
+  }
+  
+  .create-event-btn {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .create-event-btn:hover {
+    background-color: #5847dc;
+  }
+  

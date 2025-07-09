@@ -35,7 +35,6 @@ export default function Home() {
     getData();
   }, []);
 
-
   const features = [
     {
       icon: "https://img.icons8.com/?size=100&id=4BQ253NEFFli&format=png&color=000000",
@@ -197,7 +196,7 @@ export default function Home() {
                 <p>Loading latest news...</p>
               </div>
             ) : (
-              data.map((item, i) => (
+              (data || []).map((item, i) => (
                 <TechNewsCard
                   key={i}
                   title={item.title}

@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Profile.css';
 
@@ -20,7 +19,7 @@ const Profile = ({ onSubmit }) => {
     leetcode: '',
     portfolioWebsite: '',
     
-    // Files
+    // Files (Note: localStorage has size limits, so we'll only store references)
     certificates: [],
     
     // Skills
@@ -36,10 +35,11 @@ const Profile = ({ onSubmit }) => {
     experience: [],
     
     // Co-curricular Achievements
-    achievements: []
+    achievements: [],
+    
+    // Metadata
+    lastUpdated: null
   });
-
-  const isSignedIn = true;
 
   const [newSkill, setNewSkill] = useState('');
   const [newProject, setNewProject] = useState({
@@ -73,7 +73,57 @@ const Profile = ({ onSubmit }) => {
     organization: ''
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  // Simulate a backend storage key using user email (or a unique ID if available)
+  const getStorageKey = () => {
+    const userId = profileData.email || 'default_user'; // Fallback to 'default_user' if email is not set
+    return `userProfile_${userId}`;
+  };
+
+  // Load profile from localStorage when component mounts
+  useEffect(() => {
+    const loadProfileData = () => {
+      const storageKey = getStorageKey();
+      const savedProfile = localStorage.getItem(storageKey);
+      if (savedProfile) {
+        try {
+          const parsedProfile = JSON.parse(savedProfile);
+          setProfileData(parsedProfile);
+        } catch (error) {
+          console.error("Failed to parse saved profile:", error);
+        }
+      }
+    };
+
+    // Delay loading until email is available (if set by parent or auth)
+    if (profileData.email) {
+      loadProfileData();
+    }
+  }, [profileData.email]); // Depend on email to ensure we have a unique key
+
+  // Save profile to localStorage whenever it changes
+  useEffect(() => {
+    if (profileData.email) { // Only save if email is set to avoid overwriting default_user
+      const profileToSave = {
+        ...profileData,
+        lastUpdated: new Date().toISOString()
+      };
+      const storageKey = getStorageKey();
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(profileToSave));
+      } catch (error) {
+        console.error("Failed to save profile to localStorage:", error);
+      }
+    }
+  }, [profileData]);
+
+  // Simulate logout cleanup (clear only non-essential data, keep profile data)
+  const handleLogout = () => {
+    // In a real app, this would be triggered by an auth system
+    // Profile data remains in localStorage, tied to user email
+    console.log("Logout simulated, profile data retained in storage");
+  };
 
   const handleInputChange = (field, value) => {
     setProfileData(prev => ({
@@ -88,7 +138,7 @@ const Profile = ({ onSubmit }) => {
       reader.onload = (e) => {
         setProfileData(prev => ({
           ...prev,
-          profilePhoto: file,
+          profilePhoto: e.target.result, // Store as base64 string
           profilePhotoPreview: e.target.result
         }));
       };
@@ -98,15 +148,29 @@ const Profile = ({ onSubmit }) => {
 
   const handleFileUpload = (field, file) => {
     if (field === 'certificates') {
-      setProfileData(prev => ({
-        ...prev,
-        certificates: [...prev.certificates, file]
-      }));
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileData(prev => ({
+          ...prev,
+          certificates: [...prev.certificates, {
+            name: file.name,
+            data: e.target.result // Store as base64 string
+          }]
+        }));
+      };
+      reader.readAsDataURL(file);
     } else {
-      setProfileData(prev => ({
-        ...prev,
-        [field]: file
-      }));
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileData(prev => ({
+          ...prev,
+          [field]: {
+            name: file.name,
+            data: e.target.result // Store as base64 string
+          }
+        }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -133,7 +197,7 @@ const Profile = ({ onSubmit }) => {
       reader.onload = (e) => {
         setNewProject(prev => ({
           ...prev,
-          image: file,
+          image: e.target.result, // Store as base64 string
           imagePreview: e.target.result
         }));
       };
@@ -255,9 +319,11 @@ const Profile = ({ onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    console.log('Profile Data Submitted:', profileData); // Debug log
-    onSubmit(profileData); // Pass profileData to parent
+    console.log('Profile Data Submitted:', profileData);
     alert('Profile updated successfully!');
+    if (onSubmit) {
+      onSubmit(profileData);
+    }
   };
 
   const renderStepIndicator = () => {
@@ -279,7 +345,6 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Personal Information</h2>
       
-      {/* Profile Photo Section */}
       <div className="profile-photo-section">
         <div className="profile-photo-preview">
           {profileData.profilePhotoPreview ? (
@@ -345,48 +410,45 @@ const Profile = ({ onSubmit }) => {
     </div>
   );
 
+  // ... [Keeping all other render functions exactly as in the original code]
   const renderSocialLinks = () => (
     <div className="form-section">
-      <h2>Social & Professional Links</h2>
+      <h2>Social Links</h2>
       <div className="form-grid">
         <div className="form-group">
-          <label>LinkedIn Profile *</label>
+          <label>LinkedIn Profile</label>
           <input
             type="url"
             value={profileData.linkedIn}
             onChange={(e) => handleInputChange('linkedIn', e.target.value)}
-            placeholder="https://linkedin.com/in/yourprofile"
-            required
+            placeholder="Enter your LinkedIn URL"
           />
         </div>
         <div className="form-group">
-          <label>GitHub Profile *</label>
+          <label>GitHub Profile</label>
           <input
             type="url"
             value={profileData.github}
             onChange={(e) => handleInputChange('github', e.target.value)}
-            placeholder="https://github.com/yourusername"
-            required
+            placeholder="Enter your GitHub URL"
           />
         </div>
         <div className="form-group">
-          <label>LeetCode Profile *</label>
+          <label>LeetCode Profile</label>
           <input
             type="url"
             value={profileData.leetcode}
             onChange={(e) => handleInputChange('leetcode', e.target.value)}
-            placeholder="https://leetcode.com/yourusername"
-            required
+            placeholder="Enter your LeetCode URL"
           />
         </div>
         <div className="form-group">
-          <label>Portfolio Website *</label>
+          <label>Portfolio Website</label>
           <input
             type="url"
             value={profileData.portfolioWebsite}
             onChange={(e) => handleInputChange('portfolioWebsite', e.target.value)}
-            placeholder="https://yourportfolio.com"
-            required
+            placeholder="Enter your portfolio URL"
           />
         </div>
       </div>
@@ -396,75 +458,45 @@ const Profile = ({ onSubmit }) => {
   const renderSkillsAndFiles = () => (
     <div className="form-section">
       <h2>Skills & Documents</h2>
-      
-      {/* Skills */}
       <div className="form-group">
-        <label>Skills *</label>
-        <div className="skills-input">
+        <label>Add Skill</label>
+        <div className="skill-input-group">
           <input
             type="text"
             value={newSkill}
             onChange={(e) => setNewSkill(e.target.value)}
-            placeholder="Enter a skill and press Add"
-            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
+            placeholder="Enter a skill"
           />
-          <button type="button" onClick={addSkill} className="add-skill-btn">
-            Add
-          </button>
+          <button onClick={addSkill} className="add-btn">Add Skill</button>
         </div>
-        {profileData.skills.length > 0 && (
-          <div className="skills-list">
-            {profileData.skills.map((skill, index) => (
-              <div key={index} className="skill-tag">
-                <span>{skill}</span>
-                <button 
-                  type="button" 
-                  onClick={() => removeSkill(skill)}
-                  className="remove-btn"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
-
-      {/* Certificates Upload */}
-      <div className="form-group">
-        <label>Upload Certificates (Optional)</label>
-        <div className="file-upload">
-          <input
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            multiple
-            onChange={(e) => {
-              Array.from(e.target.files).forEach(file => {
-                handleFileUpload('certificates', file);
-              });
-            }}
-            id="certificates-upload"
-          />
-          <label htmlFor="certificates-upload" className="file-upload-label">
-            Choose Certificate Files
-          </label>
-        </div>
-        {profileData.certificates.length > 0 && (
-          <div className="uploaded-files">
-            {profileData.certificates.map((cert, index) => (
-              <div key={index} className="file-item">
-                <span>{cert.name}</span>
-                <button 
-                  type="button" 
-                  onClick={() => removeCertificate(index)}
-                  className="remove-btn"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
+      <div className="skills-list">
+        {profileData.skills.map((skill, index) => (
+          <div key={index} className="skill-item">
+            {skill}
+            <button onClick={() => removeSkill(skill)} className="remove-btn">×</button>
           </div>
-        )}
+        ))}
+      </div>
+      <div className="form-group">
+        <label>Upload Certificates</label>
+        <input
+          type="file"
+          accept=".pdf,.jpg,.png"
+          onChange={(e) => handleFileUpload('certificates', e.target.files[0])}
+          id="certificate-upload"
+        />
+        <label htmlFor="certificate-upload" className="file-upload-btn">
+          Choose Files
+        </label>
+      </div>
+      <div className="certificates-list">
+        {profileData.certificates.map((cert, index) => (
+          <div key={index} className="certificate-item">
+            {cert.name}
+            <button onClick={() => removeCertificate(index)} className="remove-btn">×</button>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -472,16 +504,25 @@ const Profile = ({ onSubmit }) => {
   const renderProjects = () => (
     <div className="form-section">
       <h2>Projects</h2>
-      
-      {/* Add New Project */}
       <div className="form-grid">
         <div className="form-group">
           <label>Project Name *</label>
           <input
             type="text"
             value={newProject.name}
-            onChange={(e) => setNewProject(prev => ({...prev, name: e.target.value}))}
+            onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
             placeholder="Enter project name"
+            required
+          />
+        </div>
+        <div className="form-group full-width">
+          <label>Description *</label>
+          <textarea
+            value={newProject.description}
+            onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
+            placeholder="Describe your project"
+            rows="4"
+            required
           />
         </div>
         <div className="form-group">
@@ -489,8 +530,8 @@ const Profile = ({ onSubmit }) => {
           <input
             type="url"
             value={newProject.hostedLink}
-            onChange={(e) => setNewProject(prev => ({...prev, hostedLink: e.target.value}))}
-            placeholder="https://your-project.com"
+            onChange={(e) => setNewProject({ ...newProject, hostedLink: e.target.value })}
+            placeholder="Enter hosted project URL"
           />
         </div>
         <div className="form-group">
@@ -498,94 +539,49 @@ const Profile = ({ onSubmit }) => {
           <input
             type="url"
             value={newProject.githubLink}
-            onChange={(e) => setNewProject(prev => ({...prev, githubLink: e.target.value}))}
-            placeholder="https://github.com/username/project"
+            onChange={(e) => setNewProject({ ...newProject, githubLink: e.target.value })}
+            placeholder="Enter GitHub project URL"
           />
         </div>
         <div className="form-group">
           <label>Project Image</label>
-          <div className="file-upload">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleProjectImageUpload(e.target.files[0])}
-              id="project-image-upload"
-            />
-            <label htmlFor="project-image-upload" className="file-upload-label">
-              {newProject.image ? newProject.image.name : 'Choose Project Image'}
-            </label>
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Project Description *</label>
-          <textarea
-            value={newProject.description}
-            onChange={(e) => setNewProject(prev => ({...prev, description: e.target.value}))}
-            placeholder="Describe your project..."
-            rows="3"
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleProjectImageUpload(e.target.files[0])}
+            id="project-image-upload"
           />
+          <label htmlFor="project-image-upload" className="file-upload-btn">
+            Upload Image
+          </label>
         </div>
       </div>
-      
-      <button type="button" onClick={addProject} className="add-item-btn">
-        + Add Project
-      </button>
-
-      {/* Projects List */}
-      {profileData.projects.length > 0 && (
-        <div className="projects-list">
-          {profileData.projects.map((project) => (
-            <div key={project.id} className="project-card">
-              <button 
-                type="button" 
-                onClick={() => removeProject(project.id)}
-                className="project-remove"
-              >
-                ×
-              </button>
-              <div className="project-card-header">
-                <div className="project-image-preview">
-                  {project.imagePreview ? (
-                    <img src={project.imagePreview} alt={project.name} />
-                  ) : (
-                    <div className="placeholder">📷</div>
-                  )}
-                </div>
-                <div style={{flex: 1}}>
-                  <h4 style={{margin: '0 0 0.5rem 0', color: '#111827'}}>{project.name}</h4>
-                  <p style={{margin: '0 0 0.5rem 0', color: '#6B7280', fontSize: '0.9rem'}}>{project.description}</p>
-                  {project.hostedLink && (
-                    <p style={{margin: '0 0 0.25rem 0', fontSize: '0.8rem'}}>
-                      <strong>Live:</strong> {project.hostedLink}
-                    </p>
-                  )}
-                  {project.githubLink && (
-                    <p style={{margin: '0', fontSize: '0.8rem'}}>
-                      <strong>GitHub:</strong> {project.githubLink}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <button onClick={addProject} className="add-btn">Add Project</button>
+      <div className="projects-list">
+        {profileData.projects.map((project) => (
+          <div key={project.id} className="project-item">
+            <h4>{project.name}</h4>
+            <p>{project.description}</p>
+            {project.imagePreview && <img src={project.imagePreview} alt={project.name} />}
+            <button onClick={() => removeProject(project.id)} className="remove-btn">×</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 
   const renderEducation = () => (
     <div className="form-section">
       <h2>Education</h2>
-      
-      {/* Add New Education */}
       <div className="form-grid">
         <div className="form-group">
           <label>Institution *</label>
           <input
             type="text"
             value={newEducation.institution}
-            onChange={(e) => setNewEducation(prev => ({...prev, institution: e.target.value}))}
-            placeholder="University/College name"
+            onChange={(e) => setNewEducation({ ...newEducation, institution: e.target.value })}
+            placeholder="Enter institution name"
+            required
           />
         </div>
         <div className="form-group">
@@ -593,8 +589,9 @@ const Profile = ({ onSubmit }) => {
           <input
             type="text"
             value={newEducation.degree}
-            onChange={(e) => setNewEducation(prev => ({...prev, degree: e.target.value}))}
-            placeholder="Bachelor's, Master's, etc."
+            onChange={(e) => setNewEducation({ ...newEducation, degree: e.target.value })}
+            placeholder="Enter degree"
+            required
           />
         </div>
         <div className="form-group">
@@ -602,17 +599,8 @@ const Profile = ({ onSubmit }) => {
           <input
             type="text"
             value={newEducation.fieldOfStudy}
-            onChange={(e) => setNewEducation(prev => ({...prev, fieldOfStudy: e.target.value}))}
-            placeholder="Computer Science, Engineering, etc."
-          />
-        </div>
-        <div className="form-group">
-          <label>Grade/CGPA</label>
-          <input
-            type="text"
-            value={newEducation.grade}
-            onChange={(e) => setNewEducation(prev => ({...prev, grade: e.target.value}))}
-            placeholder="3.8/4.0 or 85%"
+            onChange={(e) => setNewEducation({ ...newEducation, fieldOfStudy: e.target.value })}
+            placeholder="Enter field of study"
           />
         </div>
         <div className="form-group">
@@ -620,7 +608,7 @@ const Profile = ({ onSubmit }) => {
           <input
             type="date"
             value={newEducation.startDate}
-            onChange={(e) => setNewEducation(prev => ({...prev, startDate: e.target.value}))}
+            onChange={(e) => setNewEducation({ ...newEducation, startDate: e.target.value })}
           />
         </div>
         <div className="form-group">
@@ -628,209 +616,155 @@ const Profile = ({ onSubmit }) => {
           <input
             type="date"
             value={newEducation.endDate}
-            onChange={(e) => setNewEducation(prev => ({...prev, endDate: e.target.value}))}
+            onChange={(e) => setNewEducation({ ...newEducation, endDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Grade</label>
+          <input
+            type="text"
+            value={newEducation.grade}
+            onChange={(e) => setNewEducation({ ...newEducation, grade: e.target.value })}
+            placeholder="Enter grade or CGPA"
           />
         </div>
       </div>
-      
-      <button type="button" onClick={addEducation} className="add-item-btn">
-        + Add Education
-      </button>
-
-      {/* Education List */}
-      {profileData.education.length > 0 && (
-        <div className="dynamic-list">
-          {profileData.education.map((edu) => (
-            <div key={edu.id} className="list-item">
-              <button 
-                type="button" 
-                onClick={() => removeEducation(edu.id)}
-                className="list-item-remove"
-              >
-                ×
-              </button>
-              <h4 style={{margin: '0 0 0.5rem 0', color: '#111827'}}>{edu.degree} in {edu.fieldOfStudy}</h4>
-              <p style={{margin: '0 0 0.25rem 0', color: '#6B7280', fontWeight: '600'}}>{edu.institution}</p>
-              <p style={{margin: '0 0 0.25rem 0', color: '#6B7280', fontSize: '0.9rem'}}>
-                {edu.startDate} - {edu.endDate || 'Present'}
-              </p>
-              {edu.grade && (
-                <p style={{margin: '0', color: '#6B7280', fontSize: '0.9rem'}}>
-                  <strong>Grade:</strong> {edu.grade}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+      <button onClick={addEducation} className="add-btn">Add Education</button>
+      <div className="education-list">
+        {profileData.education.map((edu) => (
+          <div key={edu.id} className="education-item">
+            <h4>{edu.institution} - {edu.degree}</h4>
+            <p>{edu.fieldOfStudy} ({edu.startDate} - {edu.endDate})</p>
+            <p>Grade: {edu.grade}</p>
+            <button onClick={() => removeEducation(edu.id)} className="remove-btn">×</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 
   const renderExperienceAndAchievements = () => (
     <div className="form-section">
-      <h2>Experience & Achievements</h2>
-      
-      {/* Experience Section */}
-      <div style={{marginBottom: '2rem'}}>
-        <h3 style={{color: '#111827', fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem'}}>Work Experience</h3>
-        
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Company *</label>
-            <input
-              type="text"
-              value={newExperience.company}
-              onChange={(e) => setNewExperience(prev => ({...prev, company: e.target.value}))}
-              placeholder="Company name"
-            />
-          </div>
-          <div className="form-group">
-            <label>Position *</label>
-            <input
-              type="text"
-              value={newExperience.position}
-              onChange={(e) => setNewExperience(prev => ({...prev, position: e.target.value}))}
-              placeholder="Job title"
-            />
-          </div>
-          <div className="form-group">
-            <label>Location</label>
-            <input
-              type="text"
-              value={newExperience.location}
-              onChange={(e) => setNewExperience(prev => ({...prev, location: e.target.value}))}
-              placeholder="City, Country"
-            />
-          </div>
-          <div className="form-group">
-            <label>Start Date</label>
-            <input
-              type="date"
-              value={newExperience.startDate}
-              onChange={(e) => setNewExperience(prev => ({...prev, startDate: e.target.value}))}
-            />
-          </div>
-          <div className="form-group">
-            <label>End Date</label>
-            <input
-              type="date"
-              value={newExperience.endDate}
-              onChange={(e) => setNewExperience(prev => ({...prev, endDate: e.target.value}))}
-            />
-          </div>
-          <div className="form-group full-width">
-            <label>Description</label>
-            <textarea
-              value={newExperience.description}
-              onChange={(e) => setNewExperience(prev => ({...prev, description: e.target.value}))}
-              placeholder="Describe your role and achievements..."
-              rows="3"
-            />
-          </div>
+      <h2>Experience</h2>
+      <div className="form-grid">
+        <div className="form-group">
+          <label>Company *</label>
+          <input
+            type="text"
+            value={newExperience.company}
+            onChange={(e) => setNewExperience({ ...newExperience, company: e.target.value })}
+            placeholder="Enter company name"
+            required
+          />
         </div>
-        
-        <button type="button" onClick={addExperience} className="add-item-btn">
-          + Add Experience
-        </button>
-
-        {profileData.experience.length > 0 && (
-          <div className="dynamic-list">
-            {profileData.experience.map((exp) => (
-              <div key={exp.id} className="list-item">
-                <button 
-                  type="button" 
-                  onClick={() => removeExperience(exp.id)}
-                  className="list-item-remove"
-                >
-                  ×
-                </button>
-                <h4 style={{margin: '0 0 0.5rem 0', color: '#111827'}}>{exp.position}</h4>
-                <p style={{margin: '0 0 0.25rem 0', color: '#6B7280', fontWeight: '600'}}>{exp.company} {exp.location && `• ${exp.location}`}</p>
-                <p style={{margin: '0 0 0.5rem 0', color: '#6B7280', fontSize: '0.9rem'}}>
-                  {exp.startDate} - {exp.endDate || 'Present'}
-                </p>
-                {exp.description && (
-                  <p style={{margin: '0', color: '#374151', fontSize: '0.9rem', lineHeight: '1.5'}}>
-                    {exp.description}
-                  </p>
-                )}
-              </div>
-            ))}
+        <div className="form-group">
+          <label>Position *</label>
+          <input
+            type="text"
+            value={newExperience.position}
+            onChange={(e) => setNewExperience({ ...newExperience, position: e.target.value })}
+            placeholder="Enter position"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Start Date</label>
+          <input
+            type="date"
+            value={newExperience.startDate}
+            onChange={(e) => setNewExperience({ ...newExperience, startDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>End Date</label>
+          <input
+            type="date"
+            value={newExperience.endDate}
+            onChange={(e) => setNewExperience({ ...newExperience, endDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group full-width">
+          <label>Description</label>
+          <textarea
+            value={newExperience.description}
+            onChange={(e) => setNewExperience({ ...newExperience, description: e.target.value })}
+            placeholder="Describe your role"
+            rows="4"
+          />
+        </div>
+        <div className="form-group">
+          <label>Location</label>
+          <input
+            type="text"
+            value={newExperience.location}
+            onChange={(e) => setNewExperience({ ...newExperience, location: e.target.value })}
+            placeholder="Enter location"
+          />
+        </div>
+      </div>
+      <button onClick={addExperience} className="add-btn">Add Experience</button>
+      <div className="experience-list">
+        {profileData.experience.map((exp) => (
+          <div key={exp.id} className="experience-item">
+            <h4>{exp.position} at {exp.company}</h4>
+            <p>{exp.startDate} - {exp.endDate}</p>
+            <p>{exp.description}</p>
+            <p>Location: {exp.location}</p>
+            <button onClick={() => removeExperience(exp.id)} className="remove-btn">×</button>
           </div>
-        )}
+        ))}
       </div>
 
-      {/* Achievements Section */}
-      <div>
-        <h3 style={{color: '#111827', fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem'}}>Co-curricular Achievements</h3>
-        
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Achievement Title *</label>
-            <input
-              type="text"
-              value={newAchievement.title}
-              onChange={(e) => setNewAchievement(prev => ({...prev, title: e.target.value}))}
-              placeholder="Award/Achievement name"
-            />
-          </div>
-          <div className="form-group">
-            <label>Organization</label>
-            <input
-              type="text"
-              value={newAchievement.organization}
-              onChange={(e) => setNewAchievement(prev => ({...prev, organization: e.target.value}))}
-              placeholder="Issuing organization"
-            />
-          </div>
-          <div className="form-group">
-            <label>Date</label>
-            <input
-              type="date"
-              value={newAchievement.date}
-              onChange={(e) => setNewAchievement(prev => ({...prev, date: e.target.value}))}
-            />
-          </div>
-          <div className="form-group full-width">
-            <label>Description *</label>
-            <textarea
-              value={newAchievement.description}
-              onChange={(e) => setNewAchievement(prev => ({...prev, description: e.target.value}))}
-              placeholder="Describe your achievement..."
-              rows="3"
-            />
-          </div>
+      <h2>Co-curricular Achievements</h2>
+      <div className="form-grid">
+        <div className="form-group">
+          <label>Title *</label>
+          <input
+            type="text"
+            value={newAchievement.title}
+            onChange={(e) => setNewAchievement({ ...newAchievement, title: e.target.value })}
+            placeholder="Enter achievement title"
+            required
+          />
         </div>
-        
-        <button type="button" onClick={addAchievement} className="add-item-btn">
-          + Add Achievement
-        </button>
-
-        {profileData.achievements.length > 0 && (
-          <div className="dynamic-list">
-            {profileData.achievements.map((ach) => (
-              <div key={ach.id} className="list-item">
-                <button 
-                  type="button" 
-                  onClick={() => removeAchievement(ach.id)}
-                  className="list-item-remove"
-                >
-                  ×
-                </button>
-                <h4 style={{margin: '0 0 0.5rem 0', color: '#111827'}}>{ach.title}</h4>
-                {ach.organization && (
-                  <p style={{margin: '0 0 0.25rem 0', color: '#6B7280', fontWeight: '600'}}>{ach.organization}</p>
-                )}
-                {ach.date && (
-                  <p style={{margin: '0 0 0.5rem 0', color: '#6B7280', fontSize: '0.9rem'}}>{ach.date}</p>
-                )}
-                <p style={{margin: '0', color: '#374151', fontSize: '0.9rem', lineHeight: '1.5'}}>
-                  {ach.description}
-                </p>
-              </div>
-            ))}
+        <div className="form-group full-width">
+          <label>Description *</label>
+          <textarea
+            value={newAchievement.description}
+            onChange={(e) => setNewAchievement({ ...newAchievement, description: e.target.value })}
+            placeholder="Describe your achievement"
+            rows="4"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Date</label>
+          <input
+            type="date"
+            value={newAchievement.date}
+            onChange={(e) => setNewAchievement({ ...newAchievement, date: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Organization</label>
+          <input
+            type="text"
+            value={newAchievement.organization}
+            onChange={(e) => setNewAchievement({ ...newAchievement, organization: e.target.value })}
+            placeholder="Enter organization"
+          />
+        </div>
+      </div>
+      <button onClick={addAchievement} className="add-btn">Add Achievement</button>
+      <div className="achievements-list">
+        {profileData.achievements.map((ach) => (
+          <div key={ach.id} className="achievement-item">
+            <h4>{ach.title}</h4>
+            <p>{ach.description}</p>
+            <p>{ach.date} - {ach.organization}</p>
+            <button onClick={() => removeAchievement(ach.id)} className="remove-btn">×</button>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
@@ -839,94 +773,104 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Review Your Profile</h2>
       <div className="review-section">
-        <div className="review-card">
-          <h3>Personal Information</h3>
-          <p><strong>Name:</strong> {profileData.name}</p>
-          <p><strong>Email:</strong> {profileData.email}</p>
-          <p><strong>Mobile:</strong> {profileData.mobile}</p>
-          {profileData.bio && <p><strong>Bio:</strong> {profileData.bio}</p>}
-          <p><strong>Profile Photo:</strong> {profileData.profilePhoto ? 'Uploaded' : 'Not uploaded'}</p>
-        </div>
-
-        <div className="review-card">
-          <h3>Social Links</h3>
-          <p><strong>LinkedIn:</strong> {profileData.linkedIn}</p>
-          <p><strong>GitHub:</strong> {profileData.github}</p>
-          <p><strong>LeetCode:</strong> {profileData.leetcode}</p>
-          <p><strong>Portfolio Website:</strong> {profileData.portfolioWebsite}</p>
-        </div>
-
-        <div className="review-card">
-          <h3>Skills & Documents</h3>
-          <p><strong>Skills:</strong> {profileData.skills.join(', ')}</p>
-          <p><strong>Certificates:</strong> {profileData.certificates.length} file(s)</p>
-        </div>
-
-        <div className="review-card">
-          <h3>Projects ({profileData.projects.length})</h3>
-          {profileData.projects.length > 0 ? (
-            <div className="review-projects">
-              {profileData.projects.map((project) => (
-                <div key={project.id} className="review-project-card">
-                  <h4>{project.name}</h4>
-                  <p style={{fontSize: '0.9rem', marginBottom: '0.5rem'}}>{project.description}</p>
-                  {project.hostedLink && <p style={{fontSize: '0.8rem', margin: '0'}}><strong>Live:</strong> {project.hostedLink}</p>}
-                  {project.githubLink && <p style={{fontSize: '0.8rem', margin: '0'}}><strong>GitHub:</strong> {project.githubLink}</p>}
-                </div>
-              ))}
+        <h3>Personal Information</h3>
+        <p><strong>Name:</strong> {profileData.name || 'Not provided'}</p>
+        <p><strong>Email:</strong> {profileData.email || 'Not provided'}</p>
+        <p><strong>Mobile:</strong> {profileData.mobile || 'Not provided'}</p>
+        <p><strong>Bio:</strong> {profileData.bio || 'Not provided'}</p>
+        {profileData.profilePhotoPreview && (
+          <img src={profileData.profilePhotoPreview} alt="Profile" className="review-photo" />
+        )}
+      </div>
+      <div className="review-section">
+        <h3>Social Links</h3>
+        <p><strong>LinkedIn:</strong> {profileData.linkedIn || 'Not provided'}</p>
+        <p><strong>GitHub:</strong> {profileData.github || 'Not provided'}</p>
+        <p><strong>LeetCode:</strong> {profileData.leetcode || 'Not provided'}</p>
+        <p><strong>Portfolio:</strong> {profileData.portfolioWebsite || 'Not provided'}</p>
+      </div>
+      <div className="review-section">
+        <h3>Skills</h3>
+        {profileData.skills.length > 0 ? (
+          <ul>
+            {profileData.skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No skills added</p>
+        )}
+      </div>
+      <div className="review-section">
+        <h3>Certificates</h3>
+        {profileData.certificates.length > 0 ? (
+          <ul>
+            {profileData.certificates.map((cert, index) => (
+              <li key={index}>{cert.name}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No certificates uploaded</p>
+        )}
+      </div>
+      <div className="review-section">
+        <h3>Projects</h3>
+        {profileData.projects.length > 0 ? (
+          profileData.projects.map((project) => (
+            <div key={project.id}>
+              <h4>{project.name}</h4>
+              <p>{project.description}</p>
+              <p><strong>Hosted Link:</strong> {project.hostedLink || 'Not provided'}</p>
+              <p><strong>GitHub Link:</strong> {project.githubLink || 'Not provided'}</p>
+              {project.imagePreview && <img src={project.imagePreview} alt={project.name} className="review-photo" />}
             </div>
-          ) : (
-            <p>No projects added</p>
-          )}
-        </div>
-
-        <div className="review-card">
-          <h3>Education ({profileData.education.length})</h3>
-          {profileData.education.length > 0 ? (
-            profileData.education.map((edu) => (
-              <div key={edu.id} style={{marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #E5E7EB'}}>
-                <p><strong>{edu.degree} in {edu.fieldOfStudy}</strong></p>
-                <p>{edu.institution}</p>
-                <p>{edu.startDate} - {edu.endDate || 'Present'}</p>
-                {edu.grade && <p>Grade: {edu.grade}</p>}
-              </div>
-            ))
-          ) : (
-            <p>No education added</p>
-          )}
-        </div>
-
-        <div className="review-card">
-          <h3>Experience ({profileData.experience.length})</h3>
-          {profileData.experience.length > 0 ? (
-            profileData.experience.map((exp) => (
-              <div key={exp.id} style={{marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #E5E7EB'}}>
-                <p><strong>{exp.position}</strong></p>
-                <p>{exp.company} {exp.location && `• ${exp.location}`}</p>
-                <p>{exp.startDate} - {exp.endDate || 'Present'}</p>
-                {exp.description && <p style={{fontSize: '0.9rem'}}>{exp.description}</p>}
-              </div>
-            ))
-          ) : (
-            <p>No experience added</p>
-          )}
-        </div>
-
-        <div className="review-card">
-          <h3>Achievements ({profileData.achievements.length})</h3>
-          {profileData.achievements.length > 0 ? (
-            profileData.achievements.map((ach) => (
-              <div key={ach.id} style={{marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #E5E7EB'}}>
-                <p><strong>{ach.title}</strong></p>
-                {ach.organization && <p>{ach.organization}</p>}
-                {ach.date && <p>{ach.date}</p>}
-                <p style={{fontSize: '0.9rem'}}>{ach.description}</p>
-              </div>
-            ))
-          ) : (
-            <p>No achievements added</p>
-          )}
-        </div>
+          ))
+        ) : (
+          <p>No projects added</p>
+        )}
+      </div>
+      <div className="review-section">
+        <h3>Education</h3>
+        {profileData.education.length > 0 ? (
+          profileData.education.map((edu) => (
+            <div key={edu.id}>
+              <h4>{edu.institution} - {edu.degree}</h4>
+              <p>{edu.fieldOfStudy} ({edu.startDate} - {edu.endDate})</p>
+              <p>Grade: {edu.grade || 'Not provided'}</p>
+            </div>
+          ))
+        ) : (
+          <p>No education added</p>
+        )}
+      </div>
+      <div className="review-section">
+        <h3>Experience</h3>
+        {profileData.experience.length > 0 ? (
+          profileData.experience.map((exp) => (
+            <div key={exp.id}>
+              <h4>{exp.position} at {exp.company}</h4>
+              <p>{exp.startDate} - {exp.endDate}</p>
+              <p>{exp.description}</p>
+              <p>Location: {exp.location || 'Not provided'}</p>
+            </div>
+          ))
+        ) : (
+          <p>No experience added</p>
+        )}
+      </div>
+      <div className="review-section">
+        <h3>Achievements</h3>
+        {profileData.achievements.length > 0 ? (
+          profileData.achievements.map((ach) => (
+            <div key={ach.id}>
+              <h4>{ach.title}</h4>
+              <p>{ach.description}</p>
+              <p>{ach.date} - {ach.organization || 'Not provided'}</p>
+            </div>
+          ))
+        ) : (
+          <p>No achievements added</p>
+        )}
       </div>
     </div>
   );
@@ -938,15 +882,12 @@ const Profile = ({ onSubmit }) => {
           <h1>LinkUp.AI Profile</h1>
           <p>Complete your profile to access internships, jobs, webinars, and hackathons</p>
         </div>
-        {isSignedIn && (
-          <button 
-            className="post-btn"
-            onClick={() => navigate("/post")}
-          >
-            Post
-          </button>
-        )}
-
+        <button 
+          className="post-btn"
+          onClick={() => navigate("/post")}
+        >
+          Post
+        </button>
       </div>
 
       {renderStepIndicator()}

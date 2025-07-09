@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Webinar.css';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Webinar() {
  const [activeTab, setActiveTab] = useState('live');
@@ -42,14 +42,17 @@ export default function Webinar() {
    }
  ];
 
+ const navigate = useNavigate();
+
 
  return (
    <div className="webinars-container">
      <div className="container">
        {/* Header */}
-       <div className="header">
-         <h1>LinkUp.AI Webinars</h1>
-       </div>
+       <div className="header-with-button">
+        <h1>LinkUp.AI Webinars</h1>
+        <button className="create-event-btn" onClick={() => navigate('/Eventform')}>Create Event</button>
+      </div>
 
 
 
@@ -104,12 +107,7 @@ export default function Webinar() {
 
 
                <div className="register-section">
-                 <button
-                   onClick={() => handleRegister(webinar.title)}
-                   className="register-btn"
-                 >
-                   REGISTER
-                 </button>
+                 <button onClick={() => handleRegister(webinar.title)} className="register-btn"> REGISTE </button>
                </div>
              </div>
            </div>

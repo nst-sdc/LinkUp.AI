@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
@@ -86,8 +85,6 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
           )}
         </li>
 
-        <li>Notifications</li>
-
         <li className="auth-buttons">
           {isSignedIn ? (
             <div className="auth-buttons">
@@ -102,6 +99,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn, profileData }) => {
           )}
         </li>
       </ul>
+      <div className="notification-top-right"><Link to="/chat">💬</Link></div>
     </div>
   );
 };
