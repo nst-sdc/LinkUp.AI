@@ -2,6 +2,9 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+require("dotenv").config(); 
+const axios = require("axios");
+
 
 const app = express();
 const server = http.createServer(app);
@@ -59,6 +62,20 @@ io.on('connection', (socket) => {
     }
     console.log(`Client disconnected: ${socket.id}`);
   });
+});
+
+app.get("/tech-news", async (req, res) => {
+  const query = req.query.q || "technology";
+
+  try {
+    const response = await axios.get(
+      `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=${process.env.NEWS_API_KEY}`
+    );
+    res.json(response.data);
+  } catch (err) {
+    console.error("Error fetching tech news:", err.message);
+    res.status(500).json({ error: "Failed to fetch tech news" });
+  }
 });
 
 const PORT = process.env.PORT || 4000;
