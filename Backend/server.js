@@ -1,3 +1,5 @@
+require("dotenv").config();
+const axios = require("axios");
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -102,8 +104,33 @@ socket.on('request users', () => {
   socket.emit('user list', userList);
 });
 });
+app.get("/tech-news", async (req, res) => {
+  const query = req.query.q || "technology";
+
 
 const PORT = 4000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+  try {
+    const response = await axios.get(
+      `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=${process.env.NEWS_API_KEY}`
+    );
+    res.json(response.data);
+  } catch (err) {
+    console.error("Error fetching tech news:", err.message);
+    res.status(500).json({ error: "Failed to fetch tech news" });
+  }
+});
+const PORT = process.env.PORT || 4000;
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
+
+
