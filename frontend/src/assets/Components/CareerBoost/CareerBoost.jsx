@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import certificateMap from '../../../data/certificateMap';
 import './CareerBoost.css';
 
-// Dummy data for popular certifications (keep your existing data here)
 const popularCertifications = [
   { title: 'AWS Certified Solutions Architect', category: 'Cloud', issuer: 'Amazon' },
   { title: 'Certified Kubernetes Administrator', category: 'DevOps', issuer: 'CNCF' },
@@ -10,77 +10,53 @@ const popularCertifications = [
   { title: 'Google Associate Cloud Engineer', category: 'Cloud', issuer: 'Google' },
 ];
 
-// Dummy map for local search (keep your existing data here)
-const certificateMap = {
-  'frontend developer': [
-    { title: 'Certified Front End Developer', issuer: 'W3C', level: 'Beginner' },
-    { title: 'React Developer Certification', issuer: 'Meta', level: 'Intermediate' },
-    { title: 'Google Mobile Web Specialist', issuer: 'Google', level: 'Intermediate' },
-  ],
-  'cloud engineer': [
-    { title: 'AWS Certified Solutions Architect', issuer: 'Amazon', level: 'Intermediate' },
-    { title: 'Google Associate Cloud Engineer', issuer: 'Google', level: 'Beginner' },
-    { title: 'Microsoft Certified: Azure Fundamentals', issuer: 'Microsoft', level: 'Beginner' },
-  ],
-  'devops': [
-    { title: 'Certified Kubernetes Administrator', issuer: 'CNCF', level: 'Intermediate' },
-    { title: 'AWS Certified DevOps Engineer', issuer: 'Amazon', level: 'Advanced' },
-    { title: 'Docker Certified Associate', issuer: 'Docker', level: 'Intermediate' },
-  ],
-  'security': [
-    { title: 'CompTIA Security+', issuer: 'CompTIA', level: 'Beginner' },
-    { title: 'Certified Ethical Hacker', issuer: 'EC-Council', level: 'Intermediate' },
-    { title: 'CISSP', issuer: 'ISC2', level: 'Advanced' },
-  ],
-};
-
 const CareerBoost = () => {
   const [inputRole, setInputRole] = useState('');
   const [results, setResults] = useState([]);
-  const [aiResponse, setAiResponse] = useState('');
-  const [loadingAI, setLoadingAI] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
-  // Call your backend OpenAI proxy
-  const callOpenAI = async (prompt) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/openai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
-      });
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || 'No response';
-    } catch (err) {
-      return 'Error contacting OpenAI API';
+  const performSearch = (value) => {
+    const role = value.trim().toLowerCase();
+    let foundKey = null;
+    Object.keys(certificateMap).forEach((key) => {
+      if (role.includes(key)) foundKey = key;
+    });
+
+    if (foundKey) {
+      setResults(certificateMap[foundKey]);
+    } else {
+      setResults([]);
     }
   };
 
-  // Enter key handler: local search + AI
-  const handleKeyPress = async (e) => {
-    if (e.key === 'Enter') {
-      // Local search
-      const role = inputRole.trim().toLowerCase();
-      let foundKey = null;
-      Object.keys(certificateMap).forEach((key) => {
-        if (role.includes(key)) foundKey = key;
-      });
-      if (foundKey) {
-        setResults(certificateMap[foundKey]);
-      } else {
-        setResults([]);
-      }
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInputRole(value);
 
-      // AI search
-      if (!inputRole.trim()) {
-        setAiResponse('Please enter a role to get AI suggestions.');
-        return;
-      }
-      setLoadingAI(true);
-      setAiResponse('');
-      const prompt = `Suggest top IT certifications for the role: ${inputRole}. List them with issuer and level if possible.`;
-      const result = await callOpenAI(prompt);
-      setAiResponse(result);
-      setLoadingAI(false);
+    if (value.trim() === '') {
+      setResults([]);
+      setSuggestions([]);
+      return;
+    }
+
+    const matches = Object.keys(certificateMap).filter((role) =>
+      role.toLowerCase().includes(value.toLowerCase())
+    );
+    setSuggestions(matches);
+
+    performSearch(value);
+  };
+
+  const handleSuggestionClick = (role) => {
+    setInputRole(role);
+    setSuggestions([]);
+    performSearch(role);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setSuggestions([]);
+      performSearch(inputRole);
     }
   };
 
@@ -96,11 +72,19 @@ const CareerBoost = () => {
             type="text"
             value={inputRole}
             id="search-bar"
-            onChange={(e) => setInputRole(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             placeholder="Search by role (e.g. Frontend Developer, Cloud Engineer)"
-            disabled={loadingAI}
           />
+          {suggestions.length > 0 && (
+            <ul className="suggestions-dropdown">
+              {suggestions.map((role, index) => (
+                <li key={index} onClick={() => handleSuggestionClick(role)}>
+                  {role}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
@@ -109,10 +93,11 @@ const CareerBoost = () => {
           <h2>Recommended Certifications for {inputRole}</h2>
           <div className="certificate-grid">
             {results.map((cert, index) => (
-              <div key={index} className="certificate-card">
+              <div key={index} className="certificate-card search-result">
+                <img src={cert.image || 'https://cdn-icons-png.flaticon.com/512/1161/1161753.png'} alt={cert.title} />
                 <h3>{cert.title}</h3>
                 <p className="issuer">Issued by: {cert.issuer}</p>
-                <span className={`level ${cert.level.toLowerCase()}`}>
+                <span className={`level-badge ${cert.level.toLowerCase()}`}>
                   {cert.level}
                 </span>
               </div>
@@ -123,16 +108,6 @@ const CareerBoost = () => {
         inputRole.trim() && (
           <p className="no-results">No certifications found for "{inputRole}"</p>
         )
-      )}
-
-      {/* AI Response Section */}
-      {aiResponse && (
-        <div className="results-section">
-          <h2>AI Suggested Certifications</h2>
-          <div style={{ whiteSpace: 'pre-line', background: '#f3f3f3', padding: '1rem', borderRadius: '8px' }}>
-            {loadingAI ? 'Loading AI suggestions...' : aiResponse}
-          </div>
-        </div>
       )}
 
       <div className="importance-section">
