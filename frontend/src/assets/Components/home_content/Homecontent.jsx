@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await fetch('/api/news?q=coding');
+        const res = await fetch('http://localhost:4000/tech-news?q=coding');
         if (!res.ok) {
           throw new Error(`News API error: ${res.status}`);
         }
@@ -29,10 +29,10 @@ export default function Home() {
       }
       setLoading(false);
     };
-
-
+  
     getData();
   }, []);
+
 
 
   const features = [
