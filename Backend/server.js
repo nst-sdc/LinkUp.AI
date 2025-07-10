@@ -6,26 +6,31 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 
-// Configure CORS for Socket.IO
+
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173", // Change to your frontend URL
+    origin: "http://localhost:5173", 
     methods: ["GET", "POST"]
   }
 });
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 
-// Store active users
+
 const users = {};
 
-// Socket.IO connection handler
+
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
 
-  // Handle new user joining
+
+  socket.on("private-messaging",(dd)=>{
+    
+  })
+
+
   socket.on('join', (username) => {
     users[socket.id] = username;
     io.emit('userList', Object.values(users));
@@ -36,7 +41,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Handle incoming messages
+  
   socket.on('sendMessage', (message) => {
     io.emit('message', {
       user: users[socket.id],
@@ -45,7 +50,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Handle disconnection
+  
   socket.on('disconnect', () => {
     const username = users[socket.id];
     if (username) {
@@ -59,9 +64,46 @@ io.on('connection', (socket) => {
     }
     console.log(`Client disconnected: ${socket.id}`);
   });
+
+
+
+socket.on('private message', ({ recipientId, message }) => {
+  const sender = users[socket.id];
+  
+  if (users[recipientId]) {
+    
+    io.to(recipientId).emit('private message', {
+      sender: sender,
+      senderId: socket.id,
+      message: message,
+      time: new Date().toLocaleTimeString()
+    });
+    
+    
+    socket.emit('private message', {
+      sender: sender,
+      senderId: socket.id,
+      recipientId: recipientId,
+      message: message,
+      time: new Date().toLocaleTimeString(),
+      isSelf: true
+    });
+  } else {
+    socket.emit('error', 'User not found or offline');
+  }
 });
 
-const PORT = process.env.PORT || 4000;
+
+socket.on('request users', () => {
+  const userList = Object.keys(users).map(id => ({
+    id: id,
+    username: users[id]
+  }));
+  socket.emit('user list', userList);
+});
+});
+
+const PORT = 4000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
