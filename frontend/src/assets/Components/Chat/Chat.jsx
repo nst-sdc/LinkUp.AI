@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './Chat.css'
-const socket = io('http://localhost:4000'); // Point to your backend URL
+const socket = io('http://localhost:4000');
 
 function Chat() {
   const [username, setUsername] = useState('');
@@ -10,7 +10,7 @@ function Chat() {
   const [users, setUsers] = useState([]);
   const messagesEndRef = useRef(null);
 
-  // Join chat when username is set
+  
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
@@ -19,7 +19,7 @@ function Chat() {
     }
   }, []);
 
-  // Set up socket listeners
+  
   useEffect(() => {
     socket.on('message', (msg) => {
       setMessages(prev => [...prev, msg]);
@@ -35,10 +35,6 @@ function Chat() {
     };
   }, []);
 
-  // Auto-scroll to bottom of messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
