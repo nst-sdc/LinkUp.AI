@@ -2,7 +2,10 @@ import { useState } from 'react';
 import './EventForm.css';
 import { useNavigate } from 'react-router-dom';
 
-export default function CreateEventForm({ onSubmit }) {
+import { db } from '../../../firebase';
+import { collection, addDoc } from 'firebase/firestore';
+
+export default function CreateEventForm() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -14,6 +17,7 @@ export default function CreateEventForm({ onSubmit }) {
     registrationLink: '',
     duration: '',
     maxAttendees: '',
+    type: 'live' 
   });
 
   const [errors, setErrors] = useState({});
@@ -36,27 +40,24 @@ export default function CreateEventForm({ onSubmit }) {
 
   const validateForm = () => {
     const newErrors = {};
-
+    // You can uncomment this to add validation
     // if (!formData.title.trim()) newErrors.title = 'required';
     // if (!formData.description.trim()) newErrors.description = 'required';
     // if (!formData.date) newErrors.date = 'required';
     // if (!formData.time) newErrors.time = 'required';
     // if (!formData.speaker.trim()) newErrors.speaker = 'required';
     // if (!formData.registrationLink.trim()) newErrors.registrationLink = 'required';
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     setIsSubmitting(true);
 
     try {
-      onSubmit?.(formData);
+      await addDoc(collection(db, "webinars"), formData);
       setFormData({
         title: '',
         description: '',
@@ -66,8 +67,8 @@ export default function CreateEventForm({ onSubmit }) {
         registrationLink: '',
         duration: '',
         maxAttendees: '',
+        type: 'live'
       });
-
       navigate('/webinar');
     } catch (error) {
       console.error('Error creating event:', error);
@@ -126,6 +127,14 @@ export default function CreateEventForm({ onSubmit }) {
                 <input type="number" id="maxAttendees" name="maxAttendees" value={formData.maxAttendees} onChange={handleInputChange} placeholder="100" />
               </div>
             </div>
+
+            <div className="form-group">
+              <label htmlFor="type">Webinar Type</label>
+              <select id="type" name="type" value={formData.type} onChange={handleInputChange}>
+                <option value="live">Live</option>
+                <option value="recorded">Recorded</option>
+              </select>
+            </div>
           </div>
 
           <div className="form-section">
@@ -155,3 +164,4 @@ export default function CreateEventForm({ onSubmit }) {
     </div>
   );
 }
+

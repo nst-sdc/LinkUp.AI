@@ -1,119 +1,96 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Webinar.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { db } from '../../../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function Webinar() {
- const [activeTab, setActiveTab] = useState('live');
+  const [activeTab, setActiveTab] = useState('live');
+  const [webinars, setWebinars] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchWebinars = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'webinars'));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setWebinars(data);
+        console.log("Fetched webinars from Firebase:", data);
+      } catch (err) {
+        console.error("Error fetching webinars:", err);
+      }
+    };
+
+    fetchWebinars();
+  }, []);
+
+  const handleRegister = (webinarTitle) => {
+    alert(`Registration functionality would be implemented here for: ${webinarTitle}`);
+  };
+
+  return (
+    <div className="webinars-container">
+      <div className="container">
+        <div className="header-with-button">
+          <h1>LinkUp.AI Webinars</h1>
+          <button className="create-event-btn" onClick={() => navigate('/Eventform')}>
+            Create Event
+          </button>
+        </div>
+
+        <div className="nav-tabs">
+          <button
+            onClick={() => setActiveTab('live')}
+            className={`nav-tab ${activeTab === 'live' ? 'active' : ''}`}
+          >
+            Live webinars
+          </button>
+          <button
+            onClick={() => setActiveTab('recorded')}
+            className={`nav-tab ${activeTab === 'recorded' ? 'active' : ''}`}
+          >
+            Recorded webinars
+          </button>
+        </div>
 
 
- const handleRegister = (webinarTitle) => {
-   alert(`Registration functionality would be implemented here for: ${webinarTitle}`);
- };
+        <div className="webinars-list">
+          {webinars
+            .filter(w => (w.type || '').toLowerCase().trim() === activeTab)
+            .map((webinar) => (
+              <div key={webinar.id} className="webinar-card">
+                <div className="webinar-header accent-gradient">
+                  <div className="webinar-header-content">
+                    <div className="day-column">{webinar.date}</div>
+                    <div className="time-column">{webinar.time}</div>
+                    <div className="title-column">{webinar.title}</div>
+                  </div>
+                </div>
 
+                <div className="webinar-content">
+                  <p className="webinar-description">{webinar.description}</p>
 
- const webinars = [
-   {
-     id: 1,
-     day: "Every alternate Thursday",
-     time: "10:00 a.m PT / 10:30 p.m IST",
-     title: "Master your AI connections",
-     description: "Join us for a 60 minute session to explore LinkUp.AI, ask questions and automate your networking and connection management.",
-     features: [
-       "Setting up LinkUp.AI",
-       "LinkUp.AI mobile app demo",
-       "Integrations",
-       "Scenarios & Solutions"
-     ],
-     gradientClass: "accent-gradient"
-   },
-   {
-     id: 2,
-     day: "June 25, 2025 at Wednesday",
-     time: "9:00 p.m. IST | 11:30 a.m. EDT",
-     title: "Level up your team's productivity and day-to-day collaboration with LinkUp.AI",
-     description: "Discover how LinkUp.AI can transform your team's networking capabilities and streamline collaboration through intelligent connection management.",
-     features: [
-       "Team collaboration features",
-       "Advanced AI networking tools",
-       "Productivity workflows",
-       "Real-time connection insights"
-     ],
-     gradientClass: "accent-gradient-alt"
-   }
- ];
+                  <div className="session-details">
+                    <h3>Speaker: {webinar.speaker}</h3>
+                    <p>
+                      Duration: {webinar.duration} mins | Max Attendees: {webinar.maxAttendees}
+                    </p>
+                  </div>
 
- const navigate = useNavigate();
-
-
- return (
-   <div className="webinars-container">
-     <div className="container">
-       {/* Header */}
-       <div className="header-with-button">
-        <h1>LinkUp.AI Webinars</h1>
-        <button className="create-event-btn" onClick={() => navigate('/Eventform')}>Create Event</button>
+                  <div className="register-section">
+                    <a
+                      href={webinar.registrationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button className="register-btn">REGISTER</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
-
-
-
-
-       <div className="nav-tabs">
-         <button
-           onClick={() => setActiveTab('live')}
-           className={`nav-tab ${activeTab === 'live' ? 'active' : ''}`}
-         >
-           Live webinars
-         </button>
-         <button
-           onClick={() => setActiveTab('recorded')}
-           className={`nav-tab ${activeTab === 'recorded' ? 'active' : ''}`}
-         >
-           Recorded webinars
-         </button>
-       </div>
-
-
-       {/* Webinar Cards */}
-       <div className="webinars-list">
-         {webinars.map((webinar) => (
-           <div key={webinar.id} className="webinar-card">
-             {/*Card Header */}
-             <div className={`webinar-header ${webinar.gradientClass}`}>
-               <div className="webinar-header-content">
-                 <div className="day-column">{webinar.day}</div>
-                 <div className="time-column">{webinar.time}</div>
-                 <div className="title-column">{webinar.title}</div>
-               </div>
-             </div>
-
-
-             {/* Card Content */}
-             <div className="webinar-content">
-               <p className="webinar-description">
-                 {webinar.description}
-               </p>
-
-
-               <div className="session-details">
-                 <h3>What's covered in this session?</h3>
-                 <div className="features-grid">
-                   {webinar.features.map((feature, index) => (
-                     <div key={index} className="feature-item">
-                       {feature}
-                     </div>
-                   ))}
-                 </div>
-               </div>
-
-
-               <div className="register-section">
-                 <button onClick={() => handleRegister(webinar.title)} className="register-btn"> REGISTE </button>
-               </div>
-             </div>
-           </div>
-         ))}
-       </div>
-     </div>
-   </div>
- );
+    </div>
+  );
 }
