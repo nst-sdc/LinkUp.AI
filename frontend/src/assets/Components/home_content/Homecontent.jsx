@@ -114,7 +114,6 @@ export default function Home() {
       </section>
 
 
-      {/* What is LinkUp.AI Section */}
       <section className="home-about-section home-fade-in-section" id = "about">
         <div className="home-container">
           <div className="home-about-content">
