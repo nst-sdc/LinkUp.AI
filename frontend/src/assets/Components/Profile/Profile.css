@@ -397,6 +397,20 @@
     gap: 0.5rem;
     margin-top: 1rem;
   }
+
+  .upload-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .upload-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
   
   .file-item {
     display: flex;
