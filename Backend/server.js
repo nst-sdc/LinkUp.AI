@@ -104,6 +104,10 @@ socket.on('request users', () => {
   socket.emit('user list', userList);
 });
 });
+app.get("/",(req,res)=>{
+  res.send("Server is running.")
+})
+
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
 
