@@ -40,13 +40,12 @@ export default function CreateEventForm() {
 
   const validateForm = () => {
     const newErrors = {};
-    // You can uncomment this to add validation
-    // if (!formData.title.trim()) newErrors.title = 'required';
-    // if (!formData.description.trim()) newErrors.description = 'required';
-    // if (!formData.date) newErrors.date = 'required';
-    // if (!formData.time) newErrors.time = 'required';
-    // if (!formData.speaker.trim()) newErrors.speaker = 'required';
-    // if (!formData.registrationLink.trim()) newErrors.registrationLink = 'required';
+    if (!formData.title.trim()) newErrors.title = 'required';
+    if (!formData.description.trim()) newErrors.description = 'required';
+    if (!formData.date) newErrors.date = 'required';
+    if (!formData.time) newErrors.time = 'required';
+    if (!formData.speaker.trim()) newErrors.speaker = 'required';
+    if (!formData.registrationLink.trim()) newErrors.registrationLink = 'required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };

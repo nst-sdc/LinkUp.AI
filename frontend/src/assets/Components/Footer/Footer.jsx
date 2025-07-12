@@ -32,7 +32,7 @@ return (
     </div>
 
 
-    {/* the below section is for social media accounds for which we have to add the images we will do it letter */}
+    
 
 
 <hr></hr>

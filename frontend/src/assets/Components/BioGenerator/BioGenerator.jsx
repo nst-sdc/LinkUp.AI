@@ -79,15 +79,12 @@ export default function BioGenerator() {
             </p>
             <div className="bio-hero-features">
               <div className="bio-hero-feature">
-                <span>⚡</span>
                 <span>Fast Generation</span>
               </div>
               <div className="bio-hero-feature">
-                <span>🔒</span>
                 <span>Privacy Focused</span>
               </div>
               <div className="bio-hero-feature">
-                <span>📱</span>
                 <span>Mobile Friendly</span>
               </div>
             </div>
@@ -126,7 +123,6 @@ export default function BioGenerator() {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
                 <div className="bio-button-group">
                   <button
                     onClick={generateBio}
