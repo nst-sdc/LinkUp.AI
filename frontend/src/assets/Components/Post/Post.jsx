@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Post.css';
+import { db } from '../../../firebase';
+import { collection, addDoc, onSnapshot, Timestamp, query, orderBy, doc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
 
 const Post = ({ profileData, onBack }) => {
   const [postData, setPostData] = useState({
@@ -57,119 +59,23 @@ const [suggestedConnections, setSuggestedConnections] = useState([
   }
 ]);
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: {
-        name: 'Sarah Johnson',
-        title: 'Senior Product Manager at TechCorp',
-        profileImage: null,
-        verified: true
-      },
-      content: 'Excited to announce that our team just launched a groundbreaking AI-powered analytics dashboard! 🚀 After months of hard work, we\'ve created something that will revolutionize how businesses understand their data.\n\nKey features:\n✅ Real-time data visualization\n✅ Predictive analytics\n✅ Custom reporting tools\n✅ Mobile-first design\n\nHuge thanks to my incredible team for making this possible! #ProductManagement #AI #DataAnalytics #TeamWork',
-      image: null,
-      hashtags: ['ProductManagement', 'AI', 'DataAnalytics', 'TeamWork'],
-      timestamp: '2h',
-      likes: 127,
-      comments: [
-        {
-          id: 1,
-          author: {
-            name: 'Alex Rodriguez',
-            title: 'Data Scientist at InnovateTech',
-            profileImage: null
-          },
-          content: 'This looks amazing! The predictive analytics feature is exactly what we\'ve been looking for. Can\'t wait to try it out! 🔥',
-          timestamp: '1h',
-          likes: 12,
-          liked: false,
-          replies: [
-            {
-              id: 1,
-              author: {
-                name: 'Sarah Johnson',
-                title: 'Senior Product Manager at TechCorp',
-                profileImage: null
-              },
-              content: 'Thanks Alex! I\'d love to show you a demo. Feel free to reach out!',
-              timestamp: '45m',
-              likes: 3,
-              liked: false
-            }
-          ]
-        },
-        {
-          id: 2,
-          author: {
-            name: 'Maria Garcia',
-            title: 'UX Designer',
-            profileImage: null
-          },
-          content: 'Congratulations on the launch! The mobile-first approach is brilliant. How did you handle the data visualization on smaller screens?',
-          timestamp: '30m',
-          likes: 8,
-          liked: true,
-          replies: []
-        }
-      ],
-      shares: 18,
-      liked: false,
-      bookmarked: false,
-      location: 'San Francisco, CA'
-    },
-    {
-      id: 2,
-      author: {
-        name: 'Michael Chen',
-        title: 'Full Stack Developer | React Enthusiast',
-        profileImage: null,
-        verified: false
-      },
-      content: 'Just completed a 30-day coding challenge! 💪 Built 30 different projects using React, Node.js, and MongoDB. Here are my key takeaways:\n\n🎯 Consistency beats perfection\n🎯 Learning by building is the most effective approach\n🎯 Community support makes all the difference\n\nTo everyone starting their coding journey - you\'ve got this! Drop a comment if you want to see any of the projects. #100DaysOfCode #WebDevelopment #React #JavaScript',
-      image: null,
-      hashtags: ['100DaysOfCode', 'WebDevelopment', 'React', 'JavaScript'],
-      timestamp: '5h',
-      likes: 89,
-      comments: [
-        {
-          id: 3,
-          author: {
-            name: 'Jennifer Lee',
-            title: 'Frontend Developer',
-            profileImage: null
-          },
-          content: 'Inspiring! I\'m on day 15 of my own challenge. Would love to see some of your React projects for inspiration!',
-          timestamp: '3h',
-          likes: 5,
-          liked: false,
-          replies: []
-        }
-      ],
-      shares: 12,
-      liked: true,
-      bookmarked: true,
-      location: 'Remote'
-    },
-    {
-      id: 3,
-      author: {
-        name: 'Emma Wilson',
-        title: 'UX Designer at Creative Studios',
-        profileImage: null,
-        verified: false
-      },
-      content: 'Design tip of the day: White space is not empty space - it\'s a powerful design element! 🎨\n\nWhite space (or negative space) helps:\n• Improve readability\n• Create visual hierarchy\n• Reduce cognitive load\n• Make your design feel premium\n\nLess is often more in design. What\'s your favorite use of white space? #UXDesign #DesignTips #UserExperience',
-      image: null,
-      hashtags: ['UXDesign', 'DesignTips', 'UserExperience'],
-      timestamp: '1d',
-      likes: 56,
-      comments: [],
-      shares: 7,
-      liked: false,
-      bookmarked: false,
-      location: 'New York, NY'
-    }
-  ]);
+  // Firestore posts state
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch posts from Firestore in real-time
+  useEffect(() => {
+    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const postsArr = [];
+      snapshot.forEach((doc) => {
+        postsArr.push({ id: doc.id, ...doc.data() });
+      });
+      setPosts(postsArr);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const emojis = ['😊', '👍', '🚀', '💡', '🎉', '❤️', '🔥', '💪', '🌟', '✨', '👏', '🎯'];
 
@@ -227,10 +133,10 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     setShowEmojiPanel(false);
   };
 
-  const handlePost = () => {
+  // Save new post to Firestore
+  const handlePost = async () => {
     if (postData.content.trim()) {
       const newPost = {
-        id: Date.now(),
         author: {
           name: profileData?.name || 'You',
           title: profileData?.bio || 'LinkUp.AI User',
@@ -240,7 +146,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         content: postData.content,
         image: postData.imagePreview,
         hashtags: postData.hashtags,
-        timestamp: 'now',
+        createdAt: Timestamp.now(),
         likes: 0,
         comments: [],
         shares: 0,
@@ -248,50 +154,41 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         bookmarked: false,
         location: postData.location
       };
-
-      setPosts(prev => [newPost, ...prev]);
-      
-      // Reset form
-      setPostData({
-        content: '',
-        image: null,
-        imagePreview: null,
-        hashtags: [],
-        visibility: 'public',
-        location: ''
-      });
-
-      // Show success notification
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3000);
+      try {
+        await addDoc(collection(db, 'posts'), newPost);
+        // No need to update local state, onSnapshot will update posts
+        setPostData({
+          content: '',
+          image: null,
+          imagePreview: null,
+          hashtags: [],
+          visibility: 'public',
+          location: ''
+        });
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+      } catch (err) {
+        alert('Failed to post. Please try again.');
+      }
     }
   };
 
-  const handleLike = (postId) => {
-    setPosts(prev => prev.map(post =>
-      post.id === postId
-        ? {
-            ...post,
-            liked: !post.liked,
-            likes: post.liked ? post.likes - 1 : post.likes + 1
-          }
-        : post
-    ));
+  // Like/Unlike a post in Firestore
+  const handleLike = async (postId, liked) => {
+    const postRef = doc(db, 'posts', postId);
+    await updateDoc(postRef, {
+      liked: !liked,
+      likes: increment(!liked ? 1 : -1)
+    });
   };
 
-  const handleBookmark = (postId) => {
-    const post = posts.find(p => p.id === postId);
-    setPosts(prev => prev.map(post =>
-      post.id === postId
-        ? { ...post, bookmarked: !post.bookmarked }
-        : post
-    ));
-    if (post && !post.bookmarked) {
-      setBookmarkedPosts(prev => [...prev, { ...post, bookmarked: true }]);
-    } else {
-      setBookmarkedPosts(prev => prev.filter(p => p.id !== postId));
-    }
-  }
+  // Bookmark/Unbookmark a post in Firestore
+  const handleBookmark = async (postId, bookmarked) => {
+    const postRef = doc(db, 'posts', postId);
+    await updateDoc(postRef, {
+      bookmarked: !bookmarked
+    });
+  };
 
   const toggleComments = (postId) => {
     setExpandedComments(prev => ({
@@ -307,10 +204,10 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     }));
   };
 
-  const addComment = (postId) => {
-    const commentText = newComments[postId]?.trim();
-    if (!commentText) return;
-
+  // Add a comment to a post in Firestore
+  const addComment = async (postId, commentText) => {
+    if (!commentText.trim()) return;
+    const postRef = doc(db, 'posts', postId);
     const newComment = {
       id: Date.now(),
       author: {
@@ -319,26 +216,15 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         profileImage: profileData?.profilePhotoPreview || null
       },
       content: commentText,
-      timestamp: 'now',
+      timestamp: new Date().toISOString(),
       likes: 0,
       liked: false,
       replies: []
     };
-
-    setPosts(prev => prev.map(post =>
-      post.id === postId
-        ? {
-            ...post,
-            comments: [...post.comments, newComment]
-          }
-        : post
-    ));
-
-    // Clear the comment input
-    setNewComments(prev => ({
-      ...prev,
-      [postId]: ''
-    }));
+    await updateDoc(postRef, {
+      comments: arrayUnion(newComment)
+    });
+    setNewComments(prev => ({ ...prev, [postId]: '' }));
   };
 
   const handleCommentLike = (postId, commentId) => {
@@ -646,7 +532,10 @@ const [suggestedConnections, setSuggestedConnections] = useState([
       </div>
     </div>
 
-    {posts.map((post) => (
+    {loading ? (
+      <div className="loading-state">Loading posts...</div>
+    ) : (
+      posts.map((post) => (
       <div key={post.id} className="post-card">
         {/* Your existing post rendering code stays exactly the same */}
         {/* Post Header */}
@@ -674,7 +563,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
               <p className="author-title">{post.author.title}</p>
               <div className="post-meta">
-                <span className="post-time">{post.timestamp}</span>
+                <span className="post-time">{post.createdAt?.toDate().toLocaleDateString()}</span>
                 {post.location && (
                   <>
                     <span className="meta-separator">•</span>
@@ -729,7 +618,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         <div className="post-interactions">
           <button 
             className={`interaction-btn ${post.liked ? 'liked' : ''}`}
-            onClick={() => handleLike(post.id)}
+            onClick={() => handleLike(post.id, post.liked)}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7.5 2.5C10.5 2.5 12 4.5 12 4.5s1.5-2 4.5-2C19.54 2.5 22 4.96 22 8c0 4.5-8 11-10 11S2 12.5 2 8c0-3.04 2.46-5.5 5.5-5.5z"/>
@@ -759,7 +648,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </button>
           <button 
             className={`interaction-btn bookmark ${post.bookmarked ? 'bookmarked' : ''}`}
-            onClick={() => handleBookmark(post.id)}
+            onClick={() => handleBookmark(post.id, post.bookmarked)}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
@@ -792,7 +681,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
                   rows="2"
                 />
                 <button 
-                  onClick={() => addComment(post.id)}
+                  onClick={() => addComment(post.id, newComments[post.id])}
                   className={`comment-submit-btn ${!newComments[post.id]?.trim() ? 'disabled' : ''}`}
                   disabled={!newComments[post.id]?.trim()}
                 >
@@ -889,7 +778,8 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </div>
         )}
       </div>
-    ))}
+    ))
+    )}
   </div>
 )}
 
@@ -928,7 +818,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
                 </div>
                 <div className="author-info">
                   <h4>{post.author.name}</h4>
-                  <span className="post-time">{post.timestamp}</span>
+                  <span className="post-time">{post.createdAt?.toDate().toLocaleDateString()}</span>
                 </div>
               </div>
               <p className="bookmark-text">{post.content.substring(0, 150)}...</p>
@@ -939,7 +829,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
             </div>
             <button 
               className="remove-bookmark-btn"
-              onClick={() => handleBookmark(post.id)}
+              onClick={() => handleBookmark(post.id, post.bookmarked)}
               title="Remove bookmark"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
