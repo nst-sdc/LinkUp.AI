@@ -8,9 +8,13 @@ function Chat() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
+  
+  const [activeConversation, setActiveConversation] = useState(null);
+  const [privateMessages, setPrivateMessages] = useState({});
+  const [showUserList, setShowUserList] = useState(false);
+
   const messagesEndRef = useRef(null);
 
-  
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
@@ -19,7 +23,6 @@ function Chat() {
     }
   }, []);
 
-  
   useEffect(() => {
     socket.on('message', (msg) => {
       setMessages(prev => [...prev, msg]);
@@ -29,17 +32,42 @@ function Chat() {
       setUsers(userList);
     });
 
+    
+    socket.on('private message', (msg) => {
+      const conversationId = msg.isSelf ? msg.recipientId : msg.senderId;
+      setPrivateMessages(prev => ({
+        ...prev,
+        [conversationId]: [...(prev[conversationId] || []), msg]
+      }));
+    });
+
     return () => {
       socket.off('message');
       socket.off('userList');
+      socket.off('private message'); 
     };
   }, []);
 
+  
+  const requestUserList = () => {
+    socket.emit('request users');
+    setShowUserList(!showUserList);
+  };
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim()) {
-      socket.emit('sendMessage', message);
+      if (activeConversation) {
+        
+        socket.emit('private message', {
+          recipientId: activeConversation,
+          message: message
+        });
+      } else {
+        
+        socket.emit('sendMessage', message);
+      }
       setMessage('');
     }
   };
@@ -71,24 +99,51 @@ function Chat() {
 
   return (
     <div className="chat-container">
-      <div className="users-list">
-        <h3>Online Users ({users.length})</h3>
-        <ul>
-          {users.map((user, index) => (
-            <li key={index}>{user}</li>
-          ))}
-        </ul>
-      </div>
+      <button onClick={requestUserList} className="user-list-toggle">
+        {showUserList ? 'Hide Users' : 'Show Users'}
+      </button>
+
+      {showUserList && (
+        <div className="users-list">
+          <h3>Online Users ({users.length})</h3>
+          <ul>
+            {users.map((user) => (
+              <li 
+                key={user.id}
+                onClick={() => {
+                  setActiveConversation(user.id);
+                  setShowUserList(false);
+                }}
+                className={activeConversation === user.id ? 'active' : ''}
+              >
+                {user.username}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       
       <div className="chat-box">
         <div className="messages">
-          {messages.map((msg, index) => (
-            <div key={index} className="message">
-              <span className="message-time">{msg.time}</span>
-              <span className="message-user">{msg.user}:</span>
-              <span className="message-text">{msg.text}</span>
-            </div>
-          ))}
+          {activeConversation ? (
+            
+            privateMessages[activeConversation]?.map((msg, index) => (
+              <div key={index} className={`message ${msg.isSelf ? 'self' : 'other'}`}>
+                <span className="message-time">{msg.time}</span>
+                <span className="message-user">{msg.sender}:</span>
+                <span className="message-text">{msg.message}</span>
+              </div>
+            ))
+          ) : (
+            
+            messages.map((msg, index) => (
+              <div key={index} className="message">
+                <span className="message-time">{msg.time}</span>
+                <span className="message-user">{msg.user}:</span>
+                <span className="message-text">{msg.text}</span>
+              </div>
+            ))
+          )}
           <div ref={messagesEndRef} />
         </div>
         
@@ -97,7 +152,7 @@ function Chat() {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type a message..."
+            placeholder={activeConversation ? "Type a private message..." : "Type a message..."}
           />
           <button type="submit">Send</button>
         </form>
