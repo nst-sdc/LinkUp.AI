@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './Chat.css'
-const socket = io('https://linkup-ai.onrender.com/');
+const socket = io('https://linkup-ai.onrender.com');
 
 function Chat() {
   const [username, setUsername] = useState('');
@@ -14,6 +14,15 @@ function Chat() {
   const [showUserList, setShowUserList] = useState(false);
 
   const messagesEndRef = useRef(null);
+
+  
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, privateMessages, activeConversation]);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -28,11 +37,14 @@ function Chat() {
       setMessages(prev => [...prev, msg]);
     });
 
-    socket.on('userList', (userList) => {
-      setUsers(userList);
-    });
-
     
+    const userListHandler = (userList) => {
+      console.log("Received Users:", userList);
+      setUsers(userList);
+    };
+
+    socket.on('userList', userListHandler);
+
     socket.on('private message', (msg) => {
       const conversationId = msg.isSelf ? msg.recipientId : msg.senderId;
       setPrivateMessages(prev => ({
@@ -43,23 +55,22 @@ function Chat() {
 
     return () => {
       socket.off('message');
-      socket.off('userList');
+      socket.off('userList', userListHandler);
       socket.off('private message'); 
     };
   }, []);
 
-  
   const requestUserList = () => {
+    console.log("Requesting user list");
     socket.emit('request users');
-    setShowUserList(!showUserList);
+    setShowUserList(prev => !prev);
   };
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim()) {
       if (activeConversation) {
-        
+       
         socket.emit('private message', {
           recipientId: activeConversation,
           message: message
@@ -80,19 +91,29 @@ function Chat() {
     }
   };
 
+  
+  const getActiveConversationUsername = () => {
+    if (!activeConversation) return null;
+    const user = users.find(u => u.id === activeConversation);
+    return user?.username || 'Unknown User';
+  };
+
   if (!localStorage.getItem('username')) {
     return (
       <div className="username-container">
-        <form onSubmit={handleUsernameSubmit}>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            required
-          />
-          <button type="submit">Join Chat</button>
-        </form>
+        <div className="username-box">
+          <h2>Join Chat</h2>
+          <form onSubmit={handleUsernameSubmit} className="username-form">
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+              required
+            />
+            <button type="submit">Join Chat</button>
+          </form>
+        </div>
       </div>
     );
   }
@@ -105,7 +126,15 @@ function Chat() {
 
       {showUserList && (
         <div className="users-list">
-          <h3>Online Users ({users.length})</h3>
+          <div className="users-list-header">
+            <h3>Online Users ({users.length})</h3>
+            <button 
+              onClick={() => setShowUserList(false)}
+              className="close-button"
+            >
+              ×
+            </button>
+          </div>
           <ul>
             {users.map((user) => (
               <li 
@@ -116,6 +145,7 @@ function Chat() {
                 }}
                 className={activeConversation === user.id ? 'active' : ''}
               >
+                <div className="user-status"></div>
                 {user.username}
               </li>
             ))}
@@ -124,23 +154,37 @@ function Chat() {
       )}
       
       <div className="chat-box">
+        {activeConversation && (
+          <div className="chat-header">
+            <h3 className="chat-title">
+              Private chat with {getActiveConversationUsername()}
+            </h3>
+            <button 
+              onClick={() => setActiveConversation(null)}
+              className="back-button"
+            >
+              ← Back to Public Chat
+            </button>
+          </div>
+        )}
+        
         <div className="messages">
           {activeConversation ? (
             
             privateMessages[activeConversation]?.map((msg, index) => (
-              <div key={index} className={`message ${msg.isSelf ? 'self' : 'other'}`}>
-                <span className="message-time">{msg.time}</span>
-                <span className="message-user">{msg.sender}:</span>
-                <span className="message-text">{msg.message}</span>
+              <div key={index} className={`message ${msg.isSelf ? 'message-self' : 'message-other'}`}>
+                <div className="message-time">{msg.time}</div>
+                <div className="message-user">{msg.sender}:</div>
+                <div className="message-text">{msg.message}</div>
               </div>
             ))
           ) : (
             
             messages.map((msg, index) => (
               <div key={index} className="message">
-                <span className="message-time">{msg.time}</span>
-                <span className="message-user">{msg.user}:</span>
-                <span className="message-text">{msg.text}</span>
+                <div className="message-time">{msg.time}</div>
+                <div className="message-user">{msg.user}:</div>
+                <div className="message-text">{msg.text}</div>
               </div>
             ))
           )}
@@ -152,7 +196,11 @@ function Chat() {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder={activeConversation ? "Type a private message..." : "Type a message..."}
+            placeholder={
+              activeConversation 
+                ? `Type a private message to ${getActiveConversationUsername()}...` 
+                : "Type a message..."
+            }
           />
           <button type="submit">Send</button>
         </form>
