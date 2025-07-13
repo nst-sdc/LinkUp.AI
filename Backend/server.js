@@ -105,11 +105,18 @@ socket.on('request users', () => {
   socket.emit('user list', userList);
 });
 });
+
 const PORT = process.env.PORT || 4000;
 app.get("/",(req,res)=>{
   res.send("Server is running")
 
 });
+
+app.get("/",(req,res)=>{
+  res.send("Server is running.")
+})
+
+
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
   res.send("tech-news")
