@@ -10,6 +10,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
+
 const io = new Server(server, {
   cors: {
     origin: "https://link-up-ai-pearl.vercel.app",
@@ -107,19 +108,30 @@ io.on('connection', (socket) => {
 });
 
 
+
+socket.on('request users', () => {
+  const userList = Object.keys(users).map(id => ({
+    id: id,
+    username: users[id]
+  }));
+  socket.emit('user list', userList);
+});
+});
+
+
+
+
 app.get("/",(req,res)=>{
   res.send("Server is running.")
 })
 
-app.get("/tech-news", async (req, res) => {
-  const query = req.query.q || "technology";
+
+
 
 
 const PORT = process.env.PORT || 4000;
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
+
 
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
@@ -136,8 +148,11 @@ app.get("/tech-news", async (req, res) => {
   }
 });
 
+
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
 export default app;
+
+
