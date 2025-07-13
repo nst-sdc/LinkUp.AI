@@ -106,6 +106,15 @@ io.on('connection', (socket) => {
   });
 });
 
+
+app.get("/",(req,res)=>{
+  res.send("Server is running.")
+})
+
+app.get("/tech-news", async (req, res) => {
+  const query = req.query.q || "technology";
+
+
 const PORT = process.env.PORT || 4000;
 
 app.get("/", (req, res) => {
