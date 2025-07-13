@@ -1,15 +1,25 @@
 import dotenv from "dotenv";
+
 dotenv.config();
+
+
+import axios from "axios";
 
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+
 import axios from "axios";
 import { GoogleGenAI } from "@google/genai";
 
+
+dotenv.config();
+
+
 const app = express();
 const server = http.createServer(app);
+
 
 const io = new Server(server, {
   cors: {
@@ -26,6 +36,7 @@ const users = {};
 io.on("connection", (socket) => {
   console.log(`Client connected: ${socket.id}`);
 
+
   socket.on("join", (username) => {
     users[socket.id] = username;
     io.emit("userList", Object.values(users));
@@ -38,11 +49,41 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", (message) => {
     io.emit("message", {
+
+const getUserList = () => {
+  return Object.keys(users).map(id => ({
+    id: id,
+    username: users[id]
+  }));
+};
+
+io.on('connection', (socket) => {
+  console.log(`New client connected: ${socket.id}`);
+
+  socket.on('join', (username) => {
+    users[socket.id] = username;
+    console.log(`User ${username} joined with socket ID: ${socket.id}`);
+    
+    
+    io.emit('userList', getUserList());
+    
+    
+    io.emit('message', {
+      user: 'System',
+      text: `${username} has joined the chat`,
+      time: new Date().toLocaleTimeString()
+    });
+  });
+
+  socket.on('sendMessage', (message) => {
+    io.emit('message', {
+
       user: users[socket.id],
       text: message,
       time: new Date().toLocaleTimeString(),
     });
   });
+
 
   socket.on("private message", ({ recipientId, message }) => {
     const sender = users[socket.id];
@@ -85,15 +126,93 @@ io.on("connection", (socket) => {
         user: "System",
         text: `${username} left the chat`,
         time: new Date().toLocaleTimeString(),
+
+  socket.on('disconnect', () => {
+    const username = users[socket.id];
+    if (username) {
+      delete users[socket.id];
+      console.log(`User ${username} disconnected`);
+      
+      
+      io.emit('userList', getUserList());
+      
+      io.emit('message', {
+        user: 'System',
+        text: `${username} has left the chat`,
+        time: new Date().toLocaleTimeString()
+
       });
     }
     console.log(`Client disconnected: ${socket.id}`);
   });
-});
 
-// Tech news API
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
+
+
+
+  socket.on('private message', ({ recipientId, message }) => {
+    const sender = users[socket.id];
+    
+    if (users[recipientId]) {
+      
+      io.to(recipientId).emit('private message', {
+        sender: sender,
+        senderId: socket.id,
+        message: message,
+        time: new Date().toLocaleTimeString(),
+        isSelf: false
+      });
+      
+      
+      socket.emit('private message', {
+        sender: sender,
+        senderId: socket.id,
+        recipientId: recipientId,
+        message: message,
+        time: new Date().toLocaleTimeString(),
+        isSelf: true
+      });
+    } else {
+      socket.emit('error', 'User not found or offline');
+    }
+  });
+
+  socket.on('request users', () => {
+    socket.emit('userList', getUserList());
+  });
+});
+
+
+
+socket.on('request users', () => {
+  const userList = Object.keys(users).map(id => ({
+    id: id,
+    username: users[id]
+  }));
+  socket.emit('user list', userList);
+});
+});
+
+
+
+
+app.get("/",(req,res)=>{
+  res.send("Server is running.")
+})
+
+
+
+
+
+const PORT = process.env.PORT || 4000;
+
+
+
+app.get("/tech-news", async (req, res) => {
+  const query = req.query.q || "technology";
+  res.send("tech-news");
+  
 
   try {
     const response = await axios.get(
@@ -106,7 +225,8 @@ app.get("/tech-news", async (req, res) => {
   }
 });
 
-// Gemini AI integration
+
+
 
 
 const ai = new GoogleGenAI({
@@ -144,6 +264,13 @@ app.post("/generate", async (req, res) => {
   }
 });
 
+
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+export default app;
 
 
 const PORT = process.env.PORT || 4000;
