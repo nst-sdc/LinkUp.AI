@@ -18,21 +18,22 @@ export default function BioGenerator() {
     setBioResult('');
 
     try {
-      const response = await fetch('/api/generate-bio', {
+      const prompt = `Write a concise, professional LinkedIn bio in 50 words or less. Use clear and simple language. Here is some info: ${userInput}`;
+
+
+      const response = await fetch('http://localhost:4000/generate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: userInput }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt}),
       });
 
       const data = await response.json();
-
-      if (response.ok && data.bio) {
-        setBioResult(data.bio.trim());
+      if (response.ok && data.response) {
+        setBioResult(data.response.trim());
       } else {
         setError(data.message || "Something went wrong. Try again.");
       }
+      
     } catch (err) {
       console.error("API Error:", err);
       setError("Server error. Please check backend connection.");
@@ -79,12 +80,23 @@ export default function BioGenerator() {
             </p>
             <div className="bio-hero-features">
               <div className="bio-hero-feature">
+
+                <span>Fast Generation</span>
+              </div>
+              <div className="bio-hero-feature">
+             
+                <span>Privacy Focused</span>
+              </div>
+              <div className="bio-hero-feature">
+              
+
                 <span>Fast Generation</span>
               </div>
               <div className="bio-hero-feature">
                 <span>Privacy Focused</span>
               </div>
               <div className="bio-hero-feature">
+
                 <span>Mobile Friendly</span>
               </div>
             </div>
@@ -122,6 +134,7 @@ export default function BioGenerator() {
                     </div>
                   </div>
                 </div>
+
 
                 <div className="bio-button-group">
                   <button
