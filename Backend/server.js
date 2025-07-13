@@ -1,21 +1,22 @@
-require("dotenv").config();
-const axios = require("axios");
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const cors = require('cors');
+import dotenv from "dotenv";
+import axios from "axios";
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import cors from "cors";
+
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 
 
-const io = socketIo(server, {
+const io = new Server(server, {
   cors: {
-    origin: "https://link-up-ai-pearl.vercel.app/", 
-    methods: ["GET", "POST"]
-  }
+    origin: "https://link-up-ai-pearl.vercel.app",
+    methods: ["GET", "POST"],
+  },
 });
-
 
 app.use(cors());
 app.use(express.json());
@@ -104,14 +105,18 @@ socket.on('request users', () => {
   socket.emit('user list', userList);
 });
 });
+const PORT = process.env.PORT || 4000;
+app.get("/",(req,res)=>{
+  res.send("Server is running")
+
+});
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
+  res.send("tech-news")
 
 
-const PORT = 4000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+
 
   try {
     const response = await axios.get(
@@ -123,14 +128,9 @@ server.listen(PORT, () => {
     res.status(500).json({ error: "Failed to fetch tech news" });
   }
 });
-const PORT = process.env.PORT || 4000;
-
-if (require.main === module) {
-  server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
-
-module.exports = app;
 
 
+export default app;
+
+server.listen(PORT, () => {
+console.log(`Server running on port ${PORT}`)})
