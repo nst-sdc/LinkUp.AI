@@ -10,7 +10,6 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-
 const io = new Server(server, {
   cors: {
     origin: "https://link-up-ai-pearl.vercel.app",
@@ -21,22 +20,27 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
-
 const users = {};
 
+
+const getUserList = () => {
+  return Object.keys(users).map(id => ({
+    id: id,
+    username: users[id]
+  }));
+};
 
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
 
-
-  socket.on("private-messaging",(dd)=>{
-    
-  })
-
-
   socket.on('join', (username) => {
     users[socket.id] = username;
-    io.emit('userList', Object.values(users));
+    console.log(`User ${username} joined with socket ID: ${socket.id}`);
+    
+    
+    io.emit('userList', getUserList());
+    
+    
     io.emit('message', {
       user: 'System',
       text: `${username} has joined the chat`,
@@ -44,7 +48,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  
   socket.on('sendMessage', (message) => {
     io.emit('message', {
       user: users[socket.id],
@@ -53,12 +56,15 @@ io.on('connection', (socket) => {
     });
   });
 
-  
   socket.on('disconnect', () => {
     const username = users[socket.id];
     if (username) {
       delete users[socket.id];
-      io.emit('userList', Object.values(users));
+      console.log(`User ${username} disconnected`);
+      
+      
+      io.emit('userList', getUserList());
+      
       io.emit('message', {
         user: 'System',
         text: `${username} has left the chat`,
@@ -68,56 +74,48 @@ io.on('connection', (socket) => {
     console.log(`Client disconnected: ${socket.id}`);
   });
 
+  socket.on('private message', ({ recipientId, message }) => {
+    const sender = users[socket.id];
+    
+    if (users[recipientId]) {
+      
+      io.to(recipientId).emit('private message', {
+        sender: sender,
+        senderId: socket.id,
+        message: message,
+        time: new Date().toLocaleTimeString(),
+        isSelf: false
+      });
+      
+      
+      socket.emit('private message', {
+        sender: sender,
+        senderId: socket.id,
+        recipientId: recipientId,
+        message: message,
+        time: new Date().toLocaleTimeString(),
+        isSelf: true
+      });
+    } else {
+      socket.emit('error', 'User not found or offline');
+    }
+  });
 
-
-socket.on('private message', ({ recipientId, message }) => {
-  const sender = users[socket.id];
-  
-  if (users[recipientId]) {
-    
-    io.to(recipientId).emit('private message', {
-      sender: sender,
-      senderId: socket.id,
-      message: message,
-      time: new Date().toLocaleTimeString()
-    });
-    
-    
-    socket.emit('private message', {
-      sender: sender,
-      senderId: socket.id,
-      recipientId: recipientId,
-      message: message,
-      time: new Date().toLocaleTimeString(),
-      isSelf: true
-    });
-  } else {
-    socket.emit('error', 'User not found or offline');
-  }
+  socket.on('request users', () => {
+    socket.emit('userList', getUserList());
+  });
 });
 
-
-socket.on('request users', () => {
-  const userList = Object.keys(users).map(id => ({
-    id: id,
-    username: users[id]
-  }));
-  socket.emit('user list', userList);
-});
-});
 const PORT = process.env.PORT || 4000;
-app.get("/",(req,res)=>{
-  res.send("Server is running")
 
+app.get("/", (req, res) => {
+  res.send("Server is running");
 });
+
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
-  res.send("tech-news")
-
-
-
-
-
+  res.send("tech-news");
+  
   try {
     const response = await axios.get(
       `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=${process.env.NEWS_API_KEY}`
@@ -129,8 +127,8 @@ app.get("/tech-news", async (req, res) => {
   }
 });
 
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 export default app;
-
-server.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`)})
