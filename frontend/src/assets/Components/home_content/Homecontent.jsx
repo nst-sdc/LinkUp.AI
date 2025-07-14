@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TechNewsCard from './TechNewsCard';
 import './Homecontent.css';
+import { auth } from "../../../firebase";
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 
 export default function Home() {
@@ -11,8 +14,15 @@ export default function Home() {
 
 
   const handleSignUpClick = () => {
-    navigate('/signup');
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate('/profile');
+      } else {
+        navigate('/signup');
+      }
+    });
   };
+  
 
 
   useEffect(() => {
