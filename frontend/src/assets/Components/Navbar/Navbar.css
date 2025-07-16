@@ -1,3 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 .navbar {
   width: 100%;
   background-color: #EEF2FF;
@@ -8,6 +19,7 @@
   padding: 0px 5%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
+  flex-wrap: wrap;
 }
 
 .logo {
@@ -25,6 +37,7 @@ ul {
   gap: 15px;
   padding: 0;
   margin: 0;
+  flex-wrap: wrap;
 }
 
 ul li {
@@ -34,19 +47,10 @@ ul li {
   padding: 10px 15px;
 }
 
-/* ul li:hover {
-  background-color: #b6cbeb;
-  border-radius: 6px;
-  transition: background 0.3s;
-} */
 ul li:not(.auth-buttons):hover {
   background-color: #b6cbeb;
   border-radius: 6px;
   transition: background 0.3s;
-}
-
-.nav-btn:hover {
-  filter: brightness(0.9);          
 }
 
 .search-bar {
@@ -56,7 +60,11 @@ ul li:not(.auth-buttons):hover {
   padding: 10px 20px;
   border-radius: 50px;
   margin-left: 2rem;
+  width: 280px;          
+  max-width: 100%;
+  box-sizing: border-box;
 }
+
 
 .search-bar input {
   border: none;
@@ -64,18 +72,19 @@ ul li:not(.auth-buttons):hover {
   background: transparent;
   color: #fff;
   font-size: 16px;
-  width: 200px;
+  flex: 1; 
+  min-width: 0;
 }
 
 .search-bar input::placeholder {
   color: #ccc;
-  
 }
 
 .search-bar img {
   width: 20px;
   height: 20px;
   margin-left: 10px;
+  flex-shrink: 0;
   cursor: pointer;
 }
 
@@ -114,7 +123,6 @@ ul li:not(.auth-buttons):hover {
   height: 10px;
   margin-left: 5px;
   transition: transform 0.3s;
-  /* vertical-align: middle; */
 }
 
 .dropdown-content a {
@@ -126,11 +134,11 @@ ul li:not(.auth-buttons):hover {
   color: #333;
 }
 
-/* ✅ Auth button group styling */
 .auth-buttons {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .nav-btn {
@@ -154,8 +162,8 @@ ul li:not(.auth-buttons):hover {
 .nav-btn.signout {
   background-color: #ef4444;
   color: white;
-  font-size: 14px;        /* 👈 smaller font */
-  padding: 4px,2px;      /* 👈 smaller padding */
+  font-size: 14px;
+  padding: 4px 8px;  
   border-radius: 6px;
   cursor: pointer;
 }
@@ -164,12 +172,13 @@ ul li:not(.auth-buttons):hover {
   font-weight: bold;
   text-decoration: none;
   color: #111827;
-  font-size: 14px;        /* 👈 smaller font */
-  padding: 6px 10px; 
+  font-size: 14px;
+  padding: 6px 10px;
 }
-.navbar a{
-    color: #000;
-  }
+
+.navbar a {
+  color: #000;
+}
 
 .notification-top-right {
   position: absolute;
@@ -180,3 +189,58 @@ ul li:not(.auth-buttons):hover {
   z-index: 200;
 }
 
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 5%;
+  }
+
+  ul {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+  }
+
+  ul li {
+    width: 100%;
+    padding: 8px 12px;
+  }
+
+  .search-bar {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+    justify-content: space-between;
+  }
+
+  .search-bar input {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 10px 5%;
+  }
+
+  .auth-buttons {
+    flex-wrap: wrap;
+  }
+
+  .search-bar {
+    margin-top: 10px;
+    width: 100%;
+  }
+}

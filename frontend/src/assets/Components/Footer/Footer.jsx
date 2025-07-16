@@ -7,7 +7,7 @@ return (
 <div className='footer'>
 <div className='in_footer section_padding' >
 <div className='footer_links'>
-    {/* for the every section there will be the new page and that page link we will add when we will make there page till then leave it as it is  */}
+
     <div className='footer_links1'>
         <h4>Company</h4>
         <a href='/home'><p>Home</p></a>  
