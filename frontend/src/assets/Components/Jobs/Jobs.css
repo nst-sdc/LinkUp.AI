@@ -1,4 +1,4 @@
-/* Jobs.css */
+
 .jobs-container {
   background-color: #f9fafb;
   min-height: 100vh;
@@ -6,7 +6,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
 }
 
-/* Header Section */
+
 .header-section {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
   padding: 4rem 0 2rem 0;
@@ -68,8 +68,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Search Section - FIXED */
-/* Search Section (outer background remains light) */
+
 .search-section {
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
   padding: 2rem 0 3rem 0;
@@ -87,24 +86,26 @@
   background: linear-gradient(180deg, transparent, #f9fafb);
 }
 
-/* Search Bar (only this part is dark) */
-.search-bar {
-  max-width: 750px;
+
+.search-barr {
+  width:50%; 
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
   gap: 1rem;
   align-items: center;
-  background-color: #0f172a; /* black area */
+  background-color: #0f172a; 
   border-radius: 50px;
   padding: 0.75rem 1.25rem;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Input Styling */
+
 .search-input {
   flex: 1;
-  padding: 0.9rem 1.25rem;
+  min-width: 0;
+  padding: 0.9rem 1rem;
   font-size: 1.05rem;
   border: none;
   border-radius: 40px;
@@ -119,10 +120,10 @@
 
 .search-input:focus {
   outline: none;
-  box-shadow: none; /* No blue focus glow */
+  box-shadow: none; 
 }
 
-/* Search Button */
+
 .search-button {
   padding: 0.85rem 1rem;
   min-width: 48px;
@@ -155,7 +156,7 @@
 
 
 
-/* Screen Reader Only */
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -168,7 +169,7 @@
   border: 0;
 }
 
-/* Main Content */
+
 .jobs-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -178,7 +179,7 @@
   gap: 2rem;
 }
 
-/* Filter Panel */
+
 .filter-panel {
   background-color: white;
   padding: 1.5rem;
@@ -223,7 +224,7 @@
   transform: translateY(-1px);
 }
 
-/* Tabs Section */
+
 .tabs-section {
   margin-bottom: 1.5rem;
   display: flex;
@@ -289,7 +290,7 @@
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
 }
 
-/* Job Listings */
+
 .job-listings {
   min-height: 100vh;
 }
@@ -328,7 +329,7 @@
   }
 }
 
-/* Loading Container */
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -354,14 +355,14 @@
   margin: 0;
 }
 
-/* Jobs Grid */
+
 .jobs-grid {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* Job Card */
+
 .job-card {
   background-color: #eef2ff;
   border: 1px solid #e5e7eb;
@@ -377,7 +378,7 @@
   border-color: #4f46e5;
 }
 
-/* Job Card Header */
+
 .job-card-header {
   display: flex;
   justify-content: space-between;
@@ -428,7 +429,7 @@
   background-color: rgba(245, 158, 11, 0.1);
 }
 
-/* Job Details */
+
 .job-details {
   display: flex;
   flex-direction: column;
@@ -461,7 +462,7 @@
   font-weight: 500;
 }
 
-/* Job Skills */
+
 .job-skills {
   display: flex;
   flex-wrap: wrap;
@@ -483,7 +484,7 @@
   transform: translateY(-1px);
 }
 
-/* Job Description */
+
 .job-description {
   color: #111827;
   font-size: 0.875rem;
@@ -491,7 +492,7 @@
   margin: 0;
 }
 
-/* Job Footer */
+
 .job-footer {
   display: flex;
   justify-content: space-between;
@@ -545,7 +546,7 @@
   cursor: not-allowed;
 }
 
-/* No Results */
+
 .no-results {
   text-align: center;
   padding: 4rem 2rem;
@@ -565,7 +566,7 @@
   line-height: 1.5;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .jobs-content {
     grid-template-columns: 1fr;
@@ -583,6 +584,10 @@
 
   .main-heading {
     font-size: 2.5rem;
+  }
+  .search-barr {
+    width: 100%;
+    max-width: 600px;
   }
 }
 
@@ -604,14 +609,7 @@
     gap: 1rem;
   }
 
-  .search-input {
-    width: 100%;
-  }
-
-  .search-button {
-    width: 100%;
-    padding: 1rem 1.5rem;
-  }
+  
 
   .jobs-content {
     padding: 1rem;
@@ -647,6 +645,19 @@
     width: 100%;
     text-align: center;
   }
+  .search-barr {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 100%;
+  }
+  .search-input,
+  .search-button {
+    width: 100%;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -678,4 +689,10 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.75rem;
   }
+
+  .search-input {
+    font-size: 1rem;
+    padding: 0.65rem 0.9rem;
+  }
+ 
 }

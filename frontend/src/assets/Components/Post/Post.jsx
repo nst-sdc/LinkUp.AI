@@ -18,7 +18,7 @@ const Post = ({ profileData, onBack }) => {
   const [showNotification, setShowNotification] = useState(false);
   const [expandedComments, setExpandedComments] = useState({});
   const [newComments, setNewComments] = useState({});
-  const [activeTab, setActiveTab] = useState('feed'); // 'feed', 'bookmarks', 'connect'
+  const [activeTab, setActiveTab] = useState('feed'); 
 const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 const [suggestedConnections, setSuggestedConnections] = useState([
   {
@@ -59,11 +59,11 @@ const [suggestedConnections, setSuggestedConnections] = useState([
   }
 ]);
 
-  // Firestore posts state
+ 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch posts from Firestore in real-time
+
   useEffect(() => {
     const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -133,7 +133,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     setShowEmojiPanel(false);
   };
 
-  // Save new post to Firestore
+
   const handlePost = async () => {
     if (postData.content.trim()) {
       const newPost = {
@@ -156,7 +156,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
       };
       try {
         await addDoc(collection(db, 'posts'), newPost);
-        // No need to update local state, onSnapshot will update posts
+       
         setPostData({
           content: '',
           image: null,
@@ -173,7 +173,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     }
   };
 
-  // Like/Unlike a post in Firestore
+
   const handleLike = async (postId, liked) => {
     const postRef = doc(db, 'posts', postId);
     await updateDoc(postRef, {
@@ -182,7 +182,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     });
   };
 
-  // Bookmark/Unbookmark a post in Firestore
+ 
   const handleBookmark = async (postId, bookmarked) => {
     const postRef = doc(db, 'posts', postId);
     await updateDoc(postRef, {
@@ -204,7 +204,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     }));
   };
 
-  // Add a comment to a post in Firestore
+ 
   const addComment = async (postId, commentText) => {
     if (!commentText.trim()) return;
     const postRef = doc(db, 'posts', postId);
@@ -274,7 +274,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
 
   return (
     <div className="post-container">
-      {/* Success Notification */}
+     
       {showNotification && (
         <div className="post-success-notification">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -284,7 +284,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         </div>
       )}
 
-      {/* Header */}
+ 
       <div className="post-header">
         <button onClick={onBack} className="back-btn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -297,10 +297,10 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         </div>
       </div>
 
-      {/* Create Post Section */}
+   
       <div className="create-post-section">
         <div className="create-post-card">
-          {/* Author Info */}
+       
           <div className="post-author-info">
             <div className="author-avatar">
               {profileData?.profilePhotoPreview ? (
@@ -333,7 +333,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
             </div>
           </div>
 
-          {/* Post Content Area */}
+      
           <div className="post-content-area">
             <textarea
               value={postData.content}
@@ -342,14 +342,14 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               className="post-textarea"
             />
 
-            {/* Character Counter */}
+       
             <div className="character-counter">
               <span className={postData.content.length > 3000 ? 'over-limit' : ''}>
                 {postData.content.length}/3000
               </span>
             </div>
 
-            {/* Image Preview */}
+          
             {postData.imagePreview && (
               <div className="image-preview">
                 <img src={postData.imagePreview} alt="Post preview" />
@@ -361,7 +361,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             )}
 
-            {/* Location Display */}
+          
             {postData.location && (
               <div className="location-display">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -376,7 +376,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             )}
 
-            {/* Hashtags */}
+      
             {postData.hashtags.length > 0 && (
               <div className="hashtags-display">
                 {postData.hashtags.map((tag, index) => (
@@ -396,7 +396,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             )}
 
-            {/* Emoji Panel */}
+           
             {showEmojiPanel && (
               <div className="emoji-panel">
                 <div className="emoji-grid">
@@ -414,7 +414,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
             )}
           </div>
 
-          {/* Post Actions */}
+         
           <div className="post-actions">
             <div className="post-media-actions">
               <input
@@ -489,8 +489,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         </div>
       </div>
 
-      {/* Posts Feed */}
-      {/* Navigation Tabs */}
+   
 <div className="main-navigation">
   <button 
     className={`nav-tab ${activeTab === 'feed' ? 'active' : ''}`}
@@ -521,7 +520,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
   </button>
 </div>
 
-{/* Feed Tab Content */}
+
 {activeTab === 'feed' && (
   <div className="posts-feed">
     <div className="feed-header">
@@ -537,8 +536,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     ) : (
       posts.map((post) => (
       <div key={post.id} className="post-card">
-        {/* Your existing post rendering code stays exactly the same */}
-        {/* Post Header */}
+        
         <div className="post-header-info">
           <div className="post-author">
             <div className="author-avatar">
@@ -585,7 +583,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </button>
         </div>
 
-        {/* Post Content */}
+      
         <div className="post-content">
           <p>{formatPostContent(post.content)}</p>
           {post.image && (
@@ -595,7 +593,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           )}
         </div>
 
-        {/* Post Stats */}
+       
         <div className="post-stats">
           <div className="stats-left">
             <div className="reaction-icons">
@@ -614,7 +612,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </div>
         </div>
 
-        {/* Post Interactions */}
+       
         <div className="post-interactions">
           <button 
             className={`interaction-btn ${post.liked ? 'liked' : ''}`}
@@ -656,10 +654,10 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </button>
         </div>
 
-        {/* Comments Section */}
+    
         {expandedComments[post.id] && (
           <div className="comments-section">
-            {/* Add Comment */}
+           
             <div className="add-comment">
               <div className="comment-author-avatar">
                 {profileData?.profilePhotoPreview ? (
@@ -690,7 +688,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             </div>
 
-            {/* Comments List */}
+           
             <div className="comments-list">
               {post.comments.map((comment) => (
                 <div key={comment.id} className="comment">
@@ -730,7 +728,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
                       )}
                     </div>
 
-                    {/* Replies */}
+                   
                     {comment.replies && comment.replies.length > 0 && (
                       <div className="comment-replies">
                         {comment.replies.map((reply) => (
@@ -783,7 +781,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
   </div>
 )}
 
-{/* Bookmarks Tab Content */}
+
 {activeTab === 'bookmarks' && (
   <div className="bookmarks-section">
     <div className="section-header">
@@ -843,7 +841,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
   </div>
 )}
 
-{/* Connect Tab Content */}
+
 {activeTab === 'connect' && (
   <div className="connect-section">
     <div className="section-header">

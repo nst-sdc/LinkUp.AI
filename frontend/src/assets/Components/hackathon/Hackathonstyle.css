@@ -9,7 +9,7 @@
   background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 50%, #dbeafe 100%);
 }
 
-/* Hero Section */
+
 .hero-section {
   position: relative;
   overflow: hidden;
@@ -124,7 +124,7 @@
   font-weight: 600;
 }
 
-/* Search Section */
+
 .search-section {
   position: relative;
   margin-top: -48px;
@@ -214,7 +214,7 @@
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-/* Hackathons Section */
+
 .hackathons-section {
   padding: 64px 24px;
 }
@@ -244,8 +244,8 @@
 
 .hackathons-grid {
   display: grid;
-  justify-content: center; /* center cards in grid */
-  grid-template-columns: repeat(auto-fit, minmax(320px, 360px)); /* restrict max width */
+  justify-content: center; 
+  grid-template-columns: repeat(auto-fit, minmax(320px, 360px));
   gap: 32px;
 }
 
@@ -425,7 +425,7 @@
   transform: scale(1.02);
 }
 
-/* CTA Section */
+
 .cta-section {
   background: linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #1e40af 100%);
   padding: 64px 24px;
@@ -497,7 +497,7 @@
   color: #9333ea;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .hackathons-grid {
     grid-template-columns: 1fr;
@@ -531,3 +531,5 @@
     padding: 48px 16px;
   }
 }
+
+

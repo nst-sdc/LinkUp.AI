@@ -85,7 +85,7 @@ const TeamForm = () => {
         alert("Team created successfully!");
       
   
-      // Reset form
+    
       setData({
         teamName: '',
         projectTitle: '',
