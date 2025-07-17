@@ -1,18 +1,19 @@
 import dotenv from "dotenv";
+import axios from "axios";
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
-import axios from "axios";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "https://link-up-ai-pearl.vercel.app",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
@@ -30,14 +31,16 @@ const getUserList = () => {
 };
 
 io.on("connection", (socket) => {
-  console.log(`Client connected: ${socket.id}`);
+  console.log(`New client connected: ${socket.id}`);
 
   socket.on("join", (username) => {
     users[socket.id] = username;
+    console.log(`User ${username} joined with socket ID: ${socket.id}`);
+    
     io.emit("userList", getUserList());
     io.emit("message", {
       user: "System",
-      text: `${username} joined the chat`,
+      text: `${username} has joined the chat`,
       time: new Date().toLocaleTimeString(),
     });
   });
@@ -46,18 +49,20 @@ io.on("connection", (socket) => {
     io.emit("message", {
       user: users[socket.id],
       text: message,
-      time: new Date().toLocaleTimeString(),
+      time: new Date().toLocaleTimeString()
     });
   });
 
   socket.on("private message", ({ recipientId, message }) => {
     const sender = users[socket.id];
+    
     if (users[recipientId]) {
       io.to(recipientId).emit("private message", {
         sender,
         senderId: socket.id,
         message,
         time: new Date().toLocaleTimeString(),
+        isSelf: false
       });
 
       socket.emit("private message", {
@@ -81,10 +86,12 @@ io.on("connection", (socket) => {
     const username = users[socket.id];
     if (username) {
       delete users[socket.id];
+      console.log(`User ${username} disconnected`);
+      
       io.emit("userList", getUserList());
       io.emit("message", {
         user: "System",
-        text: `${username} left the chat`,
+        text: `${username} has left the chat`,
         time: new Date().toLocaleTimeString(),
       });
     }
@@ -92,14 +99,17 @@ io.on("connection", (socket) => {
   });
 });
 
-// Routes
+// Initialize Google Generative AI
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// Routes
 app.get("/", (req, res) => {
-  res.send("Server is running.");
+  res.send("Server is running");
 });
 
 app.get("/tech-news", async (req, res) => {
   const query = req.query.q || "technology";
+  
   try {
     const response = await axios.get(
       `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=${process.env.NEWS_API_KEY}`
@@ -111,26 +121,19 @@ app.get("/tech-news", async (req, res) => {
   }
 });
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
-
 app.post("/generate", async (req, res) => {
   const prompt = req.body.prompt;
   if (!prompt) return res.status(400).json({ error: "Prompt is required" });
-
+  
   try {
-    const result = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 100 },
-    });
-
-    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    
     if (!text) {
       return res.status(500).json({ error: "Gemini returned no response" });
     }
-
+    
     res.json({ response: text });
   } catch (err) {
     console.error("Gemini error:", err.response?.data || err.message);

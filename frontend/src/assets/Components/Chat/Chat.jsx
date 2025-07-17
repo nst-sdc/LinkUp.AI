@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './Chat.css'
-const socket = io('https://linkup-ai.onrender.com');
+const socket = io('http://localhost:4000');
 
 function Chat() {
   const [username, setUsername] = useState('');
