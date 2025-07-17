@@ -82,12 +82,11 @@ const filteredHackathons = hackathons.filter(hackathon => {
   return (
     <>
       <div className="hackathon-container">
-        {/* Hero Section */}
+  
         <div className="hero-section">
           <div className="hero-background"></div>
           <div className="hero-overlay"></div>
-          
-          {/* Animated background elements */}
+       
           <div className="hero-decorations">
             <div className="floating-orb orb-1"></div>
             <div className="floating-orb orb-2"></div>
@@ -118,7 +117,7 @@ const filteredHackathons = hackathons.filter(hackathon => {
           </div>
         </div>
 
-        {/* Search Section */}
+      
         <div className="search-section">
           <div className="search-container">
             <div className="search-card">
@@ -153,7 +152,7 @@ const filteredHackathons = hackathons.filter(hackathon => {
           </div>
         </div>
 
-        {/* Featured Hackathons */}
+      
         <div className="hackathons-section">
           <div className="hackathons-container">
             <h2 className="section-title">
@@ -232,7 +231,7 @@ const filteredHackathons = hackathons.filter(hackathon => {
           </div>
         </div>
 
-        {/* CTA Section */}
+      
         <div className="cta-section">
           <div className="cta-container">
             <h2 className="cta-title">

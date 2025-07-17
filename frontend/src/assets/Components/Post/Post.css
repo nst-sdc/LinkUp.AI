@@ -7,6 +7,7 @@
     margin: 0 auto;
   }
   
+
   .post-header {
     display: flex;
     align-items: center;
@@ -49,6 +50,7 @@
     font-weight: 400;
   }
   
+
   .create-post-section {
     margin-bottom: 32px;
   }
@@ -182,6 +184,7 @@
     font-weight: 600;
   }
   
+
   .image-preview {
     position: relative;
     margin-top: 16px;
@@ -221,6 +224,7 @@
     transform: scale(1.1);
   }
   
+
   .location-display {
     display: flex;
     align-items: center;
@@ -297,6 +301,7 @@
     color: #EF4444;
   }
   
+
   .emoji-panel {
     margin-top: 12px;
     padding: 16px;
@@ -331,6 +336,7 @@
     transform: scale(1.1);
   }
   
+
   .post-actions {
     display: flex;
     justify-content: space-between;
@@ -437,7 +443,7 @@
     transform: none;
     opacity: 0.6;
   }
-  
+
   .post-success-notification {
     position: fixed;
     top: 20px;
@@ -465,7 +471,7 @@
       opacity: 1;
     }
   }
-  
+
   .posts-feed {
     margin-top: 40px;
   }
@@ -651,6 +657,7 @@
     display: block;
   }
   
+
   .post-stats {
     display: flex;
     justify-content: space-between;
@@ -739,6 +746,7 @@
     color: #D1D5DB;
   }
   
+
   .post-interactions {
     display: flex;
     justify-content: space-around;
@@ -794,13 +802,13 @@
   .interaction-btn:hover svg {
     transform: scale(1.1);
   }
-  
+
   .comments-section {
     margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid #F3F4F6;
   }
-  
+
   .add-comment {
     display: flex;
     gap: 12px;
@@ -884,6 +892,7 @@
     opacity: 0.6;
   }
   
+
   .comments-list {
     display: flex;
     flex-direction: column;
@@ -999,7 +1008,7 @@
   .comment-replies {
     margin-top: 8px;
   }
-  
+
   @media (max-width: 768px) {
     .post-container {
       padding: 16px;
@@ -1343,7 +1352,7 @@
   border-color: #4F46E5;
 }
 
-/* Bookmarks Section */
+
 .bookmarks-section {
   max-width: 800px;
   margin: 0 auto;
@@ -1668,6 +1677,7 @@
 .interaction-btn.bookmark.bookmarked svg {
   fill: #4F46E5;
 }
+
 
 @media (max-width: 768px) {
   .main-navigation {

@@ -81,7 +81,7 @@ export default function Home() {
 
   return (
     <div className="home-home-container">
-      {/* Hero Section */}
+    
       <section className="home-hero-section">
         <div className="home-hero-background">
           <div className="home-floating-shapes">
@@ -167,7 +167,7 @@ export default function Home() {
       </section>
 
 
-      {/* Features Section */}
+    
       <section className="home-features-section home-fade-in-section" id = "features">
         <div className="home-container">
           <h2 className="home-section-title home-text-center">Core Features for Students</h2>
@@ -190,7 +190,7 @@ export default function Home() {
       </section>
 
 
-      {/* News Section */}
+     
       <section className="home-news-section home-fade-in-section" id = "news">
         <div className="home-container">
           <h2 className="home-section-title home-text-center">Latest Tech News</h2>

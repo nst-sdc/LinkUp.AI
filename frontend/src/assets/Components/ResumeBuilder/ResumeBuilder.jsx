@@ -6,18 +6,18 @@ import './ResumeBuilder.css';
 const ResumeBuilder = () => {
   const location = useLocation();
   const { profileData = {} } = location.state || {};
-  console.log('profileData in ResumeBuilder:', profileData); // Debug log
+  console.log('profileData in ResumeBuilder:', profileData); 
 
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Helper function to format dates
+
   const formatDate = (date) => {
     if (!date) return 'Present';
     const d = new Date(date);
     return isNaN(d.getTime()) ? 'Invalid Date' : `${d.getMonth() + 1}/${d.getFullYear()}`;
   };
 
-  // Generate PDF content
+ 
   const generatePDF = () => {
     const {
       name = 'Your Name',
@@ -41,13 +41,13 @@ const ResumeBuilder = () => {
     const pageWidth = doc.internal.pageSize.width;
     const contentWidth = pageWidth - (2 * margin);
 
-    // Set font styles
+   
     doc.setFontSize(24);
     doc.setFont(undefined, 'bold');
     doc.text(name, pageWidth / 2, yPosition, { align: 'center' });
     yPosition += 15;
 
-    // Contact information
+   
     doc.setFontSize(12);
     doc.setFont(undefined, 'normal');
     const contactInfo = [];
@@ -63,7 +63,7 @@ const ResumeBuilder = () => {
       yPosition += 10;
     }
 
-    // Bio
+  
     if (bio) {
       doc.setFont(undefined, 'italic');
       const bioLines = doc.splitTextToSize(bio, contentWidth);
@@ -71,7 +71,7 @@ const ResumeBuilder = () => {
       yPosition += (bioLines.length * 7) + 10;
     }
 
-    // Education Section
+   
     doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
     doc.text('Education', margin, yPosition);
@@ -98,7 +98,7 @@ const ResumeBuilder = () => {
       yPosition += 10;
     }
 
-    // Experience Section
+   
     doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
     doc.text('Experience', margin, yPosition);
@@ -129,7 +129,7 @@ const ResumeBuilder = () => {
       yPosition += 10;
     }
 
-    // Projects Section
+   
     doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
     doc.text('Projects', margin, yPosition);
@@ -155,7 +155,7 @@ const ResumeBuilder = () => {
       yPosition += 10;
     }
 
-    // Skills Section
+  
     doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
     doc.text('Skills', margin, yPosition);
@@ -175,7 +175,7 @@ const ResumeBuilder = () => {
       yPosition += 10;
     }
 
-    // Achievements Section
+ 
     doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
     doc.text('Achievements', margin, yPosition);

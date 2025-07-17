@@ -21,8 +21,6 @@ const Post = ({ profileData, onBack }) => {
   const [expandedComments, setExpandedComments] = useState({});
   const [newComments, setNewComments] = useState({});
   const [activeTab, setActiveTab] = useState('feed'); 
-  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
-  const [suggestedConnections, setSuggestedConnections] = useState([
   {
     id: 1,
     name: 'John Smith',
@@ -61,6 +59,7 @@ const Post = ({ profileData, onBack }) => {
   }
 ]);
 
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imageUploading, setImageUploading] = useState(false);
@@ -69,6 +68,7 @@ const Post = ({ profileData, onBack }) => {
   useEffect(() => {
     setBookmarkedPosts(posts.filter(post => post.bookmarked));
   }, [posts]);
+
 
   useEffect(() => {
     const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
@@ -185,6 +185,7 @@ const Post = ({ profileData, onBack }) => {
       };
       try {
         await addDoc(collection(db, 'posts'), newPost);
+
         setPostData({
           content: '',
           image: null,
@@ -200,6 +201,7 @@ const Post = ({ profileData, onBack }) => {
       }
     }
   };
+
 
   const handleLike = async (postId, liked) => {
     const postRef = doc(db, 'posts', postId);
@@ -299,6 +301,7 @@ const Post = ({ profileData, onBack }) => {
 
   return (
     <div className="post-container">
+
       {showNotification && (
         <div className="post-success-notification">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -307,6 +310,7 @@ const Post = ({ profileData, onBack }) => {
           Post published successfully!
         </div>
       )}
+
 
       <div className="post-header">
         <button onClick={onBack} className="back-btn">
@@ -319,8 +323,7 @@ const Post = ({ profileData, onBack }) => {
           <p>Share your professional story with your network</p>
         </div>
       </div>
-      <div className="create-post-section">
-        <div className="create-post-card">
+
           <div className="post-author-info">
             <div className="author-avatar">
               {profileData?.profilePhotoPreview ? (
@@ -352,6 +355,7 @@ const Post = ({ profileData, onBack }) => {
               </div>
             </div>
           </div>
+
           <div className="post-content-area">
             <textarea
               value={postData.content}
@@ -360,11 +364,13 @@ const Post = ({ profileData, onBack }) => {
               className="post-textarea"
             />
 
+
             <div className="character-counter">
               <span className={postData.content.length > 3000 ? 'over-limit' : ''}>
                 {postData.content.length}/3000
               </span>
             </div>
+
 
             {postData.imagePreview && (
               <div className="image-preview">
@@ -396,6 +402,7 @@ const Post = ({ profileData, onBack }) => {
               </div>
             )}
 
+
             {postData.hashtags.length > 0 && (
               <div className="hashtags-display">
                 {postData.hashtags.map((tag, index) => (
@@ -414,6 +421,7 @@ const Post = ({ profileData, onBack }) => {
                 ))}
               </div>
             )}
+
 
             {showEmojiPanel && (
               <div className="emoji-panel">
@@ -537,6 +545,7 @@ const Post = ({ profileData, onBack }) => {
   </button>
 </div>
 
+
 {activeTab === 'feed' && (
   <div className="posts-feed">
     <div className="feed-header">
@@ -552,6 +561,7 @@ const Post = ({ profileData, onBack }) => {
     ) : (
       posts.map((post) => (
       <div key={post.id} className="post-card">
+
         <div className="post-header-info">
           <div className="post-author">
             <div className="author-avatar">
@@ -606,6 +616,7 @@ const Post = ({ profileData, onBack }) => {
             </div>
           )}
         </div>
+
 
         <div className="post-stats">
           <div className="stats-left">
@@ -666,8 +677,7 @@ const Post = ({ profileData, onBack }) => {
           </button>
         </div>
 
-        {expandedComments[post.id] && (
-          <div className="comments-section">
+
             <div className="add-comment">
               <div className="comment-author-avatar">
                 {profileData?.profilePhotoPreview ? (
@@ -737,6 +747,7 @@ const Post = ({ profileData, onBack }) => {
                         <span className="comment-likes">{comment.likes} likes</span>
                       )}
                     </div>
+
 
                     {comment.replies && comment.replies.length > 0 && (
                       <div className="comment-replies">
