@@ -7,7 +7,7 @@
     margin: 0 auto;
   }
   
-  
+
   .post-header {
     display: flex;
     align-items: center;
@@ -50,7 +50,7 @@
     font-weight: 400;
   }
   
-  
+
   .create-post-section {
     margin-bottom: 32px;
   }
@@ -138,8 +138,7 @@
   .visibility-select:hover {
     color: #111827;
   }
-  
- 
+
   .post-content-area {
     margin-bottom: 20px;
   }
@@ -171,8 +170,7 @@
     color: #9CA3AF;
     font-weight: 400;
   }
-  
- 
+
   .character-counter {
     display: flex;
     justify-content: flex-end;
@@ -186,7 +184,7 @@
     font-weight: 600;
   }
   
- 
+
   .image-preview {
     position: relative;
     margin-top: 16px;
@@ -259,7 +257,6 @@
     color: #EF4444;
   }
   
- 
   .hashtags-display {
     display: flex;
     flex-wrap: wrap;
@@ -304,7 +301,7 @@
     color: #EF4444;
   }
   
-  
+
   .emoji-panel {
     margin-top: 12px;
     padding: 16px;
@@ -339,7 +336,7 @@
     transform: scale(1.1);
   }
   
- 
+
   .post-actions {
     display: flex;
     justify-content: space-between;
@@ -446,8 +443,7 @@
     transform: none;
     opacity: 0.6;
   }
-  
- 
+
   .post-success-notification {
     position: fixed;
     top: 20px;
@@ -475,8 +471,7 @@
       opacity: 1;
     }
   }
-  
- 
+
   .posts-feed {
     margin-top: 40px;
   }
@@ -524,8 +519,7 @@
     color: white;
     border-color: #111827;
   }
-  
-  
+
   .post-card {
     background: white;
     border-radius: 16px;
@@ -625,7 +619,6 @@
     color: #6B7280;
   }
   
- 
   .post-content {
     margin-bottom: 16px;
   }
@@ -664,7 +657,7 @@
     display: block;
   }
   
- 
+
   .post-stats {
     display: flex;
     justify-content: space-between;
@@ -753,7 +746,7 @@
     color: #D1D5DB;
   }
   
-  
+
   .post-interactions {
     display: flex;
     justify-content: space-around;
@@ -809,14 +802,12 @@
   .interaction-btn:hover svg {
     transform: scale(1.1);
   }
-  
- 
+
   .comments-section {
     margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid #F3F4F6;
   }
-  
 
   .add-comment {
     display: flex;
@@ -901,7 +892,7 @@
     opacity: 0.6;
   }
   
- 
+
   .comments-list {
     display: flex;
     flex-direction: column;
@@ -1017,8 +1008,7 @@
   .comment-replies {
     margin-top: 8px;
   }
-  
-  
+
   @media (max-width: 768px) {
     .post-container {
       padding: 16px;
@@ -1270,7 +1260,7 @@
   .comment-input::-webkit-scrollbar-thumb:hover {
     background: #9CA3AF;
   }
-  
+
 .main-navigation {
   display: flex;
   justify-content: center;
@@ -1315,7 +1305,6 @@
   width: 18px;
   height: 18px;
 }
-
 
 .feed-header {
   display: flex;
@@ -1503,7 +1492,6 @@
   color: #4338CA;
 }
 
-
 .connect-section {
   max-width: 1200px;
   margin: 0 auto;
@@ -1677,7 +1665,6 @@
   width: 14px;
   height: 14px;
 }
-
 
 .interaction-btn.bookmark {
   position: relative;

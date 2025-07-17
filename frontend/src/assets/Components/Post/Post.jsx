@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Post.css';
 import { db } from '../../../firebase';
 import { collection, addDoc, onSnapshot, Timestamp, query, orderBy, doc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
+import { uploadToCloudinary } from '../../../utils/cloudinary';
+
 
 const Post = ({ profileData, onBack }) => {
   const [postData, setPostData] = useState({
@@ -12,15 +14,13 @@ const Post = ({ profileData, onBack }) => {
     visibility: 'public',
     location: ''
   });
-
+  
   const [newHashtag, setNewHashtag] = useState('');
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [expandedComments, setExpandedComments] = useState({});
   const [newComments, setNewComments] = useState({});
   const [activeTab, setActiveTab] = useState('feed'); 
-const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
-const [suggestedConnections, setSuggestedConnections] = useState([
   {
     id: 1,
     name: 'John Smith',
@@ -59,9 +59,15 @@ const [suggestedConnections, setSuggestedConnections] = useState([
   }
 ]);
 
- 
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [imageUploadProgress, setImageUploadProgress] = useState(0);
+
+  useEffect(() => {
+    setBookmarkedPosts(posts.filter(post => post.bookmarked));
+  }, [posts]);
 
 
   useEffect(() => {
@@ -86,17 +92,36 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     }));
   };
 
-  const handleImageUpload = (file) => {
+  const handleImageUpload = async (file) => {
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
+      setImageUploading(true);
+      setImageUploadProgress(0);
+      try {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setPostData(prev => ({
+            ...prev,
+            imagePreview: e.target.result
+          }));
+        };
+        reader.readAsDataURL(file);
+
+        const cloudinaryUrl = await uploadToCloudinary(
+          file,
+          (progress) => setImageUploadProgress(progress),
+          'post-images'
+        );
         setPostData(prev => ({
           ...prev,
-          image: file,
-          imagePreview: e.target.result
+          image: cloudinaryUrl
         }));
-      };
-      reader.readAsDataURL(file);
+      } catch (error) {
+        alert(error.message || 'Failed to upload image.');
+        setPostData(prev => ({ ...prev, image: null, imagePreview: null }));
+      } finally {
+        setImageUploading(false);
+        setImageUploadProgress(0);
+      }
     }
   };
 
@@ -133,9 +158,13 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     setShowEmojiPanel(false);
   };
 
-
   const handlePost = async () => {
-    if (postData.content.trim()) {
+    if (postData.content.trim() && !imageUploading) {
+      let imageUrl = postData.image || null;
+      if (postData.imagePreview && !imageUrl) {
+        alert('Please wait for the image to finish uploading.');
+        return;
+      }
       const newPost = {
         author: {
           name: profileData?.name || 'You',
@@ -144,7 +173,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           verified: false
         },
         content: postData.content,
-        image: postData.imagePreview,
+        image: imageUrl,
         hashtags: postData.hashtags,
         createdAt: Timestamp.now(),
         likes: 0,
@@ -156,7 +185,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
       };
       try {
         await addDoc(collection(db, 'posts'), newPost);
-       
+
         setPostData({
           content: '',
           image: null,
@@ -182,7 +211,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     });
   };
 
- 
   const handleBookmark = async (postId, bookmarked) => {
     const postRef = doc(db, 'posts', postId);
     await updateDoc(postRef, {
@@ -204,7 +232,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     }));
   };
 
- 
   const addComment = async (postId, commentText) => {
     if (!commentText.trim()) return;
     const postRef = doc(db, 'posts', postId);
@@ -274,7 +301,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
 
   return (
     <div className="post-container">
-     
+
       {showNotification && (
         <div className="post-success-notification">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -284,7 +311,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         </div>
       )}
 
- 
+
       <div className="post-header">
         <button onClick={onBack} className="back-btn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -297,10 +324,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
         </div>
       </div>
 
-   
-      <div className="create-post-section">
-        <div className="create-post-card">
-       
           <div className="post-author-info">
             <div className="author-avatar">
               {profileData?.profilePhotoPreview ? (
@@ -333,7 +356,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
             </div>
           </div>
 
-      
           <div className="post-content-area">
             <textarea
               value={postData.content}
@@ -342,14 +364,14 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               className="post-textarea"
             />
 
-       
+
             <div className="character-counter">
               <span className={postData.content.length > 3000 ? 'over-limit' : ''}>
                 {postData.content.length}/3000
               </span>
             </div>
 
-          
+
             {postData.imagePreview && (
               <div className="image-preview">
                 <img src={postData.imagePreview} alt="Post preview" />
@@ -358,10 +380,14 @@ const [suggestedConnections, setSuggestedConnections] = useState([
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                   </svg>
                 </button>
+                {imageUploading && (
+                  <div style={{ marginTop: '8px', color: '#6366F1', fontWeight: 500 }}>
+                    Uploading: {imageUploadProgress}%
+                  </div>
+                )}
               </div>
             )}
 
-          
             {postData.location && (
               <div className="location-display">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -376,7 +402,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             )}
 
-      
+
             {postData.hashtags.length > 0 && (
               <div className="hashtags-display">
                 {postData.hashtags.map((tag, index) => (
@@ -396,7 +422,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             )}
 
-           
+
             {showEmojiPanel && (
               <div className="emoji-panel">
                 <div className="emoji-grid">
@@ -414,7 +440,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
             )}
           </div>
 
-         
           <div className="post-actions">
             <div className="post-media-actions">
               <input
@@ -480,16 +505,16 @@ const [suggestedConnections, setSuggestedConnections] = useState([
 
             <button 
               onClick={handlePost} 
-              className={`post-btn ${!postData.content.trim() ? 'disabled' : ''}`}
-              disabled={!postData.content.trim()}
+              className={`post-btn ${!postData.content.trim() || imageUploading ? 'disabled' : ''}`}
+              disabled={!postData.content.trim() || imageUploading}
             >
-              Post
+              {imageUploading ? 'Uploading Image...' : 'Post'}
             </button>
           </div>
         </div>
       </div>
 
-   
+
 <div className="main-navigation">
   <button 
     className={`nav-tab ${activeTab === 'feed' ? 'active' : ''}`}
@@ -536,7 +561,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
     ) : (
       posts.map((post) => (
       <div key={post.id} className="post-card">
-        
+
         <div className="post-header-info">
           <div className="post-author">
             <div className="author-avatar">
@@ -561,7 +586,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
               <p className="author-title">{post.author.title}</p>
               <div className="post-meta">
-                <span className="post-time">{post.createdAt?.toDate().toLocaleDateString()}</span>
+                <span className="post-time">{post.createdAt?.toDate().toLocaleString()}</span>
                 {post.location && (
                   <>
                     <span className="meta-separator">•</span>
@@ -583,7 +608,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </button>
         </div>
 
-      
         <div className="post-content">
           <p>{formatPostContent(post.content)}</p>
           {post.image && (
@@ -593,7 +617,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           )}
         </div>
 
-       
+
         <div className="post-stats">
           <div className="stats-left">
             <div className="reaction-icons">
@@ -612,7 +636,6 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </div>
         </div>
 
-       
         <div className="post-interactions">
           <button 
             className={`interaction-btn ${post.liked ? 'liked' : ''}`}
@@ -654,10 +677,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
           </button>
         </div>
 
-    
-        {expandedComments[post.id] && (
-          <div className="comments-section">
-           
+
             <div className="add-comment">
               <div className="comment-author-avatar">
                 {profileData?.profilePhotoPreview ? (
@@ -688,7 +708,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
               </div>
             </div>
 
-           
+
             <div className="comments-list">
               {post.comments.map((comment) => (
                 <div key={comment.id} className="comment">
@@ -728,7 +748,7 @@ const [suggestedConnections, setSuggestedConnections] = useState([
                       )}
                     </div>
 
-                   
+
                     {comment.replies && comment.replies.length > 0 && (
                       <div className="comment-replies">
                         {comment.replies.map((reply) => (
