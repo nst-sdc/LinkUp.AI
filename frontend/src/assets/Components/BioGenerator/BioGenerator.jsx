@@ -23,7 +23,8 @@ export default function BioGenerator() {
     setBioResult('');
 
     try {
-      const prompt = `Write a concise, professional LinkedIn bio in 50 words or less. Use clear and simple language. Here is some info: ${userInput}`;
+      const prompt = `Write a single, concise, professional LinkedIn bio in 50 words or fewer. Do not provide multiple options. Use clear, simple language. Here is the user info: ${userInput}`;
+
 
       const response = await fetch('http://localhost:4000/generate', {
         method: 'POST',

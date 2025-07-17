@@ -7,7 +7,7 @@
     margin: 0 auto;
   }
   
-  /* Header Section */
+  
   .post-header {
     display: flex;
     align-items: center;
@@ -50,7 +50,7 @@
     font-weight: 400;
   }
   
-  /* Create Post Section */
+  
   .create-post-section {
     margin-bottom: 32px;
   }
@@ -139,7 +139,7 @@
     color: #111827;
   }
   
-  /* Post Content Area */
+ 
   .post-content-area {
     margin-bottom: 20px;
   }
@@ -172,7 +172,7 @@
     font-weight: 400;
   }
   
-  /* Character Counter */
+ 
   .character-counter {
     display: flex;
     justify-content: flex-end;
@@ -186,7 +186,7 @@
     font-weight: 600;
   }
   
-  /* Image Preview */
+ 
   .image-preview {
     position: relative;
     margin-top: 16px;
@@ -226,7 +226,7 @@
     transform: scale(1.1);
   }
   
-  /* Location Display */
+
   .location-display {
     display: flex;
     align-items: center;
@@ -259,7 +259,7 @@
     color: #EF4444;
   }
   
-  /* Hashtags Display */
+ 
   .hashtags-display {
     display: flex;
     flex-wrap: wrap;
@@ -304,7 +304,7 @@
     color: #EF4444;
   }
   
-  /* Emoji Panel */
+  
   .emoji-panel {
     margin-top: 12px;
     padding: 16px;
@@ -339,7 +339,7 @@
     transform: scale(1.1);
   }
   
-  /* Post Actions */
+ 
   .post-actions {
     display: flex;
     justify-content: space-between;
@@ -447,7 +447,7 @@
     opacity: 0.6;
   }
   
-  /* Success Notification */
+ 
   .post-success-notification {
     position: fixed;
     top: 20px;
@@ -476,7 +476,7 @@
     }
   }
   
-  /* Posts Feed */
+ 
   .posts-feed {
     margin-top: 40px;
   }
@@ -525,7 +525,7 @@
     border-color: #111827;
   }
   
-  /* Post Cards */
+  
   .post-card {
     background: white;
     border-radius: 16px;
@@ -625,7 +625,7 @@
     color: #6B7280;
   }
   
-  /* Post Content */
+ 
   .post-content {
     margin-bottom: 16px;
   }
@@ -664,7 +664,7 @@
     display: block;
   }
   
-  /* Post Stats */
+ 
   .post-stats {
     display: flex;
     justify-content: space-between;
@@ -753,7 +753,7 @@
     color: #D1D5DB;
   }
   
-  /* Post Interactions */
+  
   .post-interactions {
     display: flex;
     justify-content: space-around;
@@ -810,14 +810,14 @@
     transform: scale(1.1);
   }
   
-  /* Comments Section */
+ 
   .comments-section {
     margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid #F3F4F6;
   }
   
-  /* Add Comment */
+
   .add-comment {
     display: flex;
     gap: 12px;
@@ -901,7 +901,7 @@
     opacity: 0.6;
   }
   
-  /* Comments List */
+ 
   .comments-list {
     display: flex;
     flex-direction: column;
@@ -1018,7 +1018,7 @@
     margin-top: 8px;
   }
   
-  /* Responsive Design */
+  
   @media (max-width: 768px) {
     .post-container {
       padding: 16px;
@@ -1270,7 +1270,7 @@
   .comment-input::-webkit-scrollbar-thumb:hover {
     background: #9CA3AF;
   }
-  /* Navigation Tabs */
+  
 .main-navigation {
   display: flex;
   justify-content: center;
@@ -1316,7 +1316,7 @@
   height: 18px;
 }
 
-/* Feed Header */
+
 .feed-header {
   display: flex;
   justify-content: space-between;
@@ -1363,7 +1363,7 @@
   border-color: #4F46E5;
 }
 
-/* Bookmarks Section */
+
 .bookmarks-section {
   max-width: 800px;
   margin: 0 auto;
@@ -1503,7 +1503,7 @@
   color: #4338CA;
 }
 
-/* Connect Section */
+
 .connect-section {
   max-width: 1200px;
   margin: 0 auto;
@@ -1678,7 +1678,7 @@
   height: 14px;
 }
 
-/* Bookmark button styling */
+
 .interaction-btn.bookmark {
   position: relative;
 }
@@ -1691,7 +1691,7 @@
   fill: #4F46E5;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .main-navigation {
     flex-direction: column;

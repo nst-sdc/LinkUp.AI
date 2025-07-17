@@ -9,7 +9,6 @@ import UploadProgress from './UploadProgress';
 const Profile = ({ onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [profileData, setProfileData] = useState({
-    // Personal Information
     name: '',
     email: '',
     mobile: '',
@@ -17,32 +16,32 @@ const Profile = ({ onSubmit }) => {
     profilePhoto: null,
     profilePhotoPreview: null,
     
-    // Social Links
+ 
     linkedIn: '',
     github: '',
     leetcode: '',
     portfolioWebsite: '',
     
-    // Files
+  
     certificates: [],
     
-    // Skills
+   
     skills: [],
     
-    // Projects
+  
     projects: [],
     
-    // Education
+  
     education: [],
     
-    // Experience
+  
     experience: [],
     
-    // Co-curricular Achievements
+  
     achievements: []
   });
 
-  // Upload progress states
+ 
   const [uploadProgress, setUploadProgress] = useState({
     profilePhoto: 0,
     certificates: {},
@@ -394,26 +393,26 @@ const Profile = ({ onSubmit }) => {
   };
 
   const handleSubmit = async () => {
-    console.log('Profile Data Submitted:', profileData); // Debug log
+    console.log('Profile Data Submitted:', profileData); 
     
-    // Validate that required fields are filled
+   
     if (!profileData.name || !profileData.email || !profileData.mobile) {
       alert('Please fill in all required fields (Name, Email, Mobile)');
       return;
     }
     
-    // Prepare data for Firebase (including Cloudinary URLs)
+   
     const profileDataForFirebase = {
-      // Personal Information (including profile photo URL)
+     
       personalInfo: {
         name: profileData.name,
         email: profileData.email,
         mobile: profileData.mobile,
         bio: profileData.bio,
-        profilePhoto: profileData.profilePhoto || null // Store Cloudinary URL
+        profilePhoto: profileData.profilePhoto || null
       },
       
-      // Social Links
+    
       socialLinks: {
         linkedIn: profileData.linkedIn,
         github: profileData.github,
@@ -421,42 +420,42 @@ const Profile = ({ onSubmit }) => {
         portfolioWebsite: profileData.portfolioWebsite
       },
       
-      // Skills
+    
       skills: profileData.skills,
       
-      // Certificates (with Cloudinary URLs)
+     
       certificates: profileData.certificates
-        .filter(cert => cert.url) // Only include certificates that have been uploaded
+        .filter(cert => cert.url) 
         .map(cert => ({
           name: cert.name,
           url: cert.url,
           uploadedAt: Timestamp.now()
         })),
       
-      // Projects (including image URLs)
+     
       projects: profileData.projects.map(project => ({
         name: project.name,
         description: project.description,
         hostedLink: project.hostedLink || null,
         githubLink: project.githubLink || null,
-        image: project.image || null, // Store Cloudinary URL
+        image: project.image || null, 
         createdAt: Timestamp.now()
       })),
       
-      // Education
+     
       education: profileData.education,
       
-      // Experience
+   
       experience: profileData.experience,
       
-      // Achievements
+     
       achievements: profileData.achievements,
       
-      // Metadata
+   
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
       
-      // Upload statistics
+     
       uploadStats: {
         totalCertificates: profileData.certificates.filter(cert => cert.url).length,
         totalProjects: profileData.projects.length,
@@ -466,7 +465,7 @@ const Profile = ({ onSubmit }) => {
 
     console.log("📤 Submitting profile data to Firestore:", profileDataForFirebase);
     
-    // Log Cloudinary URLs for verification
+   
     console.log("🔗 Cloudinary URLs being saved:");
     if (profileDataForFirebase.personalInfo.profilePhoto) {
       console.log("Profile Photo:", profileDataForFirebase.personalInfo.profilePhoto);
@@ -482,10 +481,10 @@ const Profile = ({ onSubmit }) => {
       const docRef = await addDoc(collection(db, 'profiles'), profileDataForFirebase);
       console.log("Profile document written with ID: ", docRef.id);
       
-      // Call the original onSubmit function
+     
       onSubmit(profileData);
       
-      // Show detailed success message
+     
       const uploadStats = profileDataForFirebase.uploadStats;
       let successMessage = 'Profile saved successfully!';
       
@@ -525,7 +524,7 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Personal Information</h2>
       
-      {/* Profile Photo Section */}
+    
       <div className="profile-photo-section">
         <div className="profile-photo-preview">
           {profileData.profilePhotoPreview ? (
@@ -650,7 +649,7 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Skills & Documents</h2>
       
-      {/* Skills */}
+     
       <div className="form-group">
         <label>Skills *</label>
         <div className="skills-input">
@@ -683,7 +682,7 @@ const Profile = ({ onSubmit }) => {
         )}
       </div>
 
-      {/* Certificates Upload */}
+     
       <div className="form-group">
         <label>Upload Certificates (Optional)</label>
         <div className="file-upload">
@@ -702,7 +701,7 @@ const Profile = ({ onSubmit }) => {
           </label>
         </div>
         
-        {/* Upload Progress for Certificates */}
+        
         {Object.keys(uploadProgress.certificates).length > 0 && (
           <div className="upload-progress-list">
             {profileData.certificates
@@ -741,7 +740,7 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Projects</h2>
       
-      {/* Add New Project */}
+     
       <div className="form-grid">
         <div className="form-group">
           <label>Project Name *</label>
@@ -811,7 +810,7 @@ const Profile = ({ onSubmit }) => {
         + Add Project
       </button>
 
-      {/* Projects List */}
+    
       {profileData.projects.length > 0 && (
         <div className="projects-list">
           {profileData.projects.map((project) => (
@@ -859,7 +858,7 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Education</h2>
       
-      {/* Add New Education */}
+   
       <div className="form-grid">
         <div className="form-group">
           <label>Institution *</label>
@@ -919,7 +918,7 @@ const Profile = ({ onSubmit }) => {
         + Add Education
       </button>
 
-      {/* Education List */}
+  
       {profileData.education.length > 0 && (
         <div className="dynamic-list">
           {profileData.education.map((edu) => (
@@ -952,7 +951,7 @@ const Profile = ({ onSubmit }) => {
     <div className="form-section">
       <h2>Experience & Achievements</h2>
       
-      {/* Experience Section */}
+     
       <div style={{marginBottom: '2rem'}}>
         <h3 style={{color: '#111827', fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem'}}>Work Experience</h3>
         
@@ -1042,7 +1041,7 @@ const Profile = ({ onSubmit }) => {
         )}
       </div>
 
-      {/* Achievements Section */}
+     
       <div>
         <h3 style={{color: '#111827', fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem'}}>Co-curricular Achievements</h3>
         

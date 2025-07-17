@@ -3,7 +3,7 @@ import './Jobs.css';
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('all'); // 'all', 'bookmarked', 'visited'
+  const [activeTab, setActiveTab] = useState('all'); 
   const [filters, setFilters] = useState({
     location: '',
     experience: '',
@@ -18,7 +18,7 @@ const Jobs = () => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Sample job data with real URLs and work modes
+ 
   const generateJobs = useCallback(() => {
     const jobTemplates = [
       {
@@ -175,19 +175,19 @@ const Jobs = () => {
     return times[Math.floor(Math.random() * times.length)];
   };
 
-  // Generate correct platform URL based on job details
+ 
   const generatePlatformUrl = (job) => {
     const { platform, jobCategory, workMode, type, title, location } = job;
     
     try {
       if (platform === 'Internshala') {
-        // For Internshala, create specific URLs based on job type and work mode
+       
         if (type === 'Internship') {
           const workModePrefix = workMode === 'Work from Home' ? 'work-from-home-' : '';
           const categoryPath = `${jobCategory.replace('-', '-')}-internship`;
           return `https://internshala.com/internships/${workModePrefix}${categoryPath}`;
         } else {
-          // For full-time jobs
+       
           const workModePrefix = workMode === 'Work from Home' ? 'work-from-home-' : '';
           const categoryPath = `${jobCategory.replace('-', '-')}-jobs`;
           return `https://internshala.com/jobs/${workModePrefix}${categoryPath}`;
@@ -195,25 +195,25 @@ const Jobs = () => {
       } 
       
       else if (platform === 'LinkedIn') {
-        // For LinkedIn, create search URLs with keywords and filters
-        const searchTerm = encodeURIComponent(title.split(' ')[0]); // Use first word of title
+     
+        const searchTerm = encodeURIComponent(title.split(' ')[0]); 
         const locationParam = workMode === 'Work from Home' ? 'Remote' : encodeURIComponent(location);
         return `https://www.linkedin.com/jobs/search/?keywords=${searchTerm}&location=${locationParam}`;
       } 
       
       else if (platform === 'Cutshort') {
-        // For Cutshort, create category-based URLs
+     
         const categoryPath = jobCategory.replace('-', '-');
         const workModeFilter = workMode === 'Work from Home' ? '-remote' : '';
         return `https://cutshort.io/jobs/${categoryPath}${workModeFilter}`;
       } 
       
       else if (platform === 'Unstop') {
-        // For Unstop, always use the single URL
+     
         return 'https://unstop.com/job-portal';
       }
       
-      // Fallback URLs if specific URL generation fails
+  
       const fallbackUrls = {
         'Internshala': 'https://internshala.com/jobs/',
         'LinkedIn': 'https://www.linkedin.com/jobs/',
@@ -224,7 +224,7 @@ const Jobs = () => {
       return fallbackUrls[platform] || 'https://www.google.com/search?q=jobs';
       
     } catch {
-      // If any error occurs, return fallback URL
+  
       const fallbackUrls = {
         'Internshala': 'https://internshala.com/jobs/',
         'LinkedIn': 'https://www.linkedin.com/jobs/',
@@ -236,7 +236,7 @@ const Jobs = () => {
     }
   };
 
-  // Simulate real-time job updates
+
   useEffect(() => {
     const fetchJobs = () => {
       setLoading(true);
@@ -248,7 +248,7 @@ const Jobs = () => {
 
     fetchJobs();
 
-    // Simulate new jobs being added every 30 seconds
+ 
     const interval = setInterval(() => {
       const newJob = generateJobs()[Math.floor(Math.random() * 10)];
       setJobs(prev => [{ ...newJob, id: Date.now() }, ...prev]);
@@ -260,14 +260,14 @@ const Jobs = () => {
   const filterJobs = useCallback(() => {
     let filtered = jobs;
 
-    // Filter by tab
+   
     if (activeTab === 'bookmarked') {
       filtered = jobs.filter(job => bookmarkedJobs.has(job.id));
     } else if (activeTab === 'visited') {
       filtered = jobs.filter(job => visitedJobs.has(job.id));
     }
 
-    // Apply search and filter criteria
+   
     filtered = filtered.filter(job => {
       const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -297,9 +297,9 @@ const Jobs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call your search function using searchTerm
+  
     console.log("Searching for:", searchTerm);
-    // You can trigger an API call or filter jobs here
+  
   };
   
 
@@ -324,9 +324,9 @@ const Jobs = () => {
 
   const applyToJob = (job) => {
     setVisitedJobs(prev => new Set([...prev, job.id]));
-    // Generate the correct platform URL and open it
+  
     const platformUrl = generatePlatformUrl(job);
-    console.log(`Redirecting to: ${platformUrl}`); // For debugging
+    console.log(`Redirecting to: ${platformUrl}`); 
     window.open(platformUrl, '_blank');
   };
 
@@ -353,7 +353,7 @@ const Jobs = () => {
 
   return (
     <div className="jobs-container">
-      {/* Header Section */}
+    
       <div className="header-section">
         <div className="header-content">
           <h1 className="main-heading">Find Your Dream Job</h1>
@@ -361,30 +361,10 @@ const Jobs = () => {
         </div>
       </div>
 
-      {/* Search Section */}
-      {/* <div className="search-section">
-        <div className="search-container">
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search for jobs, companies, or skills..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="search-input"
-            />
-            <button type="button" className="search-button">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div> */}
-
+      
 <div className="search-section">
   <div className="search-container">
-    <form className="search-bar" onSubmit={handleSubmit}>
+    <form className="search-barr" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Search for jobs, companies, or skills..."
@@ -412,14 +392,14 @@ const Jobs = () => {
 
 
       <div className="jobs-content">
-        {/* Filter Panel */}
+      
         <div className="filter-panel">
           <div className="filter-header">
             <h3>Filters</h3>
             <button onClick={clearFilters} className="clear-filters">Clear All</button>
           </div>
 
-          {/* Tabs */}
+      
           <div className="tabs-section">
             <button
               onClick={() => setActiveTab('all')}
@@ -505,7 +485,7 @@ const Jobs = () => {
           </div>
         </div>
 
-        {/* Job Listings */}
+    
         <div className="job-listings">
           <div className="results-header">
             <h2>

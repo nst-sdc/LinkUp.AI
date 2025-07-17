@@ -81,7 +81,7 @@
    .news-link:hover .link-arrow {
     transform: translateX(2px);
   }
-   /* Loading state for images */
+ 
   .news-image[src=""], .news-image:not([src]) {
     display: none;
   }
@@ -98,7 +98,7 @@
     font-size: 3rem;
     opacity: 0.3;
   }
-   /* Responsive adjustments */
+
   @media (max-width: 768px) {
     .news-image-container {
       height: 180px;

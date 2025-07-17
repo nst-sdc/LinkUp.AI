@@ -25,82 +25,84 @@ const users = {};
 
 const getUserList = () => {
   return Object.keys(users).map(id => ({
-    id: id,
-    username: users[id]
+    id,
+    username: users[id],
   }));
 };
 
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   console.log(`New client connected: ${socket.id}`);
 
-  socket.on('join', (username) => {
+  socket.on("join", (username) => {
     users[socket.id] = username;
     console.log(`User ${username} joined with socket ID: ${socket.id}`);
     
-    io.emit('userList', getUserList());
-    io.emit('message', {
-      user: 'System',
+    io.emit("userList", getUserList());
+    io.emit("message", {
+      user: "System",
       text: `${username} has joined the chat`,
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleTimeString(),
     });
   });
 
-  socket.on('sendMessage', (message) => {
-    io.emit('message', {
+  socket.on("sendMessage", (message) => {
+    io.emit("message", {
       user: users[socket.id],
       text: message,
       time: new Date().toLocaleTimeString()
     });
   });
 
-  socket.on('disconnect', () => {
+  socket.on("private message", ({ recipientId, message }) => {
+    const sender = users[socket.id];
+    
+    if (users[recipientId]) {
+      io.to(recipientId).emit("private message", {
+        sender,
+        senderId: socket.id,
+        message,
+        time: new Date().toLocaleTimeString(),
+        isSelf: false
+      });
+
+      socket.emit("private message", {
+        sender,
+        senderId: socket.id,
+        recipientId,
+        message,
+        time: new Date().toLocaleTimeString(),
+        isSelf: true,
+      });
+    } else {
+      socket.emit("error", "User not found or offline");
+    }
+  });
+
+  socket.on("request users", () => {
+    socket.emit("userList", getUserList());
+  });
+
+  socket.on("disconnect", () => {
     const username = users[socket.id];
     if (username) {
       delete users[socket.id];
       console.log(`User ${username} disconnected`);
       
-      io.emit('userList', getUserList());
-      io.emit('message', {
-        user: 'System',
+      io.emit("userList", getUserList());
+      io.emit("message", {
+        user: "System",
         text: `${username} has left the chat`,
-        time: new Date().toLocaleTimeString()
+        time: new Date().toLocaleTimeString(),
       });
     }
     console.log(`Client disconnected: ${socket.id}`);
   });
-
-  socket.on('private message', ({ recipientId, message }) => {
-    const sender = users[socket.id];
-    
-    if (users[recipientId]) {
-      io.to(recipientId).emit('private message', {
-        sender: sender,
-        senderId: socket.id,
-        message: message,
-        time: new Date().toLocaleTimeString(),
-        isSelf: false
-      });
-      
-      socket.emit('private message', {
-        sender: sender,
-        senderId: socket.id,
-        recipientId: recipientId,
-        message: message,
-        time: new Date().toLocaleTimeString(),
-        isSelf: true
-      });
-    } else {
-      socket.emit('error', 'User not found or offline');
-    }
-  });
-
-  socket.on('request users', () => {
-    socket.emit('userList', getUserList());
-  });
 });
 
+// Initialize Google Generative AI
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// Routes
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
@@ -145,5 +147,3 @@ server.listen(PORT, () => {
 });
 
 export default app;
-
-

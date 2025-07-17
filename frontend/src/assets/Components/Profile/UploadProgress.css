@@ -4,6 +4,9 @@
   border-radius: 8px;
   padding: 12px;
   margin: 8px 0;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .upload-progress-header {
@@ -11,6 +14,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .upload-filename {
@@ -21,6 +26,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 200px;
+  flex: 1;
 }
 
 .upload-cancel-btn {
@@ -28,14 +34,16 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: bold;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
 }
 
 .upload-cancel-btn:hover {
@@ -63,4 +71,25 @@
   color: #6b7280;
   text-align: center;
   font-weight: 500;
+  word-break: break-word;
 }
+
+@media (max-width: 768px) {
+  .upload-progress-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .upload-filename {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .upload-cancel-btn {
+    margin-top: 4px;
+  }
+}
+
+
+
+
