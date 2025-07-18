@@ -20,7 +20,10 @@ function Login() {
     setIsLoading(true);
 
     try {
+      localStorage.removeItem("profileData");
+      localStorage.removeItem("currentStep");
       await signInWithEmailAndPassword(auth, email, password);
+     
       navigate("/profile");
     } catch (err) {
       console.error(err);

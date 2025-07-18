@@ -23,6 +23,7 @@ import CreateEventForm from './assets/Components/Webinar/EventForm';
 import Chat from './assets/Components/Chat/Chat'
 
 import { auth } from "./firebase";
+
 import { onAuthStateChanged } from "firebase/auth";
 
 
