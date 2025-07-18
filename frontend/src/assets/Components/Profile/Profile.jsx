@@ -688,7 +688,7 @@ const Profile = ({ onSubmit }) => {
         <div className="file-upload">
           <input
             type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
+            accept="image/*"
             multiple
             onChange={(e) => {
               handleFileUpload('certificates', Array.from(e.target.files));
@@ -697,7 +697,7 @@ const Profile = ({ onSubmit }) => {
             disabled={isUploading.certificates}
           />
           <label htmlFor="certificates-upload" className="file-upload-label">
-            {isUploading.certificates ? 'Uploading...' : 'Choose Certificate Files'}
+            {isUploading.certificates ? 'Uploading...' : 'Choose Certificate Photos'}
           </label>
         </div>
         
