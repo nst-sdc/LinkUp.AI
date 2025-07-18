@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Profile.css';
 import { db } from '../../../firebase';
@@ -7,41 +7,33 @@ import { uploadToCloudinary, uploadMultipleToCloudinary } from '../../../utils/c
 import UploadProgress from './UploadProgress';
 
 const Profile = ({ onSubmit }) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [profileData, setProfileData] = useState({
+  const navigate = useNavigate();
+
+  // Load saved state from localStorage
+  const savedProfileData = JSON.parse(localStorage.getItem('profileData')) || {
     name: '',
     email: '',
     mobile: '',
     bio: '',
     profilePhoto: null,
     profilePhotoPreview: null,
-    
- 
     linkedIn: '',
     github: '',
     leetcode: '',
     portfolioWebsite: '',
-    
-  
     certificates: [],
-    
-   
     skills: [],
-    
-  
     projects: [],
-    
-  
     education: [],
-    
-  
     experience: [],
-    
-  
     achievements: []
-  });
+  };
 
- 
+  const savedStep = parseInt(localStorage.getItem('currentStep')) || 1;
+
+  const [profileData, setProfileData] = useState(savedProfileData);
+  const [currentStep, setCurrentStep] = useState(savedStep);
+
   const [uploadProgress, setUploadProgress] = useState({
     profilePhoto: 0,
     certificates: {},
@@ -65,6 +57,7 @@ const Profile = ({ onSubmit }) => {
     image: null,
     imagePreview: null
   });
+
   const [newEducation, setNewEducation] = useState({
     institution: '',
     degree: '',
@@ -73,6 +66,7 @@ const Profile = ({ onSubmit }) => {
     endDate: '',
     grade: ''
   });
+
   const [newExperience, setNewExperience] = useState({
     company: '',
     position: '',
@@ -81,14 +75,34 @@ const Profile = ({ onSubmit }) => {
     description: '',
     location: ''
   });
+
   const [newAchievement, setNewAchievement] = useState({
     title: '',
     description: '',
     date: '',
     organization: ''
   });
+  // On mount: load profile data
+useEffect(() => {
+  const savedData = localStorage.getItem("profileData");
+  if (savedData) {
+    setProfileData(JSON.parse(savedData));
+  }
 
-  const navigate = useNavigate()
+  const savedStep = localStorage.getItem("currentStep");
+  if (savedStep) {
+    setCurrentStep(Number(savedStep));
+  }
+}, []);
+
+  // ✅ Save to localStorage on profileData or step change
+  useEffect(() => {
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+  }, [profileData]);
+
+  useEffect(() => {
+    localStorage.setItem('currentStep', currentStep.toString());
+  }, [currentStep]);
 
   const handleInputChange = (field, value) => {
     setProfileData(prev => ({
@@ -97,7 +111,8 @@ const Profile = ({ onSubmit }) => {
     }));
   };
 
-  const MAX_FILE_SIZE = 4 * 1024 * 1024;
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
 
   const handleProfilePhotoUpload = async (file) => {
     if (file) {
